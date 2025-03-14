@@ -28,6 +28,7 @@ community include:
   and learning from the experience
 * Focusing on what is best not just for us as individuals, but for the
   overall community
+*Remember to follow the Scratch community guidelines
 
 Examples of unacceptable behavior include:
 
