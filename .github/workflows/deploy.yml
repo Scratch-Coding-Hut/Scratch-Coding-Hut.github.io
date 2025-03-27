@@ -40,7 +40,15 @@ jobs:
           git clone https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.git --depth=1
           echo "::endgroup::"
 
-      # Step 3: Ensure src is a directory
+      # Step 3: Check contents of the cloned repository
+      - name: List contents of the cloned Scratch-Coding-Hut repository
+        run: |
+          echo "Listing contents of Scratch-Coding-Hut repository:"
+          ls -la Scratch-Coding-Hut/
+          echo "Listing contents of the src directory:"
+          ls -la Scratch-Coding-Hut/src/
+
+      # Step 4: Ensure src is a directory
       - name: Check src directory
         run: |
           if [ ! -d "Scratch-Coding-Hut/src" ]; then
@@ -49,7 +57,7 @@ jobs:
           fi
           echo "✅ src directory exists!"
 
-      # Step 4: Copy src contents to root
+      # Step 5: Copy src contents to root
       - name: Copy src contents
         run: |
           echo "✅ src is a directory, copying contents to root..."
@@ -58,7 +66,7 @@ jobs:
           echo "✅ Copied src content. Listing:"
           ls -la
 
-      # Step 5: Setup Git for deployment
+      # Step 6: Setup Git for deployment
       - name: Setup Git for deployment
         run: |
           git config --global user.name "GitHub Actions"
@@ -66,14 +74,14 @@ jobs:
           git checkout --orphan gh-pages  # Create or switch to gh-pages branch
           git reset --hard  # Remove all files from git history
 
-      # Step 6: Commit and deploy to GitHub Pages
+      # Step 7: Commit and deploy to GitHub Pages
       - name: Commit and Deploy to GitHub Pages
         run: |
           git add .
           git commit -m "Deploy to GitHub Pages"
           git push --force origin gh-pages
           
-      # Step 7: Confirm deployment
+      # Step 8: Confirm deployment
       - name: Confirm Deployment
         run: |
           echo "✅ Deployment completed successfully!"
