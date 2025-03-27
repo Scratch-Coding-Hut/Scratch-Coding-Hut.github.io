@@ -38,7 +38,7 @@ jobs:
           cd Scratch-Coding-Hut
           ls -R
 
-      # Step 3: Check if src file exists and deploy to GitHub Pages
+      # Step 3: Check if src FILE exists and deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         run: |
@@ -52,13 +52,16 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-          # Create a new gh-pages branch if not already there
-          git checkout --orphan gh-pages
+          # Switch to gh-pages branch, create it if necessary
+          if git ls-remote --heads origin gh-pages | grep -q gh-pages; then
+            git checkout gh-pages
+          else
+            git checkout --orphan gh-pages
+          fi
           
           # Remove all files from the current working tree
-          git reset --hard
-          rm -rf *
-
+          git rm -rf . > /dev/null 2>&1 || true
+          
           # Copy src file from the Scratch-Coding-Hut repo to root
           cp Scratch-Coding-Hut/src .
 
