@@ -25,59 +25,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Scratch-Coding-Hut repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step: List contents and ensure src exists
-      - name: List contents of Scratch-Coding-Hut repo and check src directory
+      # Step: Run deploy script
+      - name: Run deploy script
         run: |
-          echo "Listing root contents of the repository:"
-          ls -al
-
-          echo "Listing contents of src directory:"
-          ls -al src
-
-          # Verify that src directory exists
-          if [ ! -d "src" ]; then
-            echo "Error: src directory not found!"
-            exit 1
-          fi
-
-      # Step: Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
-        id: deployment
-        run: |
-          echo "Deploying content to GitHub Pages..."
-
-          # Ensure src directory exists
-          if [ ! -d "src" ]; then
-            echo "Error: src directory not found!"
-            exit 1
-          fi
-
-          # List contents of the src directory to verify the files
-          echo "Listing contents of src directory:"
-          ls -al src
-
-          # Setup Git for deployment
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-
-          # Create or checkout to the gh-pages branch
-          git checkout --orphan gh-pages
-
-          # Remove all files from the current working tree
-          git reset --hard
-
-          # Use archive reference to correctly copy files from 'src' directory
-          echo "Copying files from src directory to root..."
-          cp -r src/. .
-
-          # Commit the changes
-          git add .
-          git commit -m "Deploy to GitHub Pages"
-
-          # Push the changes to the gh-pages branch
-          git push --force origin gh-pages
-
-          echo "Deployment completed!"
+          chmod +x deploy.sh
+          ./deploy.sh
