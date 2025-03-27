@@ -29,16 +29,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the scratch-coding-hut.github.io repository
-      - name: Checkout repository
+      # Step 1: Checkout the Scratch-Coding-Hut repository
+      - name: Checkout Scratch-Coding-Hut repository
         uses: actions/checkout@v4
+        with:
+          repository: Scratch-Coding-Hut/Scratch-Coding-Hut
+          
+      # Step 2: Clone the scratch-coding-hut.github.io repository (where the content will be deployed)
+      - name: Clone scratch-coding-hut.github.io repository
+        run: |
+          git clone https://github.com/Scratch-Coding-Hut/scratch-coding-hut.git
+          cd scratch-coding-hut
 
-      # Step 2: Sync content from the src directory to the gh-pages branch
+      # Step 3: Deploy content from the src directory of Scratch-Coding-Hut repo
       - name: Deploy to GitHub Pages
         id: deployment
         run: |
           # Ensure the src directory is there
-          if [ ! -d "src" ]; then
+          if [ ! -d "../src" ]; then
             echo "src directory not found!"
             exit 1
           fi
@@ -54,7 +62,7 @@ jobs:
           git reset --hard
 
           # Copy everything from the src directory to the root
-          cp -r src/* .
+          cp -r ../src/* .
 
           # Commit the changes
           git add .
@@ -62,4 +70,3 @@ jobs:
 
           # Push the changes to the gh-pages branch
           git push --force origin gh-pages
-
