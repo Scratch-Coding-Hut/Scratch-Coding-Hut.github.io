@@ -1,0 +1,65 @@
+name: Deploy to GitHub Pages Every Minute
+
+on:
+  # Trigger every minute using cron
+  schedule:
+    - cron: "*/1 * * * *"  # Every minute
+  
+  # Allow manual trigger from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Single deploy job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the scratch-coding-hut.github.io repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Sync content from the src directory to the gh-pages branch
+      - name: Deploy to GitHub Pages
+        id: deployment
+        run: |
+          # Ensure the src directory is there
+          if [ ! -d "src" ]; then
+            echo "src directory not found!"
+            exit 1
+          fi
+
+          # Setup Git for deployment
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+          # Create a new gh-pages branch if not already existing
+          git checkout --orphan gh-pages
+
+          # Remove all files from the current working tree
+          git reset --hard
+
+          # Copy everything from the src directory to the root
+          cp -r src/* .
+
+          # Commit the changes
+          git add .
+          git commit -m "Deploy to GitHub Pages"
+
+          # Push the changes to the gh-pages branch
+          git push --force origin gh-pages
+
