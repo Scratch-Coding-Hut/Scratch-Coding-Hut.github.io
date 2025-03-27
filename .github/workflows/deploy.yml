@@ -14,8 +14,7 @@ permissions:
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+# Allow only one concurrent deployment, skipping queued runs while another is running
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -28,46 +27,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the scratch-coding-hut.github.io repository (where the content will be deployed)
+      # Step 1: Checkout the scratch-coding-hut.github.io repository (for deployment)
       - name: Checkout scratch-coding-hut.github.io repository
         uses: actions/checkout@v4
-
+      
       # Step 2: Clone the Scratch-Coding-Hut repository
       - name: Clone Scratch-Coding-Hut repository
         run: |
           git clone https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.git
           cd Scratch-Coding-Hut
+          ls -R
 
-      # Step 3: Check the repo structure and deploy content to GitHub Pages
+      # Step 3: Check if src file exists and deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         run: |
-          # List files in the cloned Scratch-Coding-Hut repo for debugging
-          echo "Listing files in the Scratch-Coding-Hut repository:"
-          ls -R
-
-          # Check if src directory exists in Scratch-Coding-Hut repo
-          if [ ! -d "src" ]; then
-            echo "src directory not found in Scratch-Coding-Hut repository!"
+          # Check if src file exists
+          if [ ! -f "Scratch-Coding-Hut/src" ]; then
+            echo "Error: src file not found in Scratch-Coding-Hut repository!"
             exit 1
           fi
 
-          # Setup Git for deployment
+          # Configure Git
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-          # Create a new gh-pages branch if not already existing
+          # Create a new gh-pages branch if not already there
           git checkout --orphan gh-pages
-
+          
           # Remove all files from the current working tree
           git reset --hard
+          rm -rf *
 
-          # Copy everything from the src directory in the Scratch-Coding-Hut repo to the root of the gh-pages branch
-          cp -r Scratch-Coding-Hut/src/* .
+          # Copy src file from the Scratch-Coding-Hut repo to root
+          cp Scratch-Coding-Hut/src .
 
-          # Commit the changes
-          git add .
-          git commit -m "Deploy to GitHub Pages from Scratch-Coding-Hut repository"
-
-          # Push the changes to the gh-pages branch
+          # Commit and push changes
+          git add src
+          git commit -m "Deploy src file to GitHub Pages"
+          
+          # Push to gh-pages branch
           git push --force origin gh-pages
