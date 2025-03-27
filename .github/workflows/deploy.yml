@@ -25,11 +25,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step: Run deploy script
-      - name: Run deploy script
+      # Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # Step 3: Install required Python packages (e.g., subprocess, shutil)
+      - name: Install dependencies
         run: |
-          chmod +x deploy.sh
-          ./deploy.sh
+          python -m pip install --upgrade pip
+
+      # Step 4: Run the deploy script
+      - name: Run deploy.py script
+        run: |
+          python deploy.py
