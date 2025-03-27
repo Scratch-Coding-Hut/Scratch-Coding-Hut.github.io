@@ -1,55 +1,36 @@
 import os
-import shutil
-import subprocess
-import sys
+import requests
 
-# Define paths
-src_directory = 'src'
-repo_root = '.'
+# GitHub repository details
+repo_owner = 'Scratch-Coding-Hut'
+repo_name = 'Scratch-Coding-Hut'
+branch = 'main'  # or any other branch you want to target
+path = 'src'  # folder name in the repo
 
-# Step 1: Check if 'src' directory exists
-if not os.path.exists(src_directory):
-    print(f"Error: {src_directory} directory not found!")
-    sys.exit(1)
+# GitHub API URL to fetch content of 'src' folder
+url = f'https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{path}?ref={branch}'
+
+# Make GET request to GitHub API
+response = requests.get(url)
+
+# Check if the request was successful (status code 200)
+if response.status_code == 200:
+    print(f"Successfully fetched contents of '{path}' directory from {repo_owner}/{repo_name} on branch {branch}")
+    
+    # The response is a JSON object containing information about files in the directory
+    files = response.json()
+    
+    # Iterate through the files and create the file path for each
+    for file in files:
+        # Get file name and download URL
+        file_name = file['name']
+        download_url = file['download_url']
+        
+        # Construct the relative file path within the 'src' directory
+        file_path = os.path.join(path, file_name)
+        
+        # Print the file path
+        print(f"File path: {file_path}")
+        print(f"Download URL: {download_url}")
 else:
-    print(f"{src_directory} directory found.")
-
-# Step 2: List contents of the 'src' directory (for debugging purposes)
-print("Listing contents of the 'src' directory:")
-for root, dirs, files in os.walk(src_directory):
-    for name in files:
-        print(os.path.join(root, name))
-
-# Step 3: Setup Git configuration
-print("Configuring Git for deployment...")
-subprocess.run(['git', 'config', '--global', 'user.name', 'GitHub Actions'], check=True)
-subprocess.run(['git', 'config', '--global', 'user.email', 'actions@github.com'], check=True)
-
-# Step 4: Create or switch to 'gh-pages' branch
-print("Creating or switching to gh-pages branch...")
-subprocess.run(['git', 'checkout', '--orphan', 'gh-pages'], check=True)
-
-# Step 5: Reset the working tree
-print("Resetting the working tree...")
-subprocess.run(['git', 'reset', '--hard'], check=True)
-
-# Step 6: Copy contents of 'src' to the root
-print(f"Copying contents of {src_directory} to the root...")
-for item in os.listdir(src_directory):
-    s = os.path.join(src_directory, item)
-    d = os.path.join(repo_root, item)
-    if os.path.isdir(s):
-        shutil.copytree(s, d, dirs_exist_ok=True)
-    else:
-        shutil.copy2(s, d)
-
-# Step 7: Commit changes
-print("Committing changes...")
-subprocess.run(['git', 'add', '.'], check=True)
-subprocess.run(['git', 'commit', '-m', 'Deploy to GitHub Pages'], check=True)
-
-# Step 8: Push changes to the gh-pages branch
-print("Pushing changes to gh-pages branch...")
-subprocess.run(['git', 'push', '--force', 'origin', 'gh-pages'], check=True)
-
-print("Deployment completed successfully!")
+    print(f"Failed to fetch directory content. Status code: {response.status_code}")
