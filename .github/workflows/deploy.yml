@@ -4,7 +4,7 @@ on:
   # Trigger every minute using cron
   schedule:
     - cron: "*/1 * * * *"  # Every minute
-  
+
   # Allow manual trigger from the Actions tab
   workflow_dispatch:
 
@@ -14,7 +14,7 @@ permissions:
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping queued runs while another is running
+# Allow only one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -27,27 +27,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the scratch-coding-hut.github.io repository (for deployment)
+      # Step 1: Checkout the scratch-coding-hut.github.io repository
       - name: Checkout scratch-coding-hut.github.io repository
         uses: actions/checkout@v4
-      
+
       # Step 2: Clone the Scratch-Coding-Hut repository
       - name: Clone Scratch-Coding-Hut repository
         run: |
           git clone https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.git
-          cd Scratch-Coding-Hut
-          ls -R
+          echo "Cloned repository contents:"
+          ls -R Scratch-Coding-Hut
 
-      # Step 3: Check if src FILE exists and deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
-        id: deployment
+      # Step 3: Verify src directory and copy its contents
+      - name: Check and copy src directory
         run: |
-          # Check if src file exists
-          if [ ! -f "Scratch-Coding-Hut/src" ]; then
-            echo "Error: src file not found in Scratch-Coding-Hut repository!"
+          # Ensure the src directory exists
+          if [ ! -d "Scratch-Coding-Hut/src" ]; then
+            echo "Error: src directory not found in Scratch-Coding-Hut!"
             exit 1
           fi
 
+          # Clean up old content and copy src directory
+          rm -rf *
+          cp -r Scratch-Coding-Hut/src/* .
+
+      # Step 4: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        run: |
           # Configure Git
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
@@ -58,16 +65,14 @@ jobs:
           else
             git checkout --orphan gh-pages
           fi
-          
-          # Remove all files from the current working tree
+
+          # Remove all files and copy src content
           git rm -rf . > /dev/null 2>&1 || true
-          
-          # Copy src file from the Scratch-Coding-Hut repo to root
-          cp Scratch-Coding-Hut/src .
+          cp -r Scratch-Coding-Hut/src/* .
 
           # Commit and push changes
-          git add src
-          git commit -m "Deploy src file to GitHub Pages"
-          
-          # Push to gh-pages branch
+          git add .
+          git commit -m "Deploy src directory to GitHub Pages"
+
+          # Force push to gh-pages branch
           git push --force origin gh-pages
