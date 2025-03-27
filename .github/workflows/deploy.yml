@@ -38,18 +38,25 @@ jobs:
           echo "Cloned repository contents:"
           ls -R Scratch-Coding-Hut
 
-      # Step 3: Verify src directory and copy its contents
-      - name: Check and copy src directory
+      # Step 3: Check and copy the correct content from src folder
+      - name: Copy website content from src
         run: |
-          # Ensure the src directory exists
-          if [ ! -d "Scratch-Coding-Hut/src" ]; then
-            echo "Error: src directory not found in Scratch-Coding-Hut!"
+          # Ensure src is a directory
+          if [ -d "Scratch-Coding-Hut/src" ]; then
+            echo "src is a directory, copying contents to root..."
+            
+            # Remove everything from current repo to prepare for new content
+            rm -rf * .??* || true
+            
+            # Copy all content from src to the root of the repo
+            cp -r Scratch-Coding-Hut/src/* .
+
+            echo "Contents copied to root:"
+            ls -a
+          else
+            echo "Error: src directory not found!"
             exit 1
           fi
-
-          # Clean up old content and copy src directory
-          rm -rf *
-          cp -r Scratch-Coding-Hut/src/* .
 
       # Step 4: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
@@ -66,13 +73,10 @@ jobs:
             git checkout --orphan gh-pages
           fi
 
-          # Remove all files and copy src content
+          # Remove all files and add new content
           git rm -rf . > /dev/null 2>&1 || true
-          cp -r Scratch-Coding-Hut/src/* .
-
-          # Commit and push changes
           git add .
-          git commit -m "Deploy src directory to GitHub Pages"
+          git commit -m "Deploy content from src to GitHub Pages 🚀"
 
           # Force push to gh-pages branch
           git push --force origin gh-pages
