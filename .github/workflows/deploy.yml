@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy Website to GitHub Pages
 
 on:
   # Trigger every minute using cron
@@ -19,28 +19,20 @@ concurrency:
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      # Step 2: Set up Python environment
-      - name: Set up Python
+        
+      - name: Set up Python environment
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.x'  # Or specify the version you need
 
-      # Step 3: Install required Python packages (e.g., subprocess, shutil)
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          pip install requests
 
-      # Step 4: Run the deploy script
       - name: Run deploy.py script
         run: |
           python deploy.py
