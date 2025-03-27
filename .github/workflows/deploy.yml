@@ -1,20 +1,15 @@
-name: Deploy to GitHub Pages Every Minute
+name: Deploy Scratch-Coding-Hut to GitHub Pages
 
 on:
-  # Trigger every minute using cron
   schedule:
-    - cron: "*/1 * * * *"  # Every minute
-
-  # Allow manual trigger from the Actions tab
+    - cron: "*/1 * * * *"  # Deploy every minute
   workflow_dispatch:
 
-# Set permissions for the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: write
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -27,56 +22,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the scratch-coding-hut.github.io repository
-      - name: Checkout scratch-coding-hut.github.io repository
-        uses: actions/checkout@v4
-
-      # Step 2: Clone the Scratch-Coding-Hut repository
+      # Step 1: Clone Scratch-Coding-Hut repo
       - name: Clone Scratch-Coding-Hut repository
         run: |
-          git clone https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.git
-          echo "Cloned repository contents:"
+          git clone -b main https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.git
+          echo "✅ Clone completed. Listing directory:"
           ls -R Scratch-Coding-Hut
 
-      # Step 3: Check and copy the correct content from src folder
-      - name: Copy website content from src
+      # Step 2: Verify that src folder exists
+      - name: Verify src path
         run: |
-          # Ensure src is a directory
           if [ -d "Scratch-Coding-Hut/src" ]; then
-            echo "src is a directory, copying contents to root..."
-            
-            # Remove everything from current repo to prepare for new content
-            rm -rf * .??* || true
-            
-            # Copy all content from src to the root of the repo
-            cp -r Scratch-Coding-Hut/src/* .
-
-            echo "Contents copied to root:"
-            ls -a
+            echo "✅ src folder found!"
           else
-            echo "Error: src directory not found!"
+            echo "❌ src folder NOT found!"
             exit 1
           fi
 
-      # Step 4: Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
-        id: deployment
+      # Step 3: Checkout scratch-coding-hut.github.io for deployment
+      - name: Checkout scratch-coding-hut.github.io
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      # Step 4: Sync content from Scratch-Coding-Hut/src to current repo
+      - name: Copy src contents
         run: |
-          # Configure Git
+          rm -rf ./*  # Clean up old content
+          cp -r Scratch-Coding-Hut/src/. .
+          echo "✅ Copied src content. Listing:"
+          ls -R .
+
+      # Step 5: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-          # Switch to gh-pages branch, create it if necessary
-          if git ls-remote --heads origin gh-pages | grep -q gh-pages; then
-            git checkout gh-pages
-          else
-            git checkout --orphan gh-pages
-          fi
-
-          # Remove all files and add new content
-          git rm -rf . > /dev/null 2>&1 || true
           git add .
-          git commit -m "Deploy content from src to GitHub Pages 🚀"
-
-          # Force push to gh-pages branch
+          git commit -m "🚀 Deploy to GitHub Pages" || echo "No changes to commit"
           git push --force origin gh-pages
