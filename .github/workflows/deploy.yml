@@ -1,49 +1,37 @@
-name: Reset and Clone Repository
+name: Clone and Push Repository via Python
 
 on:
-  push:
-    branches:
-      - main  # Trigger this workflow on push to the 'main' branch
-  workflow_dispatch:  # Allow manual trigger from the Actions tab
+  schedule:
+    - cron: '*/1 * * * *'  # This cron expression means every minute
 
 jobs:
-  reset-and-clone:
+  clone_and_push:
     runs-on: ubuntu-latest
-
+    
     steps:
-      # Step 1: Checkout the current repository
-      - name: Checkout current repository
-        uses: actions/checkout@v3
+      # Step 1: Checkout the current repository (kRxZykRxZy/Scratch-Coding-Hut)
+      - name: Checkout the current repository
+        uses: actions/checkout@v2
 
-      # Step 2: Delete all files except for the .github folder
-      - name: Delete all files except .github folder
-        run: |
-          # Find all files and folders in the repository, then delete them except the .github folder
-          find . -mindepth 1 -not -path './.github/*' -exec rm -rf {} +
+      # Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-      # Step 3: Set up authentication to clone the private repository using GITHUB_TOKEN
-      - name: Set up authentication for private repository
+      # Step 3: Install required Python dependencies (requests, gitpython)
+      - name: Install dependencies
         run: |
-          echo "machine github.com login ${{ secrets.GITHUB_TOKEN }}" > ~/.netrc
+          pip install requests gitpython
 
-      # Step 4: Clone the external repository (replace with the URL of the repository you want to clone)
-      - name: Clone external repository
+      # Step 4: Run the Python script to clone and handle files
+      - name: Run Python script to clone and manage files
         run: |
-          git clone https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.git temp_repo
+          python3 ./clone_and_manage.py
 
-      # Step 5: Copy the contents of the 'src' folder from the cloned repository to the current repository
-      - name: Copy src contents to current repository
+      # Step 5: Commit and push changes to kRxZykRxZy/Scratch-Coding-Hut
+      - name: Commit and push changes to kRxZykRxZy/Scratch-Coding-Hut
         run: |
-          # Check if the 'src' folder exists in the cloned repository
-          if [ -d "temp_repo/src" ]; then
-            cp -r temp_repo/src/* .  # Copy contents of the 'src' folder into the current repository
-            echo "Successfully copied files from src/"
-          else
-            echo "The 'src' directory does not exist in the cloned repository."
-            exit 1
-          fi
-
-      # Step 6: Clean up by removing the temporary cloned repository
-      - name: Clean up temporary repository
-        run: |
-          rm -rf temp_repo
+          git add .
+          git commit -m "Cloned contents of Scratch-Coding-Hut/Scratch-Coding-Hut excluding .github folder"
+          git push https://x-access-token:${{ secrets.MY_GITHUB_TOKEN }}@github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io.git main
