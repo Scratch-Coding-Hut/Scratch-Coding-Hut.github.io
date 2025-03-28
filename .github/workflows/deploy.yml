@@ -1,38 +1,49 @@
-name: Deploy Website to GitHub Pages
+name: Reset and Clone Repository
 
 on:
-  # Trigger every minute using cron (you can adjust this)
-  schedule:
-    - cron: "*/1 * * * *"  # Every minute
-  
-  # Allow manual trigger from the Actions tab
-  workflow_dispatch:
-
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  push:
+    branches:
+      - main  # Trigger this workflow on push to the 'main' branch
+  workflow_dispatch:  # Allow manual trigger from the Actions tab
 
 jobs:
-  deploy:
+  reset-and-clone:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Set up Python environment
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
+      # Step 1: Checkout the current repository
+      - name: Checkout current repository
+        uses: actions/checkout@v3
 
-      - name: Install dependencies
+      # Step 2: Delete all files except for the .github folder
+      - name: Delete all files except .github folder
         run: |
-          pip install requests
+          # Find all files and folders in the repository, then delete them except the .github folder
+          find . -mindepth 1 -not -path './.github/*' -exec rm -rf {} +
 
-      - name: Run deploy.py script
+      # Step 3: Set up authentication to clone the private repository using GITHUB_TOKEN
+      - name: Set up authentication for private repository
         run: |
-          python deploy.py
+          echo "machine github.com login ${{ secrets.GITHUB_TOKEN }}" > ~/.netrc
+
+      # Step 4: Clone the external repository (replace with the URL of the repository you want to clone)
+      - name: Clone external repository
+        run: |
+          git clone https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.git temp_repo
+
+      # Step 5: Copy the contents of the 'src' folder from the cloned repository to the current repository
+      - name: Copy src contents to current repository
+        run: |
+          # Check if the 'src' folder exists in the cloned repository
+          if [ -d "temp_repo/src" ]; then
+            cp -r temp_repo/src/* .  # Copy contents of the 'src' folder into the current repository
+            echo "Successfully copied files from src/"
+          else
+            echo "The 'src' directory does not exist in the cloned repository."
+            exit 1
+          fi
+
+      # Step 6: Clean up by removing the temporary cloned repository
+      - name: Clean up temporary repository
+        run: |
+          rm -rf temp_repo
