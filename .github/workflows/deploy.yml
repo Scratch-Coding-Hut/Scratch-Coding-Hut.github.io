@@ -1,7 +1,7 @@
 name: Deploy Website to GitHub Pages
 
 on:
-  # Trigger every minute using cron
+  # Trigger every minute using cron (you can adjust this)
   schedule:
     - cron: "*/1 * * * *"  # Every minute
   
@@ -27,7 +27,7 @@ jobs:
       - name: Set up Python environment
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'  # Or specify the version you need
+          python-version: '3.x'
 
       - name: Install dependencies
         run: |
