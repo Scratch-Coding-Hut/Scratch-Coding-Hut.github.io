@@ -5,6 +5,8 @@ This website serves as a hub for all things related to Coding Hut. Here, you'll 
 
 
 ### Website Status:
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/24833615-5a91-45ff-87cd-42a9f87ddc9f/deploy-status)](https://app.netlify.com/sites/scratch-coding-hut/deploys)
 [![pages-build-deployment](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io/actions/workflows/pages/pages-build-deployment)
 [![CodeQL Static](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io/actions/workflows/github-code-scanning/codeql)
 [![CodeQL Advanced](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io/actions/workflows/codeql.yml/badge.svg)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io/actions/workflows/codeql.yml)
