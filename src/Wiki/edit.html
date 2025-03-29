@@ -13,7 +13,6 @@
     }
 
     body {
-      font-family:
       font-family: 'Arial', sans-serif;
       background: #fff4f4;
       color: #333;
@@ -124,16 +123,22 @@
 
       // Fetch the wiki to edit
       const fetchWiki = async () => {
-        const response = await fetch(`${backendUrl}/wikis`);
-        const wikis = await response.json();
-        const wiki = wikis.find(w => w.title === wikiTitle);
+        try {
+          const response = await fetch(`${backendUrl}/wikis`);
+          const wikis = await response.json();
+          console.log('Fetched wikis:', wikis);  // Log the fetched wikis
+          const wiki = wikis.find(w => w.title === wikiTitle);
 
-        if (!wiki) {
-          alert('Wiki not found!');
-          window.location.href = 'index.html';
-        } else {
-          wikiTitleInput.value = wiki.title;
-          wikiContentInput.value = wiki.content;
+          if (!wiki) {
+            alert('Wiki not found!');
+            window.location.href = 'Wiki/wiki';
+          } else {
+            wikiTitleInput.value = wiki.title;
+            wikiContentInput.value = wiki.content;
+          }
+        } catch (error) {
+          console.error('Error fetching wiki:', error);
+          alert('Error fetching wiki data. Please try again later.');
         }
       };
 
@@ -149,21 +154,28 @@
           return;
         }
 
-        const response = await fetch(`${backendUrl}/wikis`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            title: updatedTitle,
-            content: updatedContent,
-            owner: username
-          })
-        });
+        try {
+          const response = await fetch(`${backendUrl}/wikis`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              title: updatedTitle,
+              content: updatedContent,
+              owner: username
+            })
+          });
 
-        if (response.ok) {
-          alert('Wiki updated successfully!');
-          window.location.href = 'Wiki/wiki';  // Redirect back to the main page after saving
-        } else {
-          alert('Failed to update wiki!');
+          if (response.ok) {
+            alert('Wiki updated successfully!');
+            window.location.href = 'Wiki/wiki.html';  // Redirect to Wiki/wiki.html after saving
+          } else {
+            const errorDetails = await response.json();
+            console.error('Failed to update wiki:', errorDetails);
+            alert('Failed to update wiki. Please try again.');
+          }
+        } catch (error) {
+          console.error('Error updating wiki:', error);
+          alert('Error updating wiki. Please check your connection or try again later.');
         }
       });
 
