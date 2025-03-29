@@ -196,6 +196,10 @@
   </div>
 
   <script>
+    if (!localStorage.getItem('username')) {
+      document.getElementById('makeWiki').style.display = 'none';
+    } 
+    
     document.addEventListener('DOMContentLoaded', () => {
       const createWikiForm = document.getElementById('createWikiForm');
       const wikiList = document.getElementById('wikiList');
