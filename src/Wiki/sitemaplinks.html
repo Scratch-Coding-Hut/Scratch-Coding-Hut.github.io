@@ -191,9 +191,6 @@
   </div>
 
   <div class="wikis-container">
-    <b>Make sure to read and follow the <a href="https://scratch-coding-hut.netlify.app/wiki/wiki-guidelines">Scratch Coding Hut Wiki Guidelines</a></b>
-
-  <div class="wikis-container">
     <h2>Wiki Posts</h2>
     <ul id="wikiList"></ul>
   </div>
@@ -204,13 +201,9 @@
       const wikiList = document.getElementById('wikiList');
       const backendUrl = 'https://thejsurlback.onrender.com/api';  // Replace with your backend URL
 
-      // Retrieve username from localStorage
+      // Retrieve username from localStorage (this is optional, users can view wikis when logged out)
       const username = localStorage.getItem('username');
-      if (!username) {
-        alert('Sorry, You must be logged in to interact with the wiki. Go to https://scratch-coding-hut.netlify.app/account to log in.');
-        return; // Stop execution if no username is found
-      }
-
+      
       // Fetch and display all wikis
       const fetchWikis = async () => {
         const response = await fetch(`${backendUrl}/wikis`);
@@ -224,8 +217,8 @@
             <p>${wiki.content}</p>
             <small>Owner: ${wiki.owner}</small>
             <div class="button-container">
-              ${isOwnerOrAdmin(wiki.owner) ? `<button class="edit" onclick="editWiki(${wiki.id}, '${wiki.title}', '${wiki.content}')">Edit</button>` : ''}
-              ${isOwnerOrAdmin(wiki.owner) ? `<button class="delete" onclick="deleteWiki(${wiki.id})">Delete</button>` : ''}
+              ${username && isOwnerOrAdmin(wiki.owner) ? `<button class="edit" onclick="editWiki('${wiki.title}')">Edit</button>` : ''}
+              ${username && isOwnerOrAdmin(wiki.owner) ? `<button class="delete" onclick="deleteWiki(${wiki.id})">Delete</button>` : ''}
             </div>
           `;
           wikiList.appendChild(li);
@@ -274,30 +267,15 @@
         }
       };
 
-      // Edit a wiki
-      window.editWiki = async (id, title, content) => {
+      // Redirect to edit page
+      window.editWiki = (title) => {
         if (!username) {
           alert('You must be logged in to edit a wiki. Go to https://scratch-coding-hut.netlify.app/account to log in.');
           return;
         }
 
-        // Open the title and content in editable textareas
-        const newTitle = prompt('New title:', title);
-        const newContent = prompt('New content:', content);
-
-        if (newTitle && newContent) {
-          const response = await fetch(`${backendUrl}/wikis/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: newTitle, content: newContent, owner: username }), // Send username from localStorage
-          });
-
-          if (response.ok) {
-            fetchWikis(); // Refresh wiki list
-          } else {
-            alert('Not authorized to edit this wiki or wiki not found');
-          }
-        }
+        // Redirect to the edit page with the 'edit' parameter
+        window.location.href = `edit.html?edit=${encodeURIComponent(title)}`;
       };
 
       // Initial fetch of wikis
