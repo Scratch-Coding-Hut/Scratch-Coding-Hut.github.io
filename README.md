@@ -3,6 +3,8 @@
 
 This website serves as a hub for all things related to Coding Hut. Here, you'll find resources, tutorials, and projects to enhance your coding skills.
 
+[![Node.js CI/CD](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut/actions/workflows/node.js.yml/badge.svg)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut/actions/workflows/node.js.yml)
+
 
 ### Website Status:
 
