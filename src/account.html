@@ -87,19 +87,14 @@
         }
     </style>
     <script>
-    
-        let secretCode;
-        if (!localStorage.getItem('baseCode')) {
-            secretCode = '972';
-            localStorage.setItem('baseCode', secretCode);
-        } else {
-            secretCode = localStorage.getItem('baseCode');
-        }
+        // Retrieve 'code' parameter from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code') || '972'; // Default to '972' if no 'code' in URL
 
         function generateKeyFromCode(code) {
             const baseKey = 'abcdefghijklmnopqrstuvwxyz0123456789';
             let shiftedKey = '';
-            let shift = parseInt(code) % 36;
+            let shift = parseInt(code) % 36; // Shift based on the code
             for (let i = 0; i < baseKey.length; i++) {
                 shiftedKey += baseKey[(i + shift) % baseKey.length];
             }
@@ -139,7 +134,7 @@
             try {
                 if (localStorage.getItem('loggedIn') === 'true') {
                     const usernameEncoded = localStorage.getItem('username');
-                    const key = generateKeyFromCode(secretCode);
+                    const key = generateKeyFromCode(code);
                     const username = decodeUsername(usernameEncoded, key);
 
                     document.getElementById('authSection').style.display = 'none';
@@ -169,7 +164,7 @@
             const username = urlParams.get('username');
 
             if (username) {
-                const key = generateKeyFromCode(secretCode);
+                const key = generateKeyFromCode(code);
                 const encodedUsername = encodeUsername(username.toLowerCase(), key);
                 localStorage.setItem('username', encodedUsername);
                 localStorage.setItem('loggedIn', 'true');
@@ -197,7 +192,7 @@
         function registerApiAuth() {
             const messageBox = document.getElementById("apiMessage");
             const redirectLocation = encodeURIComponent(window.location.href);
-            const authUrl = `https://ubbload.netlify.app/login?redirect=${redirectLocation}&code=${secretCode}`;
+            const authUrl = `https://ubbload.netlify.app/login?redirect=${redirectLocation}&code=${code}`;
 
             messageBox.style.color = "green";
             messageBox.textContent = "Redirecting to APIAuth login (ubbload)... Follow the steps there.";
@@ -208,7 +203,7 @@
 
         function logout() {
             const usernameEncoded = localStorage.getItem('username');
-            const key = generateKeyFromCode(secretCode);
+            const key = generateKeyFromCode(code);
             const username = decodeUsername(usernameEncoded, key);
             
             localStorage.removeItem('loggedIn');
@@ -217,8 +212,8 @@
         }
 
         function strikeinfo() {
-           window.location.href = 'https://scratch-coding-hut.netlify.app/Strikes/my-strikes?username=${username}';
-    }
+            window.location.href = 'https://scratch-coding-hut.netlify.app/Strikes/my-strikes?username=${username}';
+        }
     </script>
 </head>
 
@@ -242,12 +237,12 @@
     </div>
 
     <!-- Auth Section -->
-    <div id="authSection" class="content">
+    <div id="authSection" class="content"><div class="container">
         <h2>Welcome! Please log in to continue.</h2>
         <button onclick="registerScratchAuth()">Sign In With ScratchAuth</button>
         <p id="scratchMessage" class="message" aria-live="polite"></p>
         <p>Please note: You will be redirected to an external site (ScratchAuth) for authentication.</p>
-
+</div>
         <div class="container">
             <h2>Login Using APIAuth</h2>
             <button onclick="registerApiAuth()">Login With APIAuth (Made by
