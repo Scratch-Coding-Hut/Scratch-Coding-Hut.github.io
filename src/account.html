@@ -211,6 +211,10 @@
             localStorage.removeItem('username');
             window.location.href = 'account.html';
         }
+
+        function strikeinfo() {
+           window.location.href = 'https://scratch-coding-hut.netlify.app/Strikes/my-strikes?username=${username}';
+    }
     </script>
 </head>
 
@@ -226,6 +230,7 @@
             <h2 id="welcomeMessage"></h2>
             <div id="mainText"></div>
             <button onclick="logout()">Logout</button>
+            <button onclick="strikeinfo()">Strikes Received From Coding Hut</button>
         </div>
     </div>
 
