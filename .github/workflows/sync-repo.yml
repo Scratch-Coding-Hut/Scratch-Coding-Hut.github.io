@@ -3,6 +3,7 @@ name: Clone Scratch-Coding-Hut
 on:
   schedule:
     - cron: "*/1 * * * *"
+  workflow_dispatch:
 
 jobs:
   clone:
