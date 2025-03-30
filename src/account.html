@@ -207,6 +207,10 @@
         }
 
         function logout() {
+            const usernameEncoded = localStorage.getItem('username');
+            const key = generateKeyFromCode(secretCode);
+            const username = decodeUsername(usernameEncoded, key);
+            
             localStorage.removeItem('loggedIn');
             localStorage.removeItem('username');
             window.location.href = 'account.html';
