@@ -205,7 +205,7 @@
   </div>
 
   <script>
-    if (!localStorage.getItem('username')) {
+    if (!localStorage.getItem('username') || localStorage.getItem('username') === "null") {
       document.getElementById('makeWiki').style.display = 'none';
     } 
     
