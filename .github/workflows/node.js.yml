@@ -3,17 +3,17 @@ name: Node.js CI/CD
 on:
   push:
     branches:
-      - main  # or any branch you'd like to trigger on
+      - main  # Trigger on push to main branch
   pull_request:
     branches:
-      - main  # or any branch you'd like to trigger on
+      - main  # Trigger on PR to main branch
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    # Check out the code from the repository
+    # Check out the code
     - name: Checkout repository
       uses: actions/checkout@v2
 
@@ -21,16 +21,22 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '16'  # Specify the Node.js version you need
+        node-version: '16'  # Specify Node.js version
 
     # Install dependencies
     - name: Install dependencies
       run: |
         cd src/npm
-        npm install express multer axios cors
+        npm install
 
-    # Run your Node.js application (server.js)
+    # Run server.js in the background
     - name: Run server.js
       run: |
         cd src/npm
-        node server.js
+        nohup node server.js &  # Run in the background
+        echo "Server is running on port 8080"
+
+    # Workflow completes here, without waiting for the server
+    - name: Finish workflow
+      run: |
+        echo "The server is now running in the background."
