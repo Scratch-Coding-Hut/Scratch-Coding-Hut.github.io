@@ -27,7 +27,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd src/npm
-        npm install
+        npm install express multer cors axios
 
     # Run server.js in the background
     - name: Run server.js
