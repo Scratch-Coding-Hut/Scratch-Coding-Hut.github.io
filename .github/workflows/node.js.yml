@@ -1,0 +1,36 @@
+name: Node.js CI/CD
+
+on:
+  push:
+    branches:
+      - main  # or any branch you'd like to trigger on
+  pull_request:
+    branches:
+      - main  # or any branch you'd like to trigger on
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Check out the code from the repository
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'  # Specify the Node.js version you need
+
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        cd src/npm
+        npm install express multer axios cors
+
+    # Run your Node.js application (server.js)
+    - name: Run server.js
+      run: |
+        cd src/npm
+        node server.js
