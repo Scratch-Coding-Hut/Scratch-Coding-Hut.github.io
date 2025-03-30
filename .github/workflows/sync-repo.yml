@@ -1,0 +1,28 @@
+name: Clone Scratch-Coding-Hut
+
+on:
+  schedule:
+    - cron: "*/1 * * * *"
+
+jobs:
+  clone:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout current repository
+      uses: actions/checkout@v2
+
+    - name: Remove current repository contents
+      run: |
+        rm -rf ./* ./.github
+
+    - name: Clone Scratch-Coding-Hut repository
+      run: git clone https://github.com/scratch-coding-hut/Scratch-Coding-Hut.git .
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add .
+        git commit -m "Replace current contents with Scratch-Coding-Hut"
+        git push
