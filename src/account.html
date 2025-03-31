@@ -86,6 +86,7 @@
             padding: 20px;
         }
     </style>
+
     <script>
         // Retrieve 'code' parameter from URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -139,46 +140,40 @@
 
                     document.getElementById('authSection').style.display = 'none';
                     document.getElementById('loggedInContent').style.display = 'block';
-                    document.getElementById('welcomeMessage').textContent = Welcome to your account, ${username}!;
+                    document.getElementById('welcomeMessage').textContent = `Welcome to your account, ${username}!`;
 
-                    const res = await fetch(https://scratchgems.onrender.com/api/data/${username});
+                    const res = await fetch(`https://scratchgems.onrender.com/api/data/${username}`);
                     if (!res.ok) throw new Error('Failed to fetch data');
 
                     const data = await res.json();
-                    document.getElementById('mainText').innerHTML = 
+                    document.getElementById('mainText').innerHTML = `
                         <p>Pending Orders: ${data.pendingorders}</p>
                         <p>Completed Orders: ${data.completedorders}</p>
-                    ;
+                    `;
                 } else {
                     checkAuth();
                 }
             } catch (error) {
                 console.error(error);
-                document.getElementById('mainText').innerHTML = <p>Something went wrong! Please try again later.</p>;
-                // Function to send a PUT request to the API
-                const url = https://scratchgems.onrender.com/api/data/${username}; // Replace with your API endpoint
+                document.getElementById('mainText').innerHTML = `<p>Something went wrong! Please try again later.</p>`;
+
+                const url = `https://scratchgems.onrender.com/api/data/${username}`;
                 const data = {
-                email: localStorage.getItem('email'),
-                points: '100'
+                    email: localStorage.getItem('email'),
+                    points: '100'
                 };
+
                 await fetch(url, {
-                method: 'PUT',
-                headers: {
-                     'Content-Type': 'application/json',
-              },
-                body: JSON.stringify(data),
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
                 });
-
-
-// Example usage
-
-
-sendPutRequest(url, data);
             }
         };
 
         function checkAuth() {
-            const urlParams = new URLSearchParams(window.location.search);
             const authSuccess = urlParams.get('success');
             const username = urlParams.get('username');
 
@@ -199,7 +194,7 @@ sendPutRequest(url, data);
         function registerScratchAuth() {
             const messageBox = document.getElementById("scratchMessage");
             const redirectLocation = encodeURIComponent(window.location.href);
-            const authUrl = https://auth.itinerary.eu.org/auth/?redirect=${redirectLocation}&name=Coding%20Hut&sign_in_method=cloud;
+            const authUrl = `https://auth.itinerary.eu.org/auth/?redirect=${redirectLocation}&name=Coding%20Hut&sign_in_method=cloud`;
 
             messageBox.style.color = "green";
             messageBox.textContent = "Redirecting to ScratchAuth... Follow the steps there.";
@@ -211,7 +206,7 @@ sendPutRequest(url, data);
         function registerApiAuth() {
             const messageBox = document.getElementById("apiMessage");
             const redirectLocation = encodeURIComponent(window.location.href);
-            const authUrl = https://ubbload.netlify.app/login?redirect=${redirectLocation}&code=${code};
+            const authUrl = `https://ubbload.netlify.app/login?redirect=${redirectLocation}&code=${code}`;
 
             messageBox.style.color = "green";
             messageBox.textContent = "Redirecting to APIAuth login (ubbload)... Follow the steps there.";
@@ -221,17 +216,17 @@ sendPutRequest(url, data);
         }
 
         function logout() {
-            const usernameEncoded = localStorage.getItem('username');
-            const key = generateKeyFromCode(code);
-            const username = decodeUsername(usernameEncoded, key);
-            
             localStorage.removeItem('loggedIn');
             localStorage.removeItem('username');
             window.location.href = 'account.html';
         }
 
-        function strikeinfo() {
-            window.location.href = https://scratch-coding-hut.netlify.app/Strikes/my-strikes?username=${username};
+        async function strikeinfo() {
+            const usernameEncoded = localStorage.getItem('username');
+            const key = generateKeyFromCode(code);
+            const username = decodeUsername(usernameEncoded, key);
+
+            window.location.href = `https://scratch-coding-hut.netlify.app/Strikes/my-strikes?username=${username}`;
         }
     </script>
 </head>
@@ -250,18 +245,21 @@ sendPutRequest(url, data);
             <button onclick="logout()">Logout</button>
         </div>
 
-        <div class="container"><h2>For You</h2>
-        <button onclick="strikeinfo()">Strikes Received From Coding Hut</button>
+        <div class="container">
+            <h2>For You</h2>
+            <button onclick="strikeinfo()">Strikes Received From Coding Hut</button>
         </div>
     </div>
 
     <!-- Auth Section -->
-    <div id="authSection" class="content"><div class="container">
-        <h2>Welcome! Please log in to continue.</h2>
-        <button onclick="registerScratchAuth()">Sign In With ScratchAuth</button>
-        <p id="scratchMessage" class="message" aria-live="polite"></p>
-        <p>Please note: You will be redirected to an external site (ScratchAuth) for authentication.</p>
-</div>
+    <div id="authSection" class="content">
+        <div class="container">
+            <h2>Welcome! Please log in to continue.</h2>
+            <button onclick="registerScratchAuth()">Sign In With ScratchAuth</button>
+            <p id="scratchMessage" class="message" aria-live="polite"></p>
+            <p>Please note: You will be redirected to an external site (ScratchAuth) for authentication.</p>
+        </div>
+
         <div class="container">
             <h2>Login Using APIAuth</h2>
             <button onclick="registerApiAuth()">Login With APIAuth (Made by
