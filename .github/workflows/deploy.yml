@@ -21,7 +21,7 @@ jobs:
         uses: actions/configure-pages@v3
 
       - name: Upload src folder to GitHub Pages
-        uses: actions/upload-pages-artifact@v2  # Correct version and action
+        uses: actions/upload-pages-artifact@v3  # Correct version and action
         with:
           path: ./src  # Deploy only the src folder
 
