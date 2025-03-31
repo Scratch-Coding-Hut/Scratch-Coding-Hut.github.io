@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Scratch Coding Hut Wiki</title>
   <style>
-    /* Similar styles as in the main page */
+    /* Global reset */
     * {
       margin: 0;
       padding: 0;
@@ -114,12 +114,14 @@
       const wikiContentInput = document.getElementById('wikiContent');
       const urlParams = new URLSearchParams(window.location.search);
       const wikiTitle = urlParams.get('edit');
-      
+
       if (!wikiTitle) {
         alert('No wiki title provided to edit.');
-        window.location.href = 'index.html';
+        window.location.href = 'index.html';  // Redirect to main page
         return;
       }
+
+      let wikiId = null;
 
       // Fetch the wiki to edit
       const fetchWiki = async () => {
@@ -131,8 +133,9 @@
 
           if (!wiki) {
             alert('Wiki not found!');
-            window.location.href = 'Wiki/wiki';
+            window.location.href = 'Wiki/wiki';  // Redirect to wiki list if not found
           } else {
+            wikiId = wiki.id;  // Store the wiki ID
             wikiTitleInput.value = wiki.title;
             wikiContentInput.value = wiki.content;
           }
@@ -154,8 +157,13 @@
           return;
         }
 
+        if (!wikiId) {
+          alert('Wiki ID not found');
+          return;
+        }
+
         try {
-          const response = await fetch(`${backendUrl}/wikis`, {
+          const response = await fetch(`${backendUrl}/wikis/${wikiId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
