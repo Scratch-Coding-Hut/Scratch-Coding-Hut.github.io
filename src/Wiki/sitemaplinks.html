@@ -212,14 +212,14 @@
     document.addEventListener('DOMContentLoaded', () => {
       const createWikiForm = document.getElementById('createWikiForm');
       const wikiList = document.getElementById('wikiList');
-      const backendUrl = 'https://thejsurlback.onrender.com/api';  // Replace with your backend URL
+      const backendUrl = 'https://api.jsonbin.io/v3/b/67c73db1e41b4d34e4a0bfb1/';  // Replace with your backend URL
 
       // Retrieve username from localStorage (this is optional, users can view wikis when logged out)
       const username = localStorage.getItem('username');
       
       // Fetch and display all wikis
       const fetchWikis = async () => {
-        const response = await fetch(`${backendUrl}/wikis`);
+        const response = await fetch(`${backendUrl}/latest`);
         const wikis = await response.json();
         wikiList.innerHTML = ''; // Clear the current list
 
@@ -251,7 +251,7 @@
         const title = document.getElementById('wikiTitle').value;
         const content = document.getElementById('wikiContent').value;
 
-        const response = await fetch(`${backendUrl}/wikis`, {
+        const response = await fetch(`${backendUrl}/latest`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ title, content, owner: username }), // Send username from localStorage
