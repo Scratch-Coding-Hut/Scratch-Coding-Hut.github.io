@@ -1,7 +1,0 @@
-repos:
-  - "Scratch-Coding-Hut/Scratch-Coding-Hut" # Correct target repo
-
-files:
-  - source: "/src/"  # Copy all files inside 'src' folder
-    dest: "/"        # Place them in the root of the target repo
-    delete: true     # Delete extra files in the target repo
