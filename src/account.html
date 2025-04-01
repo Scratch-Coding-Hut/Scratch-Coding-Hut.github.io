@@ -142,7 +142,7 @@
         function registerScratchAuth() {
             const messageBox = document.getElementById("scratchMessage");
             const redirectLocation = encodeURIComponent(window.location.href);
-            const authUrl = `https://auth.itinerary.eu.org/auth?redirect=${redirectLocation}&name=Scratch%20Coding%20Hut&sign_in_method=cloud`;
+            const authUrl = `https://scratchauth-codinghut.onrender.com`;
 
             messageBox.style.color = "green";
             messageBox.textContent = "Redirecting to ScratchAuth... Follow the steps there.";
@@ -204,7 +204,7 @@
     <div id="authSection" class="content">
         <div class="container">
             <h2>Welcome! Please log in to continue.</h2>
-            <button onclick="registerScratchAuth()">Sign In With ScratchAuth</button>
+            <button onclick="registerScratchAuth()">Sign In With ScratchAuth (working)</button>
             <p id="scratchMessage" class="message" aria-live="polite"></p>
             <p>Please note: You will be redirected to an external site (ScratchAuth) for authentication.</p>
         </div>
