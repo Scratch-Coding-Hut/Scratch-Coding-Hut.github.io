@@ -5,6 +5,36 @@ This website serves as a hub for all things related to Coding Hut. Here, you'll 
 
 [![Node.js CI/CD](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut/actions/workflows/node.js.yml/badge.svg)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut/actions/workflows/node.js.yml)
 
+_Social buttons_
+
+[![Scratch-Coding-Hut - Scratch-Coding-hut.github.io](https://img.shields.io/static/v1?label=Scratch-Coding-Hut&message=Scratch-Coding-hut.github.io&color=blue&logo=github)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io "Go to GitHub repo")
+[![stars - Scratch-Coding-hut.github.io](https://img.shields.io/github/stars/Scratch-Coding-Hut/Scratch-Coding-hut.github.io?style=social)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io)
+[![forks - Scratch-Coding-hut.github.io](https://img.shields.io/github/forks/Scratch-Coding-Hut/Scratch-Coding-hut.github.io?style=social)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io)
+
+
+_Repo metadata_
+
+
+[![GitHub tag](https://img.shields.io/github/tag/Scratch-Coding-Hut/Scratch-Coding-hut.github.io?include_prereleases=&sort=semver&color=blue)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io/releases/)
+[![License](https://img.shields.io/badge/License-MIT-blue)](#license)
+[![issues - Scratch-Coding-hut.github.io](https://img.shields.io/github/issues/Scratch-Coding-Hut/Scratch-Coding-hut.github.io)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io/issues)
+
+_Call-to-Action buttons_
+
+[![View site - GH Pages](https://img.shields.io/badge/View_site-GH_Pages-2ea44f?style=for-the-badge)](https://scratch-coding-hut.github.io/Scratch-Coding-hut.github.io/
+
+## Documentation
+
+<div align="center">
+
+[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](/docs/ "Go to project documentation")
+
+</div>
+
+
+## License
+
+Released under [MIT](/LICENSE) by [@Scratch-Coding-Hut](https://github.com/Scratch-Coding-Hut).
 
 ### Website Status:
 
