@@ -142,7 +142,7 @@
         function registerScratchAuth() {
             const messageBox = document.getElementById("scratchMessage");
             const redirectLocation = encodeURIComponent(window.location.href);
-            const authUrl = `auth.html`;
+            const authUrl = `https://auth.itinerary.eu.org/auth?redirect=${redirectLocation}&name=Scratch%20Coding%20Hut&sign_in_method=cloud`;
 
             messageBox.style.color = "green";
             messageBox.textContent = "Redirecting to ScratchAuth... Follow the steps there.";
