@@ -16,12 +16,12 @@ This website serves as a hub for all things related to Coding Hut. Here, you'll 
 
 ### Repo metadata
 
-
+![GitHub repo size](https://img.shields.io/github/repo-size/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io)
 [![GitHub tag](https://img.shields.io/github/tag/Scratch-Coding-Hut/Scratch-Coding-hut.github.io?include_prereleases=&sort=semver&color=blue)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io/releases/)
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
 [![issues - Scratch-Coding-hut.github.io](https://img.shields.io/github/issues/Scratch-Coding-Hut/Scratch-Coding-hut.github.io)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io/issues)
 
-_Call-to-Action buttons_
+### Call-to-Action buttons
 
 [![View site - GH Pages](https://img.shields.io/badge/View_site-GH_Pages-2ea44f?style=for-the-badge)](https://scratch-coding-hut.github.io/Scratch-Coding-hut.github.io/)
 
