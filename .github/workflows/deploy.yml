@@ -20,14 +20,14 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
+      - name: Debug Artifact Contents
+        run: ls -R ./src  # Print folder contents to check if files exist
+
       - name: Upload src folder to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./src
-          name: github-pages  # Ensure the artifact name matches below
+          path: ./src  # Upload all contents of src
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
-        with:
-          artifact_name: github-pages
