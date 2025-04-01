@@ -117,7 +117,7 @@
 
       if (!wikiTitle) {
         alert('No wiki title provided to edit.');
-        window.location.href = 'index.html';  // Redirect to main page
+        window.location.href = 'sitemaplinks.html';  // Redirect to main page
         return;
       }
 
@@ -133,7 +133,7 @@
 
           if (!wiki) {
             alert('Wiki not found!');
-            window.location.href = 'Wiki/wiki';  // Redirect to wiki list if not found
+            window.location.href = 'sitemaplinks.html';  // Redirect to wiki list if not found
           } else {
             wikiId = wiki.id;  // Store the wiki ID
             wikiTitleInput.value = wiki.title;
@@ -175,7 +175,7 @@
 
           if (response.ok) {
             alert('Wiki updated successfully!');
-            window.location.href = 'Wiki/wiki.html';  // Redirect to Wiki/wiki.html after saving
+            window.location.href = 'sitemaplinks.html';  // Redirect to Wiki/wiki.html after saving
           } else {
             const errorDetails = await response.json();
             console.error('Failed to update wiki:', errorDetails);
