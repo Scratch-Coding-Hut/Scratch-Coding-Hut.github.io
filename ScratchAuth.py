@@ -23,8 +23,8 @@ def home():
 @app.get("/auth")
 def auth():
     if "username" not in session:
-        return redirect(f"https://auth.itinerary.eu.org/auth/?redirect={ base64('https://scratch-coding-hut.github.io/account.html') }&name=Scratch%20Coding%20Hut")
-    else:q
+        return redirect(f"https://auth.itinerary.eu.org/auth/?redirect={base64('https://scratch-coding-hut.github.io/account.html')}&name=Scratch%20Coding%20Hut")
+    else:
         return render_template("auth.html", username=session["username"])
 
 @app.get("/authenticate")
