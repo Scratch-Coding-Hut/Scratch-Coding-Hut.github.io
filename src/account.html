@@ -97,8 +97,9 @@
         window.onload = async function () {
             try {
                 if (localStorage.getItem('loggedIn') === 'true') {
-                    const usernameEncoded = localStorage.getItem('username');
+                    const usernameEncoded = localStorage.getItem('usernameEnc');
                     const username = decodeUsername(usernameEncoded); // Decode the username using atob
+                    localStorage.setItem('username', username)
 
                     document.getElementById('authSection').style.display = 'none';
                     document.getElementById('loggedInContent').style.display = 'block';
@@ -127,7 +128,7 @@
 
             if (username) {
                 const decodedUsername = decodeUsername(username); // Decode the username using atob
-                localStorage.setItem('username', username); // Store the original Base64-encoded username
+                localStorage.setItem('usernameEnc', username); // Store the original Base64-encoded username
                 localStorage.setItem('loggedIn', 'true');
                 window.location.href = 'index.html';
             }
