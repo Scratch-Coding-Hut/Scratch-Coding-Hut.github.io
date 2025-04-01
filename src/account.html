@@ -88,46 +88,18 @@
     </style>
 
     <script>
-        // Retrieve 'code' parameter from URL
+        // Retrieve 'code' parameter from URL, and give it a default value of '972' if it doesn't exist
         const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code') || '972'; // Default to '972' if no 'code' in URL
+        const code = urlParams.get('code') || '972';  // Default to '972' if 'code' is not in the URL
 
-        function generateKeyFromCode(code) {
-            const baseKey = 'abcdefghijklmnopqrstuvwxyz0123456789';
-            let shiftedKey = '';
-            let shift = parseInt(code) % 36; // Shift based on the code
-            for (let i = 0; i < baseKey.length; i++) {
-                shiftedKey += baseKey[(i + shift) % baseKey.length];
-            }
-            return shiftedKey;
+        // Function to encode the username using btoa (Base64 encoding)
+        function encodeUsername(username) {
+            return btoa(username); // Using btoa to encode the username to Base64
         }
 
-        function encodeUsername(username, key) {
-            const baseKey = 'abcdefghijklmnopqrstuvwxyz0123456789';
-            let encoded = '';
-            for (let char of username) {
-                let index = baseKey.indexOf(char);
-                if (index !== -1) {
-                    encoded += key[index];
-                } else {
-                    encoded += char;
-                }
-            }
-            return encoded;
-        }
-
-        function decodeUsername(encodedUsername, key) {
-            const baseKey = 'abcdefghijklmnopqrstuvwxyz0123456789';
-            let decoded = '';
-            for (let char of encodedUsername) {
-                let index = key.indexOf(char);
-                if (index !== -1) {
-                    decoded += baseKey[index];
-                } else {
-                    decoded += char;
-                }
-            }
-            return decoded;
+        // Function to decode the username using atob (Base64 decoding)
+        function decodeUsername(encodedUsername) {
+            return atob(encodedUsername); // Using atob to decode the Base64 username
         }
 
         // On page load, check if the user is logged in
@@ -135,8 +107,7 @@
             try {
                 if (localStorage.getItem('loggedIn') === 'true') {
                     const usernameEncoded = localStorage.getItem('username');
-                    const key = generateKeyFromCode(code);
-                    const username = decodeUsername(usernameEncoded, key);
+                    const username = decodeUsername(usernameEncoded); // Decode the username using atob
 
                     document.getElementById('authSection').style.display = 'none';
                     document.getElementById('loggedInContent').style.display = 'block';
@@ -174,12 +145,11 @@
         };
 
         function checkAuth() {
-            const authSuccess = urlParams.get('success');
-            const username = urlParams.get('username');
+            const authSuccess = new URLSearchParams(window.location.search).get('success');
+            const username = new URLSearchParams(window.location.search).get('username');
 
             if (username) {
-                const key = generateKeyFromCode(code);
-                const encodedUsername = encodeUsername(username.toLowerCase(), key);
+                const encodedUsername = encodeUsername(username.toLowerCase()); // Encode the username using btoa
                 localStorage.setItem('username', encodedUsername);
                 localStorage.setItem('loggedIn', 'true');
                 window.location.href = 'index.html';
@@ -223,8 +193,7 @@
 
         async function strikeinfo() {
             const usernameEncoded = localStorage.getItem('username');
-            const key = generateKeyFromCode(code);
-            const username = decodeUsername(usernameEncoded, key);
+            const username = decodeUsername(usernameEncoded); // Decode the username using atob
 
             window.location.href = `https://scratch-coding-hut.netlify.app/Strikes/my-strikes?username=${username}`;
         }
