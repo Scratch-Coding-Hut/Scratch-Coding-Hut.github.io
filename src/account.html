@@ -149,7 +149,7 @@
             const username = new URLSearchParams(window.location.search).get('username');
 
             if (username) {
-                const encodedUsername = encodeUsername(username.toLowerCase()); // Encode the username using btoa
+                const encodedUsername = decodeUsername(username.toLowerCase()); // Encode the username using btoa
                 localStorage.setItem('username', encodedUsername);
                 localStorage.setItem('loggedIn', 'true');
                 window.location.href = 'index.html';
