@@ -88,15 +88,6 @@
     </style>
 
     <script>
-        // Retrieve 'code' parameter from URL, and give it a default value of '972' if it doesn't exist
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code') || '972';  // Default to '972' if 'code' is not in the URL
-
-        // Function to encode the username using btoa (Base64 encoding)
-        function encodeUsername(username) {
-            return btoa(username); // Using btoa to encode the username to Base64
-        }
-
         // Function to decode the username using atob (Base64 decoding)
         function decodeUsername(encodedUsername) {
             return atob(encodedUsername); // Using atob to decode the Base64 username
@@ -127,20 +118,6 @@
             } catch (error) {
                 console.error(error);
                 document.getElementById('mainText').innerHTML = `<p>Something went wrong! Please try again later.</p>`;
-
-                const url = `https://scratchgems.onrender.com/api/data/${username}`;
-                const data = {
-                    email: localStorage.getItem('email'),
-                    points: '100'
-                };
-
-                await fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                });
             }
         };
 
@@ -149,8 +126,8 @@
             const username = new URLSearchParams(window.location.search).get('username');
 
             if (username) {
-                const encodedUsername = decodeUsername(username.toLowerCase()); // Encode the username using btoa
-                localStorage.setItem('username', encodedUsername);
+                const decodedUsername = decodeUsername(username); // Decode the username using atob
+                localStorage.setItem('username', username); // Store the original Base64-encoded username
                 localStorage.setItem('loggedIn', 'true');
                 window.location.href = 'index.html';
             }
@@ -176,7 +153,7 @@
         function registerApiAuth() {
             const messageBox = document.getElementById("apiMessage");
             const redirectLocation = encodeURIComponent(window.location.href);
-            const authUrl = `https://ubbload.netlify.app/login?redirect=${redirectLocation}&code=${code}`;
+            const authUrl = `https://ubbload.netlify.app/login?redirect=${redirectLocation}`;
 
             messageBox.style.color = "green";
             messageBox.textContent = "Redirecting to APIAuth login (ubbload)... Follow the steps there.";
@@ -192,8 +169,10 @@
         }
 
         async function strikeinfo() {
-            const usernameEncoded = localStorage.getItem('username');
-            const username = decodeUsername(usernameEncoded); // Decode the username using atob
+            // Retrieve the 'username' parameter from the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const encodedUsername = urlParams.get('username');
+            const username = decodeUsername(encodedUsername); // Decode the username using atob
 
             window.location.href = `https://scratch-coding-hut.netlify.app/Strikes/my-strikes?username=${username}`;
         }
