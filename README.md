@@ -27,11 +27,15 @@ This website serves as a hub for all things related to Coding Hut. Here, you'll 
 
 ### Documentation
 
-<div align="center">
-
 [![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](/docs/ "Go to project documentation")
 
-</div>
+### Commiting
+
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io)
+
 
 
 ### License
