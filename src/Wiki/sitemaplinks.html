@@ -232,8 +232,8 @@
             <div class="button-container">
               ${username && isOwnerOrAdmin(wiki.owner) ? `<button class="edit" onclick="editWiki('${wiki.title}')">Edit</button>` : ''}
               ${username && isOwnerOrAdmin(wiki.owner) ? `<button class="delete" onclick="deleteWiki(${wiki.id})">Delete</button>` : ''}
-              <a href="scratch-coding-hut.netlify.app/wiki/report">
-                <button>⛳️ R</button>
+              <a href="report.html">
+                <button>Report</button>
             </div>
           `;
           wikiList.appendChild(li);
