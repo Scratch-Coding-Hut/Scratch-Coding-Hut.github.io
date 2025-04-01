@@ -21,7 +21,7 @@ _Repo metadata_
 
 _Call-to-Action buttons_
 
-[![View site - GH Pages](https://img.shields.io/badge/View_site-GH_Pages-2ea44f?style=for-the-badge)](https://scratch-coding-hut.github.io/Scratch-Coding-hut.github.io/
+[![View site - GH Pages](https://img.shields.io/badge/View_site-GH_Pages-2ea44f?style=for-the-badge)](https://scratch-coding-hut.github.io/Scratch-Coding-hut.github.io/)
 
 ## Documentation
 
