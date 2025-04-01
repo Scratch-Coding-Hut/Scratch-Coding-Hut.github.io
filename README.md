@@ -3,16 +3,18 @@
 
 This website serves as a hub for all things related to Coding Hut. Here, you'll find resources, tutorials, and projects to enhance your coding skills.
 
+## Repo Badges
+
 [![Node.js CI/CD](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut/actions/workflows/node.js.yml/badge.svg)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut/actions/workflows/node.js.yml)
 
-_Social buttons_
+### Social buttons
 
 [![Scratch-Coding-Hut - Scratch-Coding-hut.github.io](https://img.shields.io/static/v1?label=Scratch-Coding-Hut&message=Scratch-Coding-hut.github.io&color=blue&logo=github)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io "Go to GitHub repo")
 [![stars - Scratch-Coding-hut.github.io](https://img.shields.io/github/stars/Scratch-Coding-Hut/Scratch-Coding-hut.github.io?style=social)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io)
 [![forks - Scratch-Coding-hut.github.io](https://img.shields.io/github/forks/Scratch-Coding-Hut/Scratch-Coding-hut.github.io?style=social)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io)
 
 
-_Repo metadata_
+### Repo metadata
 
 
 [![GitHub tag](https://img.shields.io/github/tag/Scratch-Coding-Hut/Scratch-Coding-hut.github.io?include_prereleases=&sort=semver&color=blue)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io/releases/)
@@ -23,7 +25,7 @@ _Call-to-Action buttons_
 
 [![View site - GH Pages](https://img.shields.io/badge/View_site-GH_Pages-2ea44f?style=for-the-badge)](https://scratch-coding-hut.github.io/Scratch-Coding-hut.github.io/)
 
-## Documentation
+### Documentation
 
 <div align="center">
 
@@ -32,11 +34,11 @@ _Call-to-Action buttons_
 </div>
 
 
-## License
+### License
 
 Released under [MIT](/LICENSE) by [@Scratch-Coding-Hut](https://github.com/Scratch-Coding-Hut).
 
-### Website Status:
+### Website Status
 
 [![Deploy static content to Pages](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io/actions/workflows/static.yml/badge.svg)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io/actions/workflows/static.yml)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/24833615-5a91-45ff-87cd-42a9f87ddc9f/deploy-status)](https://app.netlify.com/sites/scratch-coding-hut/deploys)
