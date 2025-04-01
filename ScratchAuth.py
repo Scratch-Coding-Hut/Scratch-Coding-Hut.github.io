@@ -20,7 +20,7 @@ def base64(string):
 def home():
     return render_template("account.html")
 
-@app.get("/auth")
+@app.get("/account.html")
 def auth():
     if "username" not in session:
         return redirect(f"https://auth.itinerary.eu.org/auth/?redirect={base64('https://scratch-coding-hut.github.io/account.html')}&name=Scratch%20Coding%20Hut")
