@@ -114,6 +114,7 @@
       const wikiContentInput = document.getElementById('wikiContent');
       const urlParams = new URLSearchParams(window.location.search);
       const wikiTitle = urlParams.get('edit');
+      const authorizedUsers = ['kRxZy_kRxZy', 'mcgdj', 'MyScratchedAccount'];
 
       if (!wikiTitle) {
         alert('No wiki title provided to edit.');
@@ -141,7 +142,7 @@
 
             // Check if the user is authorized to edit the wiki
             const username = localStorage.getItem('username');
-            if (username !== wiki.owner && !['kRxZy_kRxZy', 'mcgdj', 'MyScratchedAccount'].includes(username)) {
+            if (!username || (username !== wiki.owner && !authorizedUsers.includes(username))) {
               alert('You are not authorized to edit this wiki.');
               window.location.href = 'sitemaplinks.html';  // Redirect to wiki list if not authorized
             }
@@ -170,11 +171,6 @@
         }
 
         try {
-          // Log to verify the values being sent
-          console.log('Updating wiki with ID:', wikiId);
-          console.log('Updated Title:', updatedTitle);
-          console.log('Updated Content:', updatedContent);
-
           const response = await fetch(`${backendUrl}/wikis/${wikiId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
