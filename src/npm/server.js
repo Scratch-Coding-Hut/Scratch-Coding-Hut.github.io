@@ -61,16 +61,16 @@ app.get('/wiki/:title', (req, res) => {
 </head>
 <body>
   <div class="navbar">
-    <a href="/index.html">Home</a>
-    <a href="/Wiki/sitemaplinks.html">Create Wiki</a>
+    <a href="https://scratch-coding-hut.github.io/index.html">Home</a>
+    <a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Create Wiki</a>
   </div>
   <div class="wiki-content">
     <h2>${wiki.title}</h2>
     <p>${wiki.content}</p>
     <small>Author: ${wiki.owner}</small>
     <div class="button-container">
-      <a href="/Wiki/edit?edit=${encodeURIComponent(wiki.title)}" class="edit-button">Edit Wiki</a>
-      <a href="/Wiki/report.html" class="report-button">Report</a>
+      <a href="scratch-coding-hut.github.io/Wiki/edit?edit=${encodeURIComponent(wiki.title)}" class="edit-button">Edit Wiki</a>
+      <a href="scratch-coding-hut.github.io/Wiki/report.html?wiki=${encodeURIComponent(wiki.title)}" class="report-button">Report</a>
     </div>
   </div>
 </body>
