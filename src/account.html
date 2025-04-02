@@ -124,7 +124,7 @@
 
         function checkAuth() {
             const authSuccess = new URLSearchParams(window.location.search).get('success');
-            const username = new URLSearchParams(window.location.search).get('username')?.trim().toLowerCase();
+            const username = new URLSearchParams(window.location.search).get('username');
 
             if (username) {
                 const decodedUsername = decodeUsername(username); // Decode the username using atob
