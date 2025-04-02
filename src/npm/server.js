@@ -6,28 +6,48 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// In-memory storage for wikis
 let wikis = [
   { id: 1, title: 'Node.js', content: 'Node.js is a JavaScript runtime built on Chrome\'s V8 JavaScript engine.', owner: 'krxzy_krxzy' },
   { id: 2, title: 'JavaScript', content: 'JavaScript is a programming language commonly used for web development.', owner: 'myscratchedaccount' },
 ];
 
 app.use(bodyParser.json());
-app.use(cors());
-app.use(express.static('public'));
+app.use(cors()); // Enable CORS for all requests
+app.use(express.static('public')); // Serve static files (e.g., images, CSS)
 
+// Authorized users for editing and deleting wikis
 const authorizedUsers = ['kRxZy_kRxZy', 'MyScratchedAccount', 'mcgdj'];
 
+// Middleware to check if the user is authorized to edit or delete a wiki
 const isAuthorized = (username, wikiOwner) => {
   return username === wikiOwner || authorizedUsers.includes(username);
 };
 
+// API: Create a new wiki
 app.post('/api/wikis', (req, res) => {
   const { title, content, owner } = req.body;
   const newWiki = { id: wikis.length + 1, title, content, owner };
   wikis.push(newWiki);
-  res.status(201).send(`Wiki Created! <a href="/wiki/${encodeURIComponent(title)}">View Wiki</a>`);
+  res.status(201).json(newWiki); // Return the created wiki as JSON
 });
 
+// API: Get all wikis
+app.get('/api/wikis', (req, res) => {
+  res.json(wikis); // Return all wikis as JSON
+});
+
+// API: Get a specific wiki by ID
+app.get('/api/wikis/:id', (req, res) => {
+  const { id } = req.params;
+  const wiki = wikis.find(wiki => wiki.id === parseInt(id));
+  if (!wiki) {
+    return res.status(404).json({ error: 'Wiki not found' });
+  }
+  res.json(wiki); // Return the specific wiki as JSON
+});
+
+// Serve HTML page for a specific wiki title
 app.get('/wiki/:title', (req, res) => {
   const { title } = req.params;
   const wiki = wikis.find(w => w.title.toLowerCase() === title.toLowerCase());
@@ -69,14 +89,15 @@ app.get('/wiki/:title', (req, res) => {
     <p>${wiki.content}</p>
     <small>Author: ${wiki.owner}</small>
     <div class="button-container">
-      <a href="scratch-coding-hut.github.io/Wiki/edit?edit=${encodeURIComponent(wiki.title)}" class="edit-button">Edit Wiki</a>
-      <a href="scratch-coding-hut.github.io/Wiki/report.html?wiki=${encodeURIComponent(wiki.title)}" class="report-button">Report</a>
+      <a href="https://scratch-coding-hut.github.io/Wiki/edit?edit=${encodeURIComponent(wiki.title)}" class="edit-button">Edit Wiki</a>
+      <a href="https://scratch-coding-hut.github.io/Wiki/report.html?wiki=${encodeURIComponent(wiki.title)}" class="report-button">Report</a>
     </div>
   </div>
 </body>
 </html>`);
 });
 
+// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
