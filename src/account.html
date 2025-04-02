@@ -124,7 +124,7 @@
 
         function checkAuth() {
             const authSuccess = new URLSearchParams(window.location.search).get('success');
-            const username = new URLSearchParams(window.location.search).get('username');
+            const username = new URLSearchParams(window.location.search).get('username')?.trim().toLowerCase();
 
             if (username) {
                 const decodedUsername = decodeUsername(username); // Decode the username using atob
@@ -170,11 +170,6 @@
         }
 
         async function strikeinfo() {
-            // Retrieve the 'username' parameter from the URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const encodedUsername = urlParams.get('username');
-            const username = decodeUsername(encodedUsername); // Decode the username using atob
-
             window.location.href = `https://scratch-coding-hut.netlify.app/Strikes/my-strikes?username=${username}`;
         }
     </script>
