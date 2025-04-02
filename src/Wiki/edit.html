@@ -5,7 +5,93 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Scratch Coding Hut Wiki</title>
   <style>
-    /* Your existing CSS styles here */
+    /* Global reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #fff4f4;
+      color: #333;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #ff4d4d;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    .form-container {
+      background-color: #ffcccc;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 30px;
+    }
+
+    .form-container h2 {
+      font-size: 1.5rem;
+      color: #e60000;
+      margin-bottom: 20px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 2px solid #e60000;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #ff4d4d;
+      box-shadow: 0 0 5px rgba(255, 77, 77, 0.5);
+    }
+
+    button {
+      background-color: #ff4d4d;
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ff1a1a;
+    }
+
+    /* Mobile Responsive Styling */
+    @media (max-width: 768px) {
+      .form-container {
+        width: 90%;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      button {
+        font-size: 1rem;
+        padding: 12px 25px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -52,6 +138,13 @@
             wikiId = wiki.id;  // Store the wiki ID
             wikiTitleInput.value = wiki.title;
             wikiContentInput.value = wiki.content;
+
+            // Check if the user is authorized to edit the wiki
+            const username = localStorage.getItem('username');
+            if (username !== wiki.owner && !['kRxZy_kRxZy', 'mcgdj', 'MyScratchedAccount'].includes(username)) {
+              alert('You are not authorized to edit this wiki.');
+              window.location.href = 'sitemaplinks.html';  // Redirect to wiki list if not authorized
+            }
           }
         } catch (error) {
           console.error('Error fetching wiki:', error);
