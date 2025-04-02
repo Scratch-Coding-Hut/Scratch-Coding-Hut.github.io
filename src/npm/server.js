@@ -14,7 +14,7 @@ let wikis = [
 app.use(bodyParser.json());
 app.use(cors());  // Enable CORS for all requests
 
-const authorizedUsers = ['krxzy_krxzy', 'myscratchedaccount', 'mcgdj'];
+const authorizedUsers = ['kRxZy_kRxZy', 'MyScratchedAccount', 'mcgdj'];
 
 // Middleware to check if user is authorized to edit or delete
 const isAuthorized = (username, wikiOwner) => {
