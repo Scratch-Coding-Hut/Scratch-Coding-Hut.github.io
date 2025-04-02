@@ -107,58 +107,9 @@
       color: #ff4d4d;
     }
 
-    li p {
-      font-size: 1.1rem;
-      color: #333;
-    }
-
     li small {
       font-size: 0.9rem;
       color: #777;
-    }
-
-    /* Flexbox for Edit and Delete buttons */
-    .button-container {
-      display: flex;
-      gap: 10px;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-    }
-
-    .edit, .delete {
-      padding: 8px 15px;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    .edit {
-      background-color: #ffcc00;
-      color: white;
-    }
-
-    .edit:hover {
-      transform: scale(1.1);
-    }
-
-    .delete {
-      background-color: #ff4d4d;
-      color: white;
-    }
-
-    .report {
-      background-color: #FFC0CB;
-      color: white;
-    }
-
-    .report:hover {
-      transform: scale(1.1);
-    }
-    
-    .delete:hover {
-      transform: scale(1.1);
     }
 
     /* Mobile Responsive Styling */
@@ -226,23 +177,10 @@
         wikis.forEach(wiki => {
           const li = document.createElement('li');
           li.innerHTML = `
-            <h3>${wiki.title}</h3>
-            <p>${wiki.content}</p>
-            <small>Owner: ${wiki.owner}</small>
-            <div class="button-container">
-              ${username && isOwnerOrAdmin(wiki.owner) ? `<button class="edit" onclick="editWiki('${wiki.title}')">Edit</button>` : ''}
-              ${username && isOwnerOrAdmin(wiki.owner) ? `<button class="delete" onclick="deleteWiki(${wiki.id})">Delete</button>` : ''}
-              <a href="report.html">
-                <button>Report</button>
-            </div>
+            <h3><a href="https://thejsurlback.onrender.com/wiki/${encodeURIComponent(wiki.title)}">${wiki.title}</a></h3>
           `;
           wikiList.appendChild(li);
         });
-      };
-
-      // Check if user is the owner or admin
-      const isOwnerOrAdmin = (owner) => {
-        return owner === username || username === "kRxZy_kRxZy" || username === "MyScratchedAccount" || username === "mcgdj";
       };
 
       // Create a new wiki
@@ -261,37 +199,6 @@
         fetchWikis(); // Refresh wiki list
         createWikiForm.reset();
       });
-
-      // Delete a wiki
-      window.deleteWiki = async (id) => {
-        if (!username) {
-          alert('You must be logged in to delete a wiki.');
-          return;
-        }
-
-        const response = await fetch(`${backendUrl}/wikis/${id}`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ owner: username }), // Send username from localStorage
-        });
-
-        if (response.ok) {
-          fetchWikis(); // Refresh wiki list
-        } else {
-          alert('Not authorized to delete this wiki or wiki not found');
-        }
-      };
-
-      // Redirect to edit page
-      window.editWiki = (title) => {
-        if (!username) {
-          alert('You must be logged in to edit a wiki. Go to https://scratch-coding-hut.netlify.app/account to log in.');
-          return;
-        }
-
-        // Redirect to the edit page with the 'edit' parameter
-        window.location.href = `edit.html?edit=${encodeURIComponent(title)}`;
-      };
 
       // Initial fetch of wikis
       fetchWikis();
