@@ -177,7 +177,7 @@
         wikis.forEach(wiki => {
           const li = document.createElement('li');
           li.innerHTML = `
-            <h3><a href="https://thejsurlback.onrender.com/wiki/${encodeURIComponent(wiki.title)}">${wiki.title}</a></h3>
+            <h3><a href="https://thejsurlback.onrender.com/wiki/${encodeURIComponent(wiki.title)}?user=${btoa(localStorage.getItem('username'))}">${wiki.title}</a></h3>
           `;
           wikiList.appendChild(li);
         });
