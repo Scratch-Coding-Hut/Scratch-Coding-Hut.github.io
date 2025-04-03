@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,7 +18,6 @@ app.use(express.static('public'));
 // Authorized users for editing and deleting wikis
 const authorizedUsers = ['kRxZy_kRxZy', 'MyScratchedAccount', 'mcgdj'];
 
-// Middleware to check if the user is authorized to edit or delete a wiki
 const isAuthorized = (username, wikiOwner) => {
   return username === wikiOwner || authorizedUsers.includes(username);
 };
@@ -53,7 +51,15 @@ app.get('/api/wikis/:id', (req, res) => {
 // API: Delete a wiki by ID
 app.delete('/api/wikis/:id', (req, res) => {
   const { id } = req.params;
-  const { username } = req.body; // Assume the username is sent in the request body
+  const { user } = req.query;
+  if (!user) return res.status(400).json({ error: 'User parameter is required' });
+
+  let username;
+  try {
+    username = atob(user);
+  } catch (error) {
+    return res.status(400).json({ error: 'Invalid username encoding' });
+  }
 
   const wikiIndex = wikis.findIndex(wiki => wiki.id === parseInt(id));
   if (wikiIndex === -1) {
@@ -62,19 +68,18 @@ app.delete('/api/wikis/:id', (req, res) => {
 
   const wiki = wikis[wikiIndex];
 
-  // Check if the user is authorized to delete
   if (!isAuthorized(username, wiki.owner)) {
     return res.status(403).json({ error: 'Unauthorized to delete this wiki' });
   }
 
   wikis.splice(wikiIndex, 1);
-
   res.json({ message: 'Wiki deleted successfully' });
 });
 
 // Serve HTML page for a specific wiki title
 app.get('/wiki/:title', (req, res) => {
   const { title } = req.params;
+  const { user } = req.query;
   const wiki = wikis.find(w => w.title.toLowerCase() === title.toLowerCase());
 
   if (!wiki) {
@@ -102,7 +107,7 @@ app.get('/wiki/:title', (req, res) => {
     .edit-button:hover { background: #ffaa00; }
     .report-button { background: #ff4d4d; }
     .report-button:hover { background: #ff1a1a; }
-    .delete-button { background: #d11a2a; }
+    .delete-button { background: #d11a2a; display: none; }
     .delete-button:hover { background: #a3001b; }
   </style>
 </head>
@@ -114,7 +119,7 @@ app.get('/wiki/:title', (req, res) => {
   <div class="wiki-content">
     <h2>${wiki.title}</h2>
     <p>${wiki.content}</p>
-    <small>Author: ${wiki.owner}</small>
+    <small id="wiki-owner">${wiki.owner}</small>
     <div class="button-container">
       <a href="https://scratch-coding-hut.github.io/Wiki/edit?edit=${encodeURIComponent(wiki.title)}" class="edit-button">Edit Wiki</a>
       <a href="https://scratch-coding-hut.github.io/Wiki/report.html?wiki=${encodeURIComponent(wiki.title)}" class="report-button">Report</a>
@@ -123,16 +128,23 @@ app.get('/wiki/:title', (req, res) => {
   </div>
 
   <script>
+    function getUsernameFromURL() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const encodedUser = urlParams.get("user");
+      return encodedUser ? atob(encodedUser) : null;
+    }
+
     function deleteWiki(wikiId) {
-      const username = prompt("Enter your username to confirm deletion:");
-      if (!username) return alert("Deletion cancelled.");
+      const username = getUsernameFromURL();
+      if (!username) {
+        alert("No user detected. Please log in.");
+        return;
+      }
 
       if (!confirm("Are you sure you want to delete this wiki?")) return;
 
-      fetch(\`/api/wikis/\${wikiId}\`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username })
+      fetch(\`/api/wikis/\${wikiId}?user=\${btoa(username)}\`, {
+        method: "DELETE"
       })
       .then(response => response.json())
       .then(data => {
@@ -145,6 +157,16 @@ app.get('/wiki/:title', (req, res) => {
       })
       .catch(error => console.error("Error deleting wiki:", error));
     }
+
+    window.onload = function() {
+      const username = getUsernameFromURL();
+      const wikiOwner = document.getElementById("wiki-owner").textContent;
+      const authorizedUsers = ["kRxZy_kRxZy", "MyScratchedAccount", "mcgdj"];
+
+      if (username && (username === wikiOwner || authorizedUsers.includes(username))) {
+        document.querySelector(".delete-button").style.display = "inline-block";
+      }
+    };
   </script>
 </body>
 </html>`);
