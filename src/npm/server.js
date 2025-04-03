@@ -13,8 +13,8 @@ let wikis = [
 ];
 
 app.use(bodyParser.json());
-app.use(cors()); // Enable CORS for all requests
-app.use(express.static('public')); // Serve static files (e.g., images, CSS)
+app.use(cors());
+app.use(express.static('public'));
 
 // Authorized users for editing and deleting wikis
 const authorizedUsers = ['kRxZy_kRxZy', 'MyScratchedAccount', 'mcgdj'];
@@ -27,14 +27,17 @@ const isAuthorized = (username, wikiOwner) => {
 // API: Create a new wiki
 app.post('/api/wikis', (req, res) => {
   const { title, content, owner } = req.body;
+  if (!title || !content || !owner) {
+    return res.status(400).json({ error: 'Title, content, and owner are required' });
+  }
   const newWiki = { id: wikis.length + 1, title, content, owner };
   wikis.push(newWiki);
-  res.status(201).json(newWiki); // Return the created wiki as JSON
+  res.status(201).json(newWiki);
 });
 
 // API: Get all wikis
 app.get('/api/wikis', (req, res) => {
-  res.json(wikis); // Return all wikis as JSON
+  res.json(wikis);
 });
 
 // API: Get a specific wiki by ID
@@ -44,7 +47,29 @@ app.get('/api/wikis/:id', (req, res) => {
   if (!wiki) {
     return res.status(404).json({ error: 'Wiki not found' });
   }
-  res.json(wiki); // Return the specific wiki as JSON
+  res.json(wiki);
+});
+
+// API: Delete a wiki by ID
+app.delete('/api/wikis/:id', (req, res) => {
+  const { id } = req.params;
+  const { username } = req.body; // Assume the username is sent in the request body
+
+  const wikiIndex = wikis.findIndex(wiki => wiki.id === parseInt(id));
+  if (wikiIndex === -1) {
+    return res.status(404).json({ error: 'Wiki not found' });
+  }
+
+  const wiki = wikis[wikiIndex];
+
+  // Check if the user is authorized to delete
+  if (!isAuthorized(username, wiki.owner)) {
+    return res.status(403).json({ error: 'Unauthorized to delete this wiki' });
+  }
+
+  wikis.splice(wikiIndex, 1);
+
+  res.json({ message: 'Wiki deleted successfully' });
 });
 
 // Serve HTML page for a specific wiki title
@@ -72,11 +97,13 @@ app.get('/wiki/:title', (req, res) => {
     .wiki-content h2 { color: #e60000; font-size: 2.5rem; margin-bottom: 20px; text-align: center; }
     .wiki-content p { font-size: 1.5rem; color: #333; line-height: 1.6; text-align: center; }
     .button-container { margin-top: 20px; display: flex; gap: 10px; justify-content: center; }
-    .edit-button, .report-button { display: inline-block; padding: 10px 20px; font-size: 1.2rem; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s; text-decoration: none; color: white; }
+    .edit-button, .report-button, .delete-button { display: inline-block; padding: 10px 20px; font-size: 1.2rem; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s; text-decoration: none; color: white; }
     .edit-button { background: #ffcc00; }
     .edit-button:hover { background: #ffaa00; }
     .report-button { background: #ff4d4d; }
     .report-button:hover { background: #ff1a1a; }
+    .delete-button { background: #d11a2a; }
+    .delete-button:hover { background: #a3001b; }
   </style>
 </head>
 <body>
@@ -91,8 +118,34 @@ app.get('/wiki/:title', (req, res) => {
     <div class="button-container">
       <a href="https://scratch-coding-hut.github.io/Wiki/edit?edit=${encodeURIComponent(wiki.title)}" class="edit-button">Edit Wiki</a>
       <a href="https://scratch-coding-hut.github.io/Wiki/report.html?wiki=${encodeURIComponent(wiki.title)}" class="report-button">Report</a>
+      <button class="delete-button" onclick="deleteWiki(${wiki.id})">Delete Wiki</button>
     </div>
   </div>
+
+  <script>
+    function deleteWiki(wikiId) {
+      const username = prompt("Enter your username to confirm deletion:");
+      if (!username) return alert("Deletion cancelled.");
+
+      if (!confirm("Are you sure you want to delete this wiki?")) return;
+
+      fetch(\`/api/wikis/\${wikiId}\`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          alert("Error: " + data.error);
+        } else {
+          alert("Wiki deleted successfully.");
+          window.location.href = "https://scratch-coding-hut.github.io/index.html";
+        }
+      })
+      .catch(error => console.error("Error deleting wiki:", error));
+    }
+  </script>
 </body>
 </html>`);
 });
