@@ -156,53 +156,29 @@
   </div>
 
   <script>
-    if (!localStorage.getItem('username') || localStorage.getItem('username') === "null") {
-      document.getElementById('makeWiki').style.display = 'none';
-    } 
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      const createWikiForm = document.getElementById('createWikiForm');
-      const wikiList = document.getElementById('wikiList');
-      const backendUrl = 'https://thejsurlback.onrender.com/api';  // Replace with your backend URL
+    // Retrieve username from localStorage (this is optional, users can view wikis when logged out)
+    const username = localStorage.getItem('username');
+    const backendUrl = 'https://thejsurlback.onrender.com/api';  // Replace with your backend URL
+    const wikiList = document.getElementById('wikiList');
 
-      // Retrieve username from localStorage (this is optional, users can view wikis when logged out)
-      const username = localStorage.getItem('username');
-      
-      // Fetch and display all wikis
-      const fetchWikis = async () => {
-        const response = await fetch(`${backendUrl}/wikis`);
-        const wikis = await response.json();
-        wikiList.innerHTML = ''; // Clear the current list
+    // Fetch and display all wikis
+    const fetchWikis = async () => {
+      const response = await fetch(`${backendUrl}/wikis`);
+      const wikis = await response.json();
+      wikiList.innerHTML = ''; // Clear the current list
 
-        wikis.forEach(wiki => {
-          const li = document.createElement('li');
-          li.innerHTML = `
-            <h3><a href="https://thejsurlback.onrender.com/wiki/${encodeURIComponent(wiki.title)}?user=${btoa(localStorage.getItem('username'))}">${wiki.title}</a></h3>
-          `;
-          wikiList.appendChild(li);
-        });
-      };
-
-      // Create a new wiki
-      createWikiForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const title = document.getElementById('wikiTitle').value;
-        const content = document.getElementById('wikiContent').value;
-
-        const response = await fetch(`${backendUrl}/wikis`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title, content, owner: username }), // Send username from localStorage
-        });
-
-        const newWiki = await response.json();
-        fetchWikis(); // Refresh wiki list
-        createWikiForm.reset();
+      wikis.forEach(wiki => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <h3><a href="https://thejsurlback.onrender.com/wiki/${encodeURIComponent(wiki.title)}?user=${btoa(username)}">${wiki.title}</a></h3>
+          <small>Owner: ${wiki.owner}</small>
+        `;
+        wikiList.appendChild(li);
       });
+    };
 
-      // Initial fetch of wikis
-      fetchWikis();
-    });
+    // Initial fetch of wikis
+    fetchWikis();
   </script>
 </body>
 </html>
