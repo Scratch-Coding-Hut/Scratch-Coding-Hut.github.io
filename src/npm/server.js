@@ -125,6 +125,17 @@ app.get('/wiki/:title', (req, res) => {
       <a href="https://scratch-coding-hut.github.io/Wiki/report.html?wiki=${encodeURIComponent(wiki.title)}" class="report-button">Report</a>
       <button class="delete-button" onclick="deleteWiki(${wiki.id})">Delete Wiki</button>
     </div>
+
+    <h3>Talk Page</h3>
+
+<script src="https://utteranc.es/client.js"
+        repo="Scratch-Coding-Hut/Scratch-Coding-Hut.github.io"
+        issue-term="url"
+        label="Website Comments"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
   </div>
 
   <script>
