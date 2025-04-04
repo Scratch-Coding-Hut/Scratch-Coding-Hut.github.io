@@ -114,7 +114,8 @@ app.get('/wiki/:title', (req, res) => {
 <body>
   <div class="navbar">
     <a href="https://scratch-coding-hut.github.io/index.html">Home</a>
-    <a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Create Wiki & List Of Wikis</a>
+    <a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Create Wiki</a>
+    <a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Wiki List</a>
   </div>
   <div class="wiki-content">
     <h2>${wiki.title}</h2>
@@ -124,9 +125,9 @@ app.get('/wiki/:title', (req, res) => {
       <a href="https://scratch-coding-hut.github.io/Wiki/edit?edit=${encodeURIComponent(wiki.title)}" class="edit-button">Edit Wiki</a>
       <a href="https://scratch-coding-hut.github.io/Wiki/report.html?wiki=${encodeURIComponent(wiki.title)}" class="report-button">Report</a>
       <button class="delete-button" onclick="deleteWiki(${wiki.id})">Delete Wiki</button>
-    </div>
+    
 
-    <h3>Talk Page</h3>
+<h2>Talk Page</h2>
 
 <script src="https://utteranc.es/client.js"
         repo="Scratch-Coding-Hut/Scratch-Coding-Hut.github.io"
@@ -137,7 +138,7 @@ app.get('/wiki/:title', (req, res) => {
         async>
 </script>
   </div>
-
+</div>
   <script>
     function getUsernameFromURL() {
       const urlParams = new URLSearchParams(window.location.search);
