@@ -9,6 +9,9 @@ const port = process.env.PORT || 3000;
 const wikisFilePath = path.join(__dirname, 'wikis.json');
 const bannedUsersFilePath = path.join(__dirname, 'bannedUsers.json');
 
+// Admins list
+const admins = ['kRxZy_kRxZy', 'MyScratchedAccount', 'mcgdj'];
+
 // Load the wikis and banned users from the files
 const loadWikis = () => {
   if (fs.existsSync(wikisFilePath)) {
@@ -52,22 +55,33 @@ const isUserBanned = (userId) => {
   return bannedUsers.includes(userId);
 };
 
+// Middleware to check if user is admin or owner
+const isOwnerOrAdmin = (user, wikiOwner) => {
+  return admins.includes(user) || user === wikiOwner;
+};
+
 // Serve HTML page for a specific wiki title
 app.get('/wiki/:title', (req, res) => {
   const { title } = req.params;
+  const username = req.query.user ? atob(req.query.user) : null;  // Get the user from the query
+
   const wiki = wikis.find(w => w.title.toLowerCase() === title.toLowerCase());
 
   if (!wiki) {
     return res.status(404).send('Wiki not found');
   }
 
-  // Render the EJS template with the wiki data
+  // Check if user is owner or admin
+  const isOwnerOrAdminFlag = isOwnerOrAdmin(username, wiki.owner);
+
+  // Render the EJS template with the wiki data and access flag
   res.render('wiki', {
     title: wiki.title,
     content: wiki.content,
     owner: wiki.owner,
     comments: wiki.comments.slice(-7),
-    wikiId: wiki.id
+    wikiId: wiki.id,
+    isOwnerOrAdmin: isOwnerOrAdminFlag
   });
 });
 
@@ -96,6 +110,27 @@ app.get('/api/wikis/:id', (req, res) => {
     content: wiki.content,
     owner: wiki.owner
   });
+});
+
+// API: Edit wiki content (for owner or admin only)
+app.put('/api/wikis/:id', (req, res) => {
+  const { id } = req.params;
+  const { user, content } = req.body;
+
+  const wiki = wikis.find(w => w.id === parseInt(id));
+
+  if (!wiki) {
+    return res.status(404).json({ error: 'Wiki not found' });
+  }
+
+  if (!isOwnerOrAdmin(user, wiki.owner)) {
+    return res.status(403).json({ error: 'You are not authorized to edit this wiki' });
+  }
+
+  wiki.content = content;
+  saveWikis(wikis);
+
+  res.json(wiki);
 });
 
 // API: Add a comment to a specific wiki
@@ -141,6 +176,57 @@ app.post('/api/wikis/:id/comments', (req, res) => {
 
   saveWikis(wikis);
   res.status(201).json(newComment);
+});
+
+// API: Edit comment (for owner or admin only)
+app.put('/api/wikis/:wikiId/comments/:commentId', (req, res) => {
+  const { wikiId, commentId } = req.params;
+  const { user, content } = req.body;
+
+  const wiki = wikis.find(w => w.id === parseInt(wikiId));
+  if (!wiki) {
+    return res.status(404).json({ error: 'Wiki not found' });
+  }
+
+  const comment = wiki.comments.find(c => c.id === parseInt(commentId));
+  if (!comment) {
+    return res.status(404).json({ error: 'Comment not found' });
+  }
+
+  if (comment.author !== atob(user) && !admins.includes(user)) {
+    return res.status(403).json({ error: 'You are not authorized to edit this comment' });
+  }
+
+  comment.content = content;
+  comment.editedAt = new Date().toISOString();
+  saveWikis(wikis);
+
+  res.json(comment);
+});
+
+// API: Delete comment (for admin only)
+app.delete('/api/wikis/:wikiId/comments/:commentId', (req, res) => {
+  const { wikiId, commentId } = req.params;
+  const { user } = req.body;
+
+  const wiki = wikis.find(w => w.id === parseInt(wikiId));
+  if (!wiki) {
+    return res.status(404).json({ error: 'Wiki not found' });
+  }
+
+  const commentIndex = wiki.comments.findIndex(c => c.id === parseInt(commentId));
+  if (commentIndex === -1) {
+    return res.status(404).json({ error: 'Comment not found' });
+  }
+
+  if (!admins.includes(user)) {
+    return res.status(403).json({ error: 'You are not authorized to delete this comment' });
+  }
+
+  wiki.comments.splice(commentIndex, 1);
+  saveWikis(wikis);
+
+  res.status(204).send();
 });
 
 // Start the server
