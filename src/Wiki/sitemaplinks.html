@@ -141,6 +141,7 @@
 <body>
   <h1>Scratch Coding Hut Wiki</h1>
 
+  <!-- Create Wiki Form -->
   <div class="form-container">
     <h2>Create a Wiki Post</h2>
     <form id="createWikiForm">
@@ -150,6 +151,7 @@
     </form>
   </div>
 
+  <!-- Display Wiki Posts -->
   <div class="wikis-container">
     <h2>Wiki Posts</h2>
     <ul id="wikiList"></ul>
@@ -160,6 +162,7 @@
     const username = localStorage.getItem('username');
     const backendUrl = 'https://thejsurlback.onrender.com/api';  // Replace with your backend URL
     const wikiList = document.getElementById('wikiList');
+    const createWikiForm = document.getElementById('createWikiForm');
 
     // Fetch and display all wikis
     const fetchWikis = async () => {
@@ -176,6 +179,44 @@
         wikiList.appendChild(li);
       });
     };
+
+    // Create a new wiki post
+    createWikiForm.addEventListener('submit', async (e) => {
+      e.preventDefault(); // Prevent the default form submission
+
+      const title = document.getElementById('wikiTitle').value;
+      const content = document.getElementById('wikiContent').value;
+      fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+       .then(data => {
+       const ip = data.ip;
+    // Use the IP as needed
+       console.log(ip);  // You can remove the console.log if you don't want to display the IP
+     });
+
+      const newWiki = {
+        title,
+        content,
+        owner: username || ip, // Assuming the current user is stored in localStorage
+      };
+
+      const response = await fetch(`${backendUrl}/wikis`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newWiki),
+      });
+
+      if (response.ok) {
+        alert('Wiki post created successfully!');
+        fetchWikis(); // Refresh the list of wiki posts
+        document.getElementById('wikiTitle').value = '';
+        document.getElementById('wikiContent').value = '';
+      } else {
+        alert('Error creating wiki post');
+      }
+    });
 
     // Initial fetch of wikis
     fetchWikis();
