@@ -3,10 +3,6 @@
 
 This website serves as a hub for all things related to Coding Hut. Here, you'll find resources, tutorials, and projects to enhance your coding skills.
 
-## Repo Badges
-
-[![Node.js CI/CD](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut/actions/workflows/node.js.yml/badge.svg)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut/actions/workflows/node.js.yml)
-
 ### Social buttons
 
 [![Scratch-Coding-Hut - Scratch-Coding-hut.github.io](https://img.shields.io/static/v1?label=Scratch-Coding-Hut&message=Scratch-Coding-hut.github.io&color=blue&logo=github)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io "Go to GitHub repo")
