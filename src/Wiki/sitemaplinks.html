@@ -3,223 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scratch Coding Hut Wiki</title>
+  <title>Scratch Coding Hut Forum</title>
   <style>
-    /* Reset some default styling */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
-      font-family: 'Arial', sans-serif;
-      background: #fff4f4;
-      color: #333;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 3rem;
-      color: #ff4d4d;
-      margin-bottom: 30px;
-      font-weight: bold;
-    }
-
-    .form-container {
-      background-color: #ffcccc;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 500px;
-      margin-bottom: 30px;
-    }
-
-    .form-container h2 {
-      font-size: 1.5rem;
-      color: #e60000;
-      margin-bottom: 20px;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      border: 2px solid #e60000;
-      font-size: 1rem;
-      outline: none;
-    }
-
-    input:focus, textarea:focus {
-      border-color: #ff4d4d;
-      box-shadow: 0 0 5px rgba(255, 77, 77, 0.5);
-    }
-
-    button {
-      background-color: #ff4d4d;
-      color: white;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #ff1a1a;
-    }
-
-    .wikis-container {
-      width: 100%;
-      max-width: 800px;
-      margin-top: 50px;
-    }
-
-    .wikis-container h2 {
-      color: #e60000;
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    li {
-      background-color: #ffe6e6;
+      font-family: Arial, sans-serif;
       padding: 20px;
-      margin-bottom: 15px;
-      border-radius: 10px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      position: relative;
+      background-color: #f0f0f0;
     }
-
-    li h3 {
-      font-size: 1.8rem;
-      color: #ff4d4d;
+    .topic {
+      background: white;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-
-    li small {
-      font-size: 0.9rem;
-      color: #777;
+    a {
+      text-decoration: none;
+      color: #007bff;
     }
-
-    /* Mobile Responsive Styling */
-    @media (max-width: 768px) {
-      .form-container {
-        width: 90%;
-        padding: 20px;
-      }
-
-      .wikis-container {
-        width: 90%;
-      }
-
-      h1 {
-        font-size: 2.5rem;
-      }
-
-      li h3 {
-        font-size: 1.5rem;
-      }
-
-      button {
-        font-size: 1rem;
-        padding: 12px 25px;
-      }
+    a:hover {
+      text-decoration: underline;
+    }
+    #load-more {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>Scratch Coding Hut Wiki</h1>
+  <h1>Scratch Coding Hut Forum</h1>
 
-  <!-- Create Wiki Form -->
-  <div class="form-container">
-    <h2>Create a Wiki Post</h2>
-    <form id="createWikiForm">
-      <input type="text" id="wikiTitle" placeholder="Title" required>
-      <textarea id="wikiContent" placeholder="Content" required></textarea>
-      <button type="submit">Create Wiki Post</button>
-    </form>
-  </div>
-
-  <!-- Display Wiki Posts -->
-  <div class="wikis-container">
-    <h2>Wiki Posts</h2>
-    <ul id="wikiList"></ul>
-  </div>
+  <div id="topics-container"></div>
+  <button id="load-more">Load More</button>
 
   <script>
-    // Retrieve username from localStorage (this is optional, users can view wikis when logged out)
-    const username = localStorage.getItem('username');
-    const backendUrl = 'https://thejsurlback.onrender.com/api';  // Replace with your backend URL
-    const wikiList = document.getElementById('wikiList');
-    const createWikiForm = document.getElementById('createWikiForm');
+    let currentPage = 1;
+    const limit = 5;
 
-    // Fetch and display all wikis
-    const fetchWikis = async () => {
-      const response = await fetch(`${backendUrl}/wikis`);
-      const wikis = await response.json();
-      wikiList.innerHTML = ''; // Clear the current list
+    async function loadTopics(page) {
+      const response = await fetch(`http://localhost:3000/forum?page=${page}&limit=${limit}`);
+      const data = await response.json();
 
-      wikis.forEach(wiki => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <h3><a href="https://thejsurlback.onrender.com/wiki/${encodeURIComponent(wiki.title)}?user=${btoa(username)}">${wiki.title}</a></h3>
-          <small>Owner: ${wiki.owner}</small>
-        `;
-        wikiList.appendChild(li);
-      });
-    };
-
-    // Create a new wiki post
-    createWikiForm.addEventListener('submit', async (e) => {
-      e.preventDefault(); // Prevent the default form submission
-
-      const title = document.getElementById('wikiTitle').value;
-      const content = document.getElementById('wikiContent').value;
-      fetch('https://api.ipify.org?format=json')
-      .then(response => response.json())
-       .then(data => {
-       const ip = data.ip;
-    // Use the IP as needed
-       console.log(ip);  // You can remove the console.log if you don't want to display the IP
-     });
-
-      const newWiki = {
-        title,
-        content,
-        owner: username || ip, // Assuming the current user is stored in localStorage
-      };
-
-      const response = await fetch(`${backendUrl}/wikis`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newWiki),
+      const container = document.getElementById('topics-container');
+      data.topics.forEach(topic => {
+        const div = document.createElement('div');
+        div.className = 'topic';
+        div.innerHTML = `<a href="${topic.title}.html">${topic.title}</a>`;
+        container.appendChild(div);
       });
 
-      if (response.ok) {
-        alert('Wiki post created successfully!');
-        fetchWikis(); // Refresh the list of wiki posts
-        document.getElementById('wikiTitle').value = '';
-        document.getElementById('wikiContent').value = '';
-      } else {
-        alert('Error creating wiki post');
+      if ((page * limit) >= data.total) {
+        document.getElementById('load-more').style.display = 'none';
       }
+    }
+
+    document.getElementById('load-more').addEventListener('click', () => {
+      currentPage++;
+      loadTopics(currentPage);
     });
 
-    // Initial fetch of wikis
-    fetchWikis();
+    loadTopics(currentPage);
   </script>
 </body>
 </html>
