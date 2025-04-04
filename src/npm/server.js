@@ -99,16 +99,43 @@ res.send(`
 
     <div class="comment-section">
       <h3>Comments</h3>
-      ${wiki.comments.slice(-7).map(comment => {
-    return `
+      const htmlOutput = wiki.comments.slice(-7).map(comment => {
+  return `
     <div class="comment" id="comment-${comment.id}">
-      <div class="comment-author">${comment.author} <small>(${new Date(comment.createdAt).toLocaleString()})</small></div>
-      <div class="comment-content">${comment.content}</div>
+      <div class="comment-author">
+        ${comment.author} <small>(${new Date(comment.createdAt).toLocaleString()})</small>
+      </div>
+      <div class="comment-content">${escapeHtml(comment.content)}</div>
       ${comment.replies.length > 0 ? comment.replies.map(reply => {
         return `
           <div class="comment-reply">
-            <strong>${reply.author}</strong>: ${reply.content} <small>(${new Date(reply.createdAt).toLocaleString()})</small>
+            <strong>${reply.author}</strong>: ${escapeHtml(reply.content)} 
+            <small>(${new Date(reply.createdAt).toLocaleString()})</small>
           </div>
+        `;
+      }).join('') : ''}
+    </div>
+  `;
+}).join('');
+
+// Use the escapeHtml function to safely escape user input
+function escapeHtml(str) {
+  return str.replace(/[&<>"'`]/g, function(match) {
+    const escape = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;',
+      "`": '&#x60;'
+    };
+    return escape[match];
+  });
+}
+
+// Output the HTML
+console.log(htmlOutput);
+
         `;
       }).join('') : ''}
     </div>
