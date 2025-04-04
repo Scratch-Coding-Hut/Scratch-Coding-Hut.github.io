@@ -59,86 +59,110 @@ app.get('/wiki/:title', (req, res) => {
     return res.status(404).send('Wiki not found');
   }
 
-  res.send(`
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>${wiki.title} - Wiki</title>
-      <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Arial', sans-serif; background: #fff4f4; color: #333; text-align: center; }
-        .navbar { display: flex; justify-content: center; align-items: center; background: #ff4d4d; padding: 15px 20px; border-radius: 10px; gap: 15px; }
-        .navbar a { color: white; text-decoration: none; font-size: 1.2rem; padding: 10px 15px; border-radius: 5px; transition: background 0.3s; }
-        .navbar a:hover { background: #ff1a1a; }
-        .wiki-content { max-width: 1000px; margin: 40px auto; background: #ffe6e6; padding: 40px; border-radius: 10px; text-align: left; }
-        .wiki-content h2 { color: #e60000; font-size: 2.5rem; margin-bottom: 20px; text-align: center; }
-        .wiki-content p { font-size: 1.5rem; color: #333; line-height: 1.6; }
-        .comment-section { margin-top: 40px; }
-        .comment { background: #fff; padding: 10px; margin: 10px 0; border-radius: 5px; }
-        .comment-author { font-weight: bold; }
-        .comment-content { font-size: 1rem; margin-top: 5px; }
-        .comment-reply { font-size: 0.9rem; color: #888; margin-left: 20px; }
-        .comment-form { margin-top: 20px; text-align: left; }
-        .comment-input { width: 100%; padding: 10px; margin-top: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; }
-      </style>
-    </head>
-    <body>
-      <div class="navbar">
-        <a href="scratch-coding-hut.github.io/">Home</a>
-        <a href="scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Create Wiki</a>
-        <a href="scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Wiki List</a>
-      </div>
-      <div class="wiki-content">
-        <h2>${wiki.title}</h2>
-        <p>${wiki.content}</p>
-        <small id="wiki-owner">${wiki.owner}</small>
-      </div>
-      <div class="comment-form">
-        <h3>Add a Comment</h3>
-        <textarea class="comment-input" id="comment-content" placeholder="Write your comment..." rows="4"></textarea>
-        <button onclick="submitComment()">Submit</button>
-      </div>
+// HTML generation inside template literal
+res.send(`
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${wiki.title} - Wiki</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: 'Arial', sans-serif; background: #fff4f4; color: #333; text-align: center; }
+      .navbar { display: flex; justify-content: center; align-items: center; background: #ff4d4d; padding: 15px 20px; border-radius: 10px; gap: 15px; }
+      .navbar a { color: white; text-decoration: none; font-size: 1.2rem; padding: 10px 15px; border-radius: 5px; transition: background 0.3s; }
+      .navbar a:hover { background: #ff1a1a; }
+      .wiki-content { max-width: 1000px; margin: 40px auto; background: #ffe6e6; padding: 40px; border-radius: 10px; text-align: left; }
+      .wiki-content h2 { color: #e60000; font-size: 2.5rem; margin-bottom: 20px; text-align: center; }
+      .wiki-content p { font-size: 1.5rem; color: #333; line-height: 1.6; }
+      .comment-section { margin-top: 40px; }
+      .comment { background: #fff; padding: 10px; margin: 10px 0; border-radius: 5px; }
+      .comment-author { font-weight: bold; }
+      .comment-content { font-size: 1rem; margin-top: 5px; }
+      .comment-reply { font-size: 0.9rem; color: #888; margin-left: 20px; }
+      .comment-form { margin-top: 20px; text-align: left; }
+      .comment-input { width: 100%; padding: 10px; margin-top: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <a href="scratch-coding-hut.github.io/">Home</a>
+      <a href="scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Create Wiki</a>
+      <a href="scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Wiki List</a>
+    </div>
+    <div class="wiki-content">
+      <h2>${wiki.title}</h2>
+      <p>${wiki.content}</p>
+      <small id="wiki-owner">${wiki.owner}</small>
+    </div>
 
-      <script>
-        function submitComment() {
-          const content = document.getElementById('comment-content').value;
-          fetch('https://api.ipify.org?format=json')
-           .then(response => response.json())
-           .then(data => {
-            const ip = data.ip;
-            console.log(ip); 
-          });
-          const urlParams = new URLSearchParams(window.location.search);
-          const user = atob(urlParams.get('user')) || ip;
+    <div class="comment-section">
+      <h3>Comments</h3>
+      ${wiki.comments.slice(-7).map(comment => {
+        return `
+          <div class="comment" id="comment-${comment.id}">
+            <div class="comment-author">${comment.author} <small>(${new Date(comment.createdAt).toLocaleString()})</small></div>
+            <div class="comment-content">${comment.content}</div>
+            ${comment.replies.length > 0 ? comment.replies.map(reply => {
+              return `
+                <div class="comment-reply">
+                  <strong>${reply.author}</strong>: ${reply.content} <small>(${new Date(reply.createdAt).toLocaleString()})</small>
+                </div>
+              `;
+            }).join('') : ''}
+          </div>
+        `;
+      }).join('')}
+    </div>
 
-          if (!content.trim()) {
-            alert('Comment content cannot be empty');
-            return;
-          }
+    <div class="comment-form">
+      <h3>Add a Comment</h3>
+      <textarea class="comment-input" id="comment-content" placeholder="Write your comment..." rows="4"></textarea>
+      <button onclick="submitComment()">Submit</button>
+    </div>
 
-          fetch('/api/wikis/${wiki.id}/comments', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user: btoa(user), content: content })
-          })
-          .then(response => response.json())
-          .then(comment => {
-            const commentSection = document.querySelector('.comment-section');
-            commentSection.innerHTML += `
-              <div class="comment" id="comment-${comment.id}">
-                <div class="comment-author">${comment.author}</div>
-                <div class="comment-content">${comment.content}</div>
-              </div>
-            `;
-          })
-          .catch(error => console.error('Error adding comment:', error));
+    <script>
+      function submitComment() {
+        const content = document.getElementById('comment-content').value;
+        fetch('https://api.ipify.org?format=json')
+         .then(response => response.json())
+         .then(data => {
+          const ip = data.ip;
+       // Use the IP as needed
+          console.log(ip); 
+        });
+        const urlParams = new URLSearchParams(window.location.search);
+        const user = atob(urlParams.get('user')) || ip;
+
+        if (!content.trim()) {
+          alert('Comment content cannot be empty');
+          return;
         }
-      </script>
-    </body>
-    </html>
-  `);
+
+        fetch('/api/wikis/${wiki.id}/comments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user: btoa(user), content: content })
+        })
+        .then(response => response.json())
+        .then(comment => {
+          // Append new comment to the comment section
+          const commentSection = document.querySelector('.comment-section');
+          commentSection.innerHTML += `
+            <div class="comment" id="comment-${comment.id}">
+              <div class="comment-author">${comment.author}</div>
+              <div class="comment-content">${comment.content}</div>
+            </div>
+          `;
+        })
+        .catch(error => console.error('Error adding comment:', error));
+      }
+    </script>
+  </body>
+  </html>
+`);
+
 });
 
 // API: Get all wikis (without comments)
