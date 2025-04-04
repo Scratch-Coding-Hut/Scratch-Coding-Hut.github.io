@@ -114,7 +114,7 @@ app.get('/wiki/:title', (req, res) => {
 <body>
   <div class="navbar">
     <a href="https://scratch-coding-hut.github.io/index.html">Home</a>
-    <a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Create Wiki</a>
+    <a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Create Wiki & List Of Wikis</a>
   </div>
   <div class="wiki-content">
     <h2>${wiki.title}</h2>
