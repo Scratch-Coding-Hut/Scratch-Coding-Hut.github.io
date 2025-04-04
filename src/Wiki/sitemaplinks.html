@@ -44,6 +44,7 @@
   <script>
     let currentPage = 1;
     const limit = 5;
+    window.location.href = 'https://sch.flarum.cloud/'
 
     async function loadTopics(page) {
       const response = await fetch(`http://localhost:3000/forum?page=${page}&limit=${limit}`);
