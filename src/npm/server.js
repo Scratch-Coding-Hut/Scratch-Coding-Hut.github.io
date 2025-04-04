@@ -82,7 +82,8 @@ app.get('/wiki/:title', (req, res) => {
     comments: wiki.comments.slice(-7),
     wikiId: wiki.id,
     isOwnerOrAdmin: isOwnerOrAdminFlag,
-    currentUser: username
+    currentUser: username,
+    isAdmin: isOwnerOrAdminFlag
   });
 });
 
