@@ -7,8 +7,9 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 const wikisFilePath = path.join(__dirname, 'wikis.json');
+const bannedUsersFilePath = path.join(__dirname, 'bannedUsers.json');
 
-// Load the wikis from the file
+// Load the wikis and banned users from the files
 const loadWikis = () => {
   if (fs.existsSync(wikisFilePath)) {
     const data = fs.readFileSync(wikisFilePath, 'utf-8');
@@ -18,17 +19,36 @@ const loadWikis = () => {
   }
 };
 
-// Save the wikis to the file
+const loadBannedUsers = () => {
+  if (fs.existsSync(bannedUsersFilePath)) {
+    const data = fs.readFileSync(bannedUsersFilePath, 'utf-8');
+    return JSON.parse(data);
+  } else {
+    return [];
+  }
+};
+
+// Save the wikis and banned users to their respective files
 const saveWikis = (wikis) => {
   fs.writeFileSync(wikisFilePath, JSON.stringify(wikis, null, 2), 'utf-8');
 };
 
+const saveBannedUsers = (bannedUsers) => {
+  fs.writeFileSync(bannedUsersFilePath, JSON.stringify(bannedUsers, null, 2), 'utf-8');
+};
+
 // In-memory storage for wikis (loaded from file)
 let wikis = loadWikis();
+let bannedUsers = loadBannedUsers();
 
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static('public'));
+
+// Middleware to check if user is banned
+const isUserBanned = (userId) => {
+  return bannedUsers.includes(userId);
+};
 
 // Serve HTML page for a specific wiki title
 app.get('/wiki/:title', (req, res) => {
@@ -75,22 +95,6 @@ app.get('/wiki/:title', (req, res) => {
         <p>${wiki.content}</p>
         <small id="wiki-owner">${wiki.owner}</small>
       </div>
-
-      <div class="comment-section">
-        <h3>Comments</h3>
-        ${wiki.comments.slice(-7).map(comment => `
-          <div class="comment" id="comment-${comment.id}">
-            <div class="comment-author">${comment.author} <small>(${new Date(comment.createdAt).toLocaleString()})</small></div>
-            <div class="comment-content">${comment.content}</div>
-            ${comment.replies.length > 0 ? comment.replies.map(reply => `
-              <div class="comment-reply">
-                <strong>${reply.author}</strong>: ${reply.content} <small>(${new Date(reply.createdAt).toLocaleString()})</small>
-              </div>
-            `).join('') : ''}
-          </div>
-        `).join('')}
-      </div>
-
       <div class="comment-form">
         <h3>Add a Comment</h3>
         <textarea class="comment-input" id="comment-content" placeholder="Write your comment..." rows="4"></textarea>
@@ -104,7 +108,6 @@ app.get('/wiki/:title', (req, res) => {
            .then(response => response.json())
            .then(data => {
             const ip = data.ip;
-            // Use the IP as needed
             console.log(ip); 
           });
           const urlParams = new URLSearchParams(window.location.search);
@@ -122,14 +125,13 @@ app.get('/wiki/:title', (req, res) => {
           })
           .then(response => response.json())
           .then(comment => {
-            // Append new comment to the comment section
             const commentSection = document.querySelector('.comment-section');
-            commentSection.innerHTML += \`
+            commentSection.innerHTML += `
               <div class="comment" id="comment-${comment.id}">
                 <div class="comment-author">${comment.author}</div>
                 <div class="comment-content">${comment.content}</div>
               </div>
-            \`;
+            `;
           })
           .catch(error => console.error('Error adding comment:', error));
         }
@@ -139,7 +141,17 @@ app.get('/wiki/:title', (req, res) => {
   `);
 });
 
-// API: Get wiki details (including comments)
+// API: Get all wikis (without comments)
+app.get('/api/wikis', (req, res) => {
+  res.json(wikis.map(wiki => ({
+    id: wiki.id,
+    title: wiki.title,
+    content: wiki.content,
+    owner: wiki.owner
+  })));
+});
+
+// API: Get wiki details (without comments)
 app.get('/api/wikis/:id', (req, res) => {
   const { id } = req.params;
   const wiki = wikis.find(w => w.id === parseInt(id));
@@ -148,14 +160,22 @@ app.get('/api/wikis/:id', (req, res) => {
     return res.status(404).json({ error: 'Wiki not found' });
   }
 
-  // Return the wiki details including comments
-  res.json(wiki);
+  res.json({
+    id: wiki.id,
+    title: wiki.title,
+    content: wiki.content,
+    owner: wiki.owner
+  });
 });
 
 // API: Add a comment to a specific wiki
 app.post('/api/wikis/:id/comments', (req, res) => {
   const { id } = req.params;
   const { user, content, replyTo } = req.body;
+
+  if (isUserBanned(user)) {
+    return res.status(403).json({ error: 'User is banned' });
+  }
 
   const wiki = wikis.find(w => w.id === parseInt(id));
   if (!wiki) {
@@ -178,7 +198,6 @@ app.post('/api/wikis/:id/comments', (req, res) => {
     replies: [],
   };
 
-  // If it's a reply, add to the appropriate parent comment's replies
   if (replyTo) {
     const parentComment = wiki.comments.find(comment => comment.id === replyTo);
     if (parentComment) {
@@ -192,6 +211,90 @@ app.post('/api/wikis/:id/comments', (req, res) => {
 
   saveWikis(wikis);
   res.status(201).json(newComment);
+});
+
+// API: Edit a user's comment
+app.put('/api/wikis/:id/comments/:commentId', (req, res) => {
+  const { id, commentId } = req.params;
+  const { user, content } = req.body;
+
+  const wiki = wikis.find(w => w.id === parseInt(id));
+  if (!wiki) {
+    return res.status(404).json({ error: 'Wiki not found' });
+  }
+
+  const comment = wiki.comments.find(c => c.id === parseInt(commentId));
+
+  if (!comment) {
+    return res.status(404).json({ error: 'Comment not found' });
+  }
+
+  const username = atob(user); // Decode the username
+
+  if (comment.author !== username) {
+    return res.status(403).json({ error: 'You can only edit your own comments' });
+  }
+
+  if (!content) {
+    return res.status(400).json({ error: 'Content is required' });
+  }
+
+  comment.content = content;
+  comment.editedAt = new Date().toISOString();
+
+  saveWikis(wikis);
+  res.json(comment);
+});
+
+// API: Delete a comment (Admin only)
+app.delete('/api/wikis/:id/comments/:commentId', (req, res) => {
+  const { id, commentId } = req.params;
+
+  const wiki = wikis.find(w => w.id === parseInt(id));
+  if (!wiki) {
+    return res.status(404).json({ error: 'Wiki not found' });
+  }
+
+  const commentIndex = wiki.comments.findIndex(c => c.id === parseInt(commentId));
+
+  if (commentIndex === -1) {
+    return res.status(404).json({ error: 'Comment not found' });
+  }
+
+  wiki.comments.splice(commentIndex, 1);
+
+  saveWikis(wikis);
+  res.status(204).end();
+});
+
+// Admin: Ban a user
+app.post('/api/admin/ban', (req, res) => {
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required' });
+  }
+
+  if (!bannedUsers.includes(userId)) {
+    bannedUsers.push(userId);
+    saveBannedUsers(bannedUsers);
+    res.status(201).json({ message: 'User banned successfully' });
+  } else {
+    res.status(400).json({ error: 'User is already banned' });
+  }
+});
+
+// Admin: Unban a user
+app.post('/api/admin/unban', (req, res) => {
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required' });
+  }
+
+  bannedUsers = bannedUsers.filter(id => id !== userId);
+  saveBannedUsers(bannedUsers);
+  res.status(201).json({ message: 'User unbanned successfully' });
 });
 
 // Start the server
