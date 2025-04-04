@@ -104,7 +104,7 @@ app.get('/wiki/:title', (req, res) => {
            .then(response => response.json())
            .then(data => {
             const ip = data.ip;
-         // Use the IP as needed
+            // Use the IP as needed
             console.log(ip); 
           });
           const urlParams = new URLSearchParams(window.location.search);
@@ -124,12 +124,12 @@ app.get('/wiki/:title', (req, res) => {
           .then(comment => {
             // Append new comment to the comment section
             const commentSection = document.querySelector('.comment-section');
-            commentSection.innerHTML += `
+            commentSection.innerHTML += \`
               <div class="comment" id="comment-${comment.id}">
                 <div class="comment-author">${comment.author}</div>
                 <div class="comment-content">${comment.content}</div>
               </div>
-            `;
+            \`;
           })
           .catch(error => console.error('Error adding comment:', error));
         }
