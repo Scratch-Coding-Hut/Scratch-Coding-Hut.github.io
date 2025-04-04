@@ -10,7 +10,7 @@ const wikisFilePath = path.join(__dirname, 'wikis.json');
 const bannedUsersFilePath = path.join(__dirname, 'bannedUsers.json');
 
 // Admins list
-const admins = ['kRxZy_kRxZy', 'MyScratchedAccount', 'mcgdj'];
+const admins = ['admin1', 'admin2', 'admin3']; // Replace with your admin usernames
 
 // Load the wikis and banned users from the files
 const loadWikis = () => {
