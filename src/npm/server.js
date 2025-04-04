@@ -59,8 +59,8 @@ app.get('/wiki/:title', (req, res) => {
     return res.status(404).send('Wiki not found');
   }
 
-// HTML generation inside template literal
-res.send(`
+  // HTML generation inside template literal
+  res.send(`
   <!DOCTYPE html>
   <html lang="en">
   <head>
@@ -99,48 +99,21 @@ res.send(`
 
     <div class="comment-section">
       <h3>Comments</h3>
-      const htmlOutput = wiki.comments.slice(-7).map(comment => {
-  return `
-    <div class="comment" id="comment-${comment.id}">
-      <div class="comment-author">
-        ${comment.author} <small>(${new Date(comment.createdAt).toLocaleString()})</small>
-      </div>
-      <div class="comment-content">${escapeHtml(comment.content)}</div>
-      ${comment.replies.length > 0 ? comment.replies.map(reply => {
+      ${wiki.comments.slice(-7).map(comment => {
         return `
-          <div class="comment-reply">
-            <strong>${reply.author}</strong>: ${escapeHtml(reply.content)} 
-            <small>(${new Date(reply.createdAt).toLocaleString()})</small>
-          </div>
-        `;
-      }).join('') : ''}
-    </div>
-  `;
-}).join('');
-
-// Use the escapeHtml function to safely escape user input
-function escapeHtml(str) {
-  return str.replace(/[&<>"'`]/g, function(match) {
-    const escape = {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#039;',
-      "`": '&#x60;'
-    };
-    return escape[match];
-  });
-}
-
-// Output the HTML
-console.log(htmlOutput);
-
-        `;
-      }).join('') : ''}
-    </div>
-  `;
-}).join('')})
+          <div class="comment" id="comment-${comment.id}">
+            <div class="comment-author">
+              ${comment.author} <small>(${new Date(comment.createdAt).toLocaleString()})</small>
+            </div>
+            <div class="comment-content">${escapeHtml(comment.content)}</div>
+            ${comment.replies.length > 0 ? comment.replies.map(reply => {
+              return `
+                <div class="comment-reply">
+                  <strong>${reply.author}</strong>: ${escapeHtml(reply.content)} 
+                  <small>(${new Date(reply.createdAt).toLocaleString()})</small>
+                </div>
+              `;
+            }).join('') : ''}
           </div>
         `;
       }).join('')}
@@ -153,46 +126,57 @@ console.log(htmlOutput);
     </div>
 
     <script>
+      function escapeHtml(str) {
+        return str.replace(/[&<>"'`]/g, function(match) {
+          const escape = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;',
+            "`": '&#x60;'
+          };
+          return escape[match];
+        });
+      }
+
       function submitComment() {
         const content = document.getElementById('comment-content').value;
         fetch('https://api.ipify.org?format=json')
          .then(response => response.json())
          .then(data => {
           const ip = data.ip;
-       // Use the IP as needed
-          console.log(ip); 
+          const urlParams = new URLSearchParams(window.location.search);
+          const user = atob(urlParams.get('user')) || ip;
+
+          if (!content.trim()) {
+            alert('Comment content cannot be empty');
+            return;
+          }
+
+          fetch('/api/wikis/${wiki.id}/comments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user: btoa(user), content: content })
+          })
+          .then(response => response.json())
+          .then(comment => {
+            // Append new comment to the comment section
+            const commentSection = document.querySelector('.comment-section');
+            commentSection.innerHTML += `
+              <div class="comment" id="comment-${comment.id}">
+                <div class="comment-author">${comment.author}</div>
+                <div class="comment-content">${comment.content}</div>
+              </div>
+            `;
+          })
+          .catch(error => console.error('Error adding comment:', error));
         });
-        const urlParams = new URLSearchParams(window.location.search);
-        const user = atob(urlParams.get('user')) || ip;
-
-        if (!content.trim()) {
-          alert('Comment content cannot be empty');
-          return;
-        }
-
-        fetch('/api/wikis/${wiki.id}/comments', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ user: btoa(user), content: content })
-        })
-        .then(response => response.json())
-        .then(comment => {
-          // Append new comment to the comment section
-          const commentSection = document.querySelector('.comment-section');
-          commentSection.innerHTML += `
-            <div class="comment" id="comment-${comment.id}">
-              <div class="comment-author">${comment.author}</div>
-              <div class="comment-content">${comment.content}</div>
-            </div>
-          `;
-        })
-        .catch(error => console.error('Error adding comment:', error));
       }
     </script>
   </body>
   </html>
-`);
-
+  `);
 });
 
 // API: Get all wikis (without comments)
