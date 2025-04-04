@@ -5,293 +5,230 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %> - Wiki</title>
   <style>
-    /* General Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body { 
-      font-family: 'Arial', sans-serif; 
-      background: #fff4f4; 
-      color: #333; 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #fff4f4;
+      color: #333;
       text-align: center;
       margin: 0;
       padding: 0;
-    }
-
-    /* Navbar Styling */
-    .navbar { 
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
-      background: #ff4d4d; 
-      padding: 15px 20px; 
-      border-radius: 10px; 
-      gap: 15px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    }
-    .navbar a { 
-      color: white; 
-      text-decoration: none; 
-      font-size: 1.2rem; 
-      padding: 10px 15px; 
-      border-radius: 5px; 
-      transition: background 0.3s;
-    }
-    .navbar a:hover { 
-      background: #ff1a1a; 
-    }
-
-    /* Wiki Content Styling */
-    .wiki-content { 
-      max-width: 1000px; 
-      margin: 40px auto; 
-      background: #ffe6e6; 
-      padding: 40px; 
-      border-radius: 10px; 
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      text-align: left;
-      overflow-wrap: break-word;
-    }
-    .wiki-content h2 { 
-      color: #e60000; 
-      font-size: 2.5rem; 
-      margin-bottom: 20px; 
-      text-align: center;
-    }
-    .wiki-content p { 
-      font-size: 1.5rem; 
-      color: #333; 
       line-height: 1.6;
     }
 
-    /* Comment Section Styling */
-    .comment-section { 
-      margin-top: 40px; 
-      padding: 20px; 
-      background: #f7f7f7;
-      border-radius: 10px; 
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    /* Global Container */
+    .container {
+      width: 100%;
+      padding: 20px;
+      background: #fef8f8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .comment-section h3 { 
-      color: #ff4d4d; 
-      font-size: 2rem; 
+
+    .navbar {
+      display: flex;
+      justify-content: center;
+      background: #ff4d4d;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      background-color: #ff1a1a;
+    }
+
+    .wiki-content {
+      max-width: 1000px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: left;
+    }
+
+    .wiki-content h2 {
+      color: #e60000;
+      font-size: 2.5rem;
       margin-bottom: 20px;
-    }
-    .comment { 
-      background: #fff; 
-      padding: 10px; 
-      margin: 10px 0; 
-      border-radius: 5px; 
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-      position: relative;
-    }
-    .comment-author { 
-      font-weight: bold; 
-      color: #e60000;
-    }
-    .comment-content { 
-      font-size: 1rem; 
-      margin-top: 5px;
-    }
-    .comment-reply { 
-      font-size: 0.9rem; 
-      color: #888; 
-      margin-left: 20px; 
+      text-align: center;
     }
 
-    /* Comment Form Styling */
-    .comment-form { 
-      margin-top: 20px; 
-      text-align: left; 
-      background: #fff; 
-      padding: 20px; 
-      border-radius: 10px; 
+    .wiki-content p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .comment-section {
+      margin-top: 40px;
+      padding: 20px;
+      background: #f7f7f7;
+      border-radius: 10px;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     }
-    .comment-input { 
-      width: 100%; 
-      padding: 15px; 
-      margin-top: 10px; 
-      font-size: 1rem; 
-      border: 1px solid #ccc; 
-      border-radius: 5px; 
-      resize: vertical;
+
+    .comment-section h3 {
+      font-size: 2rem;
+      color: #ff4d4d;
     }
 
-    /* Edit/Delete buttons */
-    .comment-button {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 0.8rem;
-      background: transparent;
-      border: none;
+    .comment {
+      background: #fff;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .comment-author {
+      font-weight: bold;
       color: #e60000;
-      cursor: pointer;
-      transition: color 0.3s;
     }
 
-    .comment-button:hover {
-      color: #ff1a1a;
-    }
-
-    .edit-button, .delete-button {
+    .comment-content {
       margin-top: 10px;
     }
 
-    /* Mobile Responsive Design */
-    @media (max-width: 768px) {
-      .navbar { 
-        flex-direction: column; 
-        padding: 10px;
-      }
-      .wiki-content, .comment-section, .comment-form { 
-        margin: 20px; 
-        padding: 15px; 
-      }
-      .wiki-content h2 { 
-        font-size: 2rem; 
-      }
+    .comment-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .comment-buttons button {
+      padding: 5px 10px;
+      border: none;
+      background: #e60000;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .comment-buttons button:hover {
+      background: #ff1a1a;
+    }
+
+    .reply-input {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .reply-input textarea {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 100%;
+      height: 80px;
+      resize: none;
+    }
+
+    .reply-input button {
+      align-self: flex-end;
+      padding: 10px 20px;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .reply-input button:hover {
+      background: #e60000;
     }
   </style>
 </head>
 <body>
-  <!-- Navbar Section -->
-  <div class="navbar">
-    <a href="https://scratch-coding-hut.github.io/">Home</a>
-    <a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Create Wiki</a>
-    <a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Wiki List</a>
-  </div>
+  <div class="container">
+    <div class="navbar">
+      <a href="/">Home</a>
+      <a href="/wikis">All Wikis</a>
+      <a href="/create">Create Wiki</a>
+    </div>
 
-  <!-- Wiki Content Section -->
-  <div class="wiki-content">
-    <h2><%= title %></h2>
-    <p><%= content %></p>
-    <p><strong>Owner:</strong> <%= owner %></p>
-    <% if (isOwnerOrAdmin) { %>
-      <button onclick="editWiki()">Edit Wiki</button>
-    <% } %>
-  </div>
+    <div class="wiki-content">
+      <h2><%= title %></h2>
+      <p><%= content %></p>
+    </div>
 
-  <!-- Comment Section -->
-  <div class="comment-section">
-    <h3>Comments</h3>
-    <% comments.forEach(function(comment) { %>
-      <div class="comment" id="comment-<%= comment.id %>">
-        <div class="comment-author">
-          <%= comment.author %> <small>(<%= new Date(comment.createdAt).toLocaleString() %>)</small>
-        </div>
-        <div class="comment-content" id="comment-content-<%= comment.id %>"><%= comment.content %></div>
-        <% if (comment.author === currentUser || isAdmin) { %>
-          <button class="comment-button edit-button" onclick="editComment(<%= comment.id %>)">Edit</button>
-        <% } %>
-        <% if (isAdmin) { %>
-          <button class="comment-button delete-button" onclick="deleteComment(<%= comment.id %>)">Delete</button>
-        <% } %>
-        <% if (comment.replies.length > 0) { %>
-          <div class="comment-replies">
-            <% comment.replies.forEach(function(reply) { %>
-              <div class="comment-reply">
-                <strong><%= reply.author %></strong>: <%= reply.content %> 
-                <small>(<%= new Date(reply.createdAt).toLocaleString() %>)</small>
-              </div>
-            <% }); %>
-          </div>
-        <% } %>
+    <div class="comment-section">
+      <h3>Comments:</h3>
+      <div id="comments"></div>
+      <div class="reply-input">
+        <textarea id="commentContent" placeholder="Write your comment..."></textarea>
+        <button onclick="submitComment()">Submit</button>
       </div>
-    <% }); %>
-  </div>
-
-  <!-- Comment Form -->
-  <div class="comment-form">
-    <h3>Add a Comment</h3>
-    <textarea class="comment-input" id="comment-content" placeholder="Write your comment..." rows="4"></textarea>
-    <button onclick="submitComment()">Submit</button>
+    </div>
   </div>
 
   <script>
-    // Fetch user IP and determine current user
-    fetch('https://api.ipify.org?format=json')
-      .then(response => response.json())
-      .then(data => {
-        const ip = data.ip;
-        // Use the IP as needed
-        console.log(ip);  // You can remove the console.log if you don't want to display the IP
+    // Mock Data for Comments
+    const comments = <%= JSON.stringify(comments) %>;
+
+    function renderComments() {
+      const commentsDiv = document.getElementById('comments');
+      commentsDiv.innerHTML = '';
+
+      comments.forEach(comment => {
+        const commentDiv = document.createElement('div');
+        commentDiv.classList.add('comment');
+        commentDiv.innerHTML = `
+          <p class="comment-author">${comment.author}</p>
+          <p class="comment-content">${comment.content}</p>
+          <div class="comment-buttons">
+            <button onclick="editComment(${comment.id})">Edit</button>
+            <button onclick="deleteComment(${comment.id})">Delete</button>
+          </div>
+        `;
+        commentsDiv.appendChild(commentDiv);
       });
-    
-    const currentUser = localStorage.getItem('username') || ip;  // Example for current user (use your auth system)
-    const isAdmin = ['kRxZy_kRxZy', 'MyScratchedAccount', 'mcgdj'].includes(currentUser);
-    const isOwnerOrAdmin = <%= owner === currentUser || isAdmin %>;
-
-    // Edit Comment
-    function editComment(commentId) {
-      const commentContent = document.getElementById(`comment-content-${commentId}`);
-      const newContent = prompt("Edit your comment:", commentContent.innerText);
-      if (newContent) {
-        // Update the comment content on the backend
-        fetch(`/api/wikis/<%= wikiId %>/comments/${commentId}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: newContent })
-        }).then(response => response.json())
-          .then(updatedComment => {
-            commentContent.innerText = updatedComment.content;
-          }).catch(console.error);
-      }
     }
 
-    // Delete Comment
-    function deleteComment(commentId) {
-      if (confirm("Are you sure you want to delete this comment?")) {
-        fetch(`/api/wikis/<%= wikiId %>/comments/${commentId}`, {
-          method: 'DELETE',
-        }).then(() => {
-          document.getElementById(`comment-${commentId}`).remove();
-        }).catch(console.error);
-      }
-    }
-
-    // Edit Wiki
-    function editWiki() {
-      window.location.href = 'https://Scratch-Coding-Hut.github.io/Wiki/edit?edit=<%= title %>';
-    }
-
-    // Submit Comment
     function submitComment() {
-      const content = document.getElementById('comment-content').value;
-      if (!content.trim()) {
-        alert('Comment content cannot be empty');
-        return;
+      const content = document.getElementById('commentContent').value;
+      if (content) {
+        // Add to comments array (mocked here)
+        comments.push({ id: Date.now(), author: 'User', content });
+        renderComments();
+        document.getElementById('commentContent').value = '';
       }
-
-      // Get user IP or username
-      fetch('https://api.ipify.org?format=json')
-        .then(response => response.json())
-        .then(data => {
-          const ip = data.ip;
-          const user = btoa(currentUser || ip);  // Encode the user to base64
-
-          // Submit the comment
-          fetch(`/api/wikis/<%= wikiId %>/comments`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user, content })
-          }).then(response => response.json())
-            .then(comment => {
-              // Append the new comment to the comment section
-              const commentSection = document.querySelector('.comment-section');
-              commentSection.innerHTML += `
-                <div class="comment" id="comment-${comment.id}">
-                  <div class="comment-author">${comment.author} <small>(${new Date(comment.createdAt).toLocaleString()})</small></div>
-                  <div class="comment-content">${comment.content}</div>
-                  <button class="comment-button edit-button" onclick="editComment(${comment.id})">Edit</button>
-                  <button class="comment-button delete-button" onclick="deleteComment(${comment.id})">Delete</button>
-                </div>
-              `;
-              document.getElementById('comment-content').value = '';  // Clear input
-            })
-            .catch(console.error);
-        });
     }
+
+    function deleteComment(id) {
+      const index = comments.findIndex(comment => comment.id === id);
+      if (index !== -1) {
+        comments.splice(index, 1);
+        renderComments();
+      }
+    }
+
+    function editComment(id) {
+      const comment = comments.find(comment => comment.id === id);
+      if (comment) {
+        const newContent = prompt('Edit your comment:', comment.content);
+        if (newContent !== null) {
+          comment.content = newContent;
+          renderComments();
+        }
+      }
+    }
+
+    renderComments();
   </script>
 </body>
 </html>
