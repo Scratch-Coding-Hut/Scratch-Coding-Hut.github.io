@@ -5,35 +5,149 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %> - Wiki</title>
   <style>
+    /* General Reset */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Arial', sans-serif; background: #fff4f4; color: #333; text-align: center; }
-    .navbar { display: flex; justify-content: center; align-items: center; background: #ff4d4d; padding: 15px 20px; border-radius: 10px; gap: 15px; }
-    .navbar a { color: white; text-decoration: none; font-size: 1.2rem; padding: 10px 15px; border-radius: 5px; transition: background 0.3s; }
-    .navbar a:hover { background: #ff1a1a; }
-    .wiki-content { max-width: 1000px; margin: 40px auto; background: #ffe6e6; padding: 40px; border-radius: 10px; text-align: left; }
-    .wiki-content h2 { color: #e60000; font-size: 2.5rem; margin-bottom: 20px; text-align: center; }
-    .wiki-content p { font-size: 1.5rem; color: #333; line-height: 1.6; }
-    .comment-section { margin-top: 40px; }
-    .comment { background: #fff; padding: 10px; margin: 10px 0; border-radius: 5px; }
-    .comment-author { font-weight: bold; }
-    .comment-content { font-size: 1rem; margin-top: 5px; }
-    .comment-reply { font-size: 0.9rem; color: #888; margin-left: 20px; }
-    .comment-form { margin-top: 20px; text-align: left; }
-    .comment-input { width: 100%; padding: 10px; margin-top: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; }
+    
+    body { 
+      font-family: 'Arial', sans-serif; 
+      background: #fff4f4; 
+      color: #333; 
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Navbar Styling */
+    .navbar { 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      background: #ff4d4d; 
+      padding: 15px 20px; 
+      border-radius: 10px; 
+      gap: 15px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .navbar a { 
+      color: white; 
+      text-decoration: none; 
+      font-size: 1.2rem; 
+      padding: 10px 15px; 
+      border-radius: 5px; 
+      transition: background 0.3s;
+    }
+    .navbar a:hover { 
+      background: #ff1a1a; 
+    }
+
+    /* Wiki Content Styling */
+    .wiki-content { 
+      max-width: 1000px; 
+      margin: 40px auto; 
+      background: #ffe6e6; 
+      padding: 40px; 
+      border-radius: 10px; 
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      overflow-wrap: break-word;
+    }
+    .wiki-content h2 { 
+      color: #e60000; 
+      font-size: 2.5rem; 
+      margin-bottom: 20px; 
+      text-align: center;
+    }
+    .wiki-content p { 
+      font-size: 1.5rem; 
+      color: #333; 
+      line-height: 1.6;
+    }
+
+    /* Comment Section Styling */
+    .comment-section { 
+      margin-top: 40px; 
+      padding: 20px; 
+      background: #f7f7f7;
+      border-radius: 10px; 
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .comment-section h3 { 
+      color: #ff4d4d; 
+      font-size: 2rem; 
+      margin-bottom: 20px;
+    }
+    .comment { 
+      background: #fff; 
+      padding: 10px; 
+      margin: 10px 0; 
+      border-radius: 5px; 
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .comment-author { 
+      font-weight: bold; 
+      color: #e60000;
+    }
+    .comment-content { 
+      font-size: 1rem; 
+      margin-top: 5px;
+    }
+    .comment-reply { 
+      font-size: 0.9rem; 
+      color: #888; 
+      margin-left: 20px; 
+    }
+
+    /* Comment Form Styling */
+    .comment-form { 
+      margin-top: 20px; 
+      text-align: left; 
+      background: #fff; 
+      padding: 20px; 
+      border-radius: 10px; 
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .comment-input { 
+      width: 100%; 
+      padding: 15px; 
+      margin-top: 10px; 
+      font-size: 1rem; 
+      border: 1px solid #ccc; 
+      border-radius: 5px; 
+      resize: vertical;
+    }
+
+    /* Mobile Responsive Design */
+    @media (max-width: 768px) {
+      .navbar { 
+        flex-direction: column; 
+        padding: 10px;
+      }
+      .wiki-content, .comment-section, .comment-form { 
+        margin: 20px; 
+        padding: 15px; 
+      }
+      .wiki-content h2 { 
+        font-size: 2rem; 
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Navbar Section -->
   <div class="navbar">
     <a href="scratch-coding-hut.github.io/">Home</a>
     <a href="scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Create Wiki</a>
     <a href="scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Wiki List</a>
   </div>
+
+  <!-- Wiki Content Section -->
   <div class="wiki-content">
     <h2><%= title %></h2>
     <p><%= content %></p>
-    <p><%= owner %></p>
+    <p><strong>Owner:</strong> <%= owner %></p>
   </div>
 
+  <!-- Comment Section -->
   <div class="comment-section">
     <h3>Comments</h3>
     <% comments.forEach(function(comment) { %>
@@ -56,6 +170,7 @@
     <% }); %>
   </div>
 
+  <!-- Comment Form -->
   <div class="comment-form">
     <h3>Add a Comment</h3>
     <textarea class="comment-input" id="comment-content" placeholder="Write your comment..." rows="4"></textarea>
