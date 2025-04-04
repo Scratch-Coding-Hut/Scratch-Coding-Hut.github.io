@@ -100,24 +100,24 @@ app.get('/wiki/:title', (req, res) => {
     <div class="comment-section">
       <h3>Comments</h3>
       ${wiki.comments.slice(-7).map(comment => {
+  return `
+    <div class="comment" id="comment-${comment.id}">
+      <div class="comment-author">
+        ${comment.author} <small>(${new Date(comment.createdAt).toLocaleString()})</small>
+      </div>
+      <div class="comment-content">${escapeHtml(comment.content)}</div>
+      ${comment.replies.length > 0 ? comment.replies.map(reply => {
         return `
-          <div class="comment" id="comment-${comment.id}">
-            <div class="comment-author">
-              ${comment.author} <small>(${new Date(comment.createdAt).toLocaleString()})</small>
-            </div>
-            <div class="comment-content">${escapeHtml(comment.content)}</div>
-            ${comment.replies.length > 0 ? comment.replies.map(reply => {
-              return `
-                <div class="comment-reply">
-                  <strong>${reply.author}</strong>: ${escapeHtml(reply.content)} 
-                  <small>(${new Date(reply.createdAt).toLocaleString()})</small>
-                </div>
-              `;
-            }).join('') : ''}
+          <div class="comment-reply">
+            <strong>${reply.author}</strong>: ${escapeHtml(reply.content)} 
+            <small>(${new Date(reply.createdAt).toLocaleString()})</small>
           </div>
         `;
-      }).join('')}
+      }).join('') : ''}
     </div>
+  `;
+}).join('')}
+
 
     <div class="comment-form">
       <h3>Add a Comment</h3>
