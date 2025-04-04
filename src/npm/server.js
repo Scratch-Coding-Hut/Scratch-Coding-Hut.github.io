@@ -116,7 +116,7 @@ app.get('/wiki/:title', (req, res) => {
             }).join('') : ''}
           </div>
         `;
-      }).join('')}
+      }).join('')})
     </div>
 
     <div class="comment-form">
