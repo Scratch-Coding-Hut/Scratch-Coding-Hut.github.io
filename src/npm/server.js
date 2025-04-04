@@ -94,6 +94,7 @@ app.get('/wiki/:title', (req, res) => {
     <div class="wiki-content">
       <h2>${wiki.title}</h2>
       <p>${wiki.content}</p>
+      <p[${wiki.owner}</p>
     </div>
 
     <div class="comment-section">
