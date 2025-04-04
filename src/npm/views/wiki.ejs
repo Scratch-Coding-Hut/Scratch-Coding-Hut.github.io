@@ -152,9 +152,9 @@
 <body>
   <!-- Navbar Section -->
   <div class="navbar">
-    <a href="scratch-coding-hut.github.io/">Home</a>
-    <a href="scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Create Wiki</a>
-    <a href="scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Wiki List</a>
+    <a href="https://scratch-coding-hut.github.io/">Home</a>
+    <a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Create Wiki</a>
+    <a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks.html">Wiki List</a>
   </div>
 
   <!-- Wiki Content Section -->
@@ -245,19 +245,7 @@
 
     // Edit Wiki
     function editWiki() {
-      const newTitle = prompt("Edit the wiki title:", "<%= title %>");
-      const newContent = prompt("Edit the wiki content:", "<%= content %>");
-      if (newTitle && newContent) {
-        fetch(`/api/wikis/<%= wikiId %>`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title: newTitle, content: newContent })
-        }).then(response => response.json())
-          .then(updatedWiki => {
-            location.reload();  // Reload the page to reflect changes
-          }).catch(console.error);
-      }
-    }
+      window.location.href = 'https://Scratch-Coding-Hut.github.io/Wiki/edit?edit=<%= title %>
 
     // Submit Comment
     function submitComment() {
