@@ -127,6 +127,11 @@
       border: none;
       color: #e60000;
       cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .comment-button:hover {
+      color: #ff1a1a;
     }
 
     .edit-button, .delete-button {
@@ -204,13 +209,15 @@
   </div>
 
   <script>
+    // Fetch user IP and determine current user
     fetch('https://api.ipify.org?format=json')
-  .then(response => response.json())
-  .then(data => {
-    const ip = data.ip;
-    // Use the IP as needed
-    console.log(ip);  // You can remove the console.log if you don't want to display the IP
-  });
+      .then(response => response.json())
+      .then(data => {
+        const ip = data.ip;
+        // Use the IP as needed
+        console.log(ip);  // You can remove the console.log if you don't want to display the IP
+      });
+    
     const currentUser = localStorage.getItem('username') || ip;  // Example for current user (use your auth system)
     const isAdmin = ['kRxZy_kRxZy', 'MyScratchedAccount', 'mcgdj'].includes(currentUser);
     const isOwnerOrAdmin = <%= owner === currentUser || isAdmin %>;
@@ -245,7 +252,8 @@
 
     // Edit Wiki
     function editWiki() {
-      window.location.href = 'https://Scratch-Coding-Hut.github.io/Wiki/edit?edit=<%= title %>
+      window.location.href = 'https://Scratch-Coding-Hut.github.io/Wiki/edit?edit=<%= title %>';
+    }
 
     // Submit Comment
     function submitComment() {
