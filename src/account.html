@@ -185,11 +185,11 @@
         }
 
         function devToken() {
-           const usernameEncoded = localStorage.getItem('usernameEnc');
+           const usernameEnc = localStorage.getItem('usernameEnc');
            const username = localStorage.getItem('usernameEnc');
-           const joined = "Your dev token is:" + username + "- Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
+           const joined = "Your dev token is:" + usernameEnc + "- Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
            devTokens.style.color = "green";
-           devTokens.textContent = "Your dev token is:" + username + "- Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
+           devTokens.textContent = "Your dev token is:" + usernameEnc + "- Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
         }
     </script>
 </head>
@@ -212,7 +212,7 @@
             <h2>For You</h2>
             <button onclick="strikeinfo()">Strikes Received From Coding Hut</button>
         </div>
-
+    <!-- DO NOT DELETE MY AUTH TOKEN SYSTEM -->
         <div class="container">
             <h2>Developer Tokens</h2>
             <h3>Used for linking Scratch account to forums account</h3>
@@ -220,6 +220,7 @@
             <button onclick="devToken()">Generate Dev Token</button>
             Coming Soon! Stay tuned
         </div>
+    <!-- DO NOT DELETE MY AUTH TOKEN SYSTEM -->
     </div>
 
     <!-- Auth Section -->
