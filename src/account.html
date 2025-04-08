@@ -185,8 +185,10 @@
         }
 
         function devToken() {
+           const usernameEncoded = localStorage.getItem('usernameEnc');
+           const joined = `Your dev token is: ${usernameEncoded} - Make sure to only share it with Coding Hut services and partners or else you can get hacked!`;
            devTokens.style.color = "green";
-           devTokens.textContent = "Generating Dev Token...";
+           devTokens.textContent = "${joined}";
         }
     </script>
 </head>
