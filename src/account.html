@@ -100,8 +100,8 @@
         }
 
         // Function to encode the username using btoa() (Base64 encoding)
-        function decodeUsername(encodedUsername) {
-            return btoa(encodedUsername); // Using atob to encode the Base64 username
+        function encodeUsername(username) {
+            return btoa(username); // Using btoa to encode the username to Base64
         }
 
         // On page load, check if the user is logged in
@@ -185,11 +185,11 @@
         }
 
         function devToken() {
-           const usernameEnc = localStorage.getItem('usernameEnc');
-           const username = localStorage.getItem('username');
-           const joined = "Your dev token is:" + username + "- Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
-           devTokens.style.color = "green";
-           devTokens.textContent = "Your dev token is:" + username + "- Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
+            const usernameEnc = localStorage.getItem('usernameEnc');
+            const username = localStorage.getItem('username');
+            const joined = "Your dev token is:" + username + "- Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
+            devTokens.style.color = "green";
+            devTokens.textContent = "Your dev token is:" + username + "- Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
         }
     </script>
 </head>
