@@ -186,10 +186,10 @@
 
         function devToken() {
            const usernameEnc = localStorage.getItem('usernameEnc');
-           const username = localStorage.getItem('usernameEnc');
-           const joined = "Your dev token is:" + usernameEnc + "- Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
+           const username = localStorage.getItem('username');
+           const joined = "Your dev token is:" + username + "- Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
            devTokens.style.color = "green";
-           devTokens.textContent = "Your dev token is:" + usernameEnc + "- Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
+           devTokens.textContent = "Your dev token is:" + username + "- Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
         }
     </script>
 </head>
