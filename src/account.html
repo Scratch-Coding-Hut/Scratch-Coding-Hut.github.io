@@ -37,6 +37,12 @@
             margin-top: 10px;
         }
 
+        .devTokens {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
         button {
             width: 100%;
             padding: 12px 20px;
@@ -91,6 +97,11 @@
         // Function to decode the username using atob (Base64 decoding)
         function decodeUsername(encodedUsername) {
             return atob(encodedUsername); // Using atob to decode the Base64 username
+        }
+
+        // Function to encode the username using btoa() (Base64 encoding)
+        function decodeUsername(encodedUsername) {
+            return btoa(encodedUsername); // Using atob to encode the Base64 username
         }
 
         // On page load, check if the user is logged in
@@ -172,6 +183,12 @@
         async function strikeinfo() {
             window.location.href = `https://scratch-coding-hut.github.io/Strikes/my-strikes?username=${username}`;
         }
+
+        function devToken() {
+            localStorage.removeItem('loggedIn');
+            localStorage.removeItem('username');
+            window.location.href = 'account.html';
+        }
     </script>
 </head>
 
@@ -197,6 +214,8 @@
         <div class="container">
             <h2>Developer Tokens</h2>
             <h3>Used for linking Scratch account to forums account</h3>
+            <p id="devTokens" class="message" aria-live="polite"></p>
+            <button onclick="logout()">Generate Dev Token</button>
             Coming Soon! Stay tuned
         </div>
     </div>
