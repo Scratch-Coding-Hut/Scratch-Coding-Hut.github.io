@@ -185,9 +185,8 @@
         }
 
         function devToken() {
-            localStorage.removeItem('loggedIn');
-            localStorage.removeItem('username');
-            window.location.href = 'account.html';
+           devTokens.style.color = "green";
+           messageBox.textContent = "Generating Dev Token...";
         }
     </script>
 </head>
@@ -215,7 +214,7 @@
             <h2>Developer Tokens</h2>
             <h3>Used for linking Scratch account to forums account</h3>
             <p id="devTokens" class="message" aria-live="polite"></p>
-            <button onclick="logout()">Generate Dev Token</button>
+            <button onclick="devToken()">Generate Dev Token</button>
             Coming Soon! Stay tuned
         </div>
     </div>
@@ -225,7 +224,7 @@
         <div class="container">
             <h2>Welcome! Please log in to continue.</h2>
             <button onclick="registerScratchAuth()">Sign In With ScratchAuth (working)</button>
-            <p id="scratchMessage" class="message" aria-live="polite"></p>
+            <p id="scratchMessage" class="devTokens" aria-live="polite"></p>
             <p>Please note: You will be redirected to an external site (ScratchAuth) for authentication.</p>
         </div>
 
