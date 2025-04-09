@@ -110,11 +110,11 @@
                 if (localStorage.getItem('loggedIn') === 'true') {
                     const usernameEncoded = localStorage.getItem('usernameEnc');
                     const username = decodeUsername(usernameEncoded); // Decode the username using atob
-                    localStorage.setItem('usernameEnc', username)
+                    localStorage.setItem('username', username)
 
                     document.getElementById('authSection').style.display = 'none';
                     document.getElementById('loggedInContent').style.display = 'block';
-                    document.getElementById('welcomeMessage').textContent = `Welcome to your account, ${username}!`;
+                    document.getElementById('welcomeMessage').textContent = `Welcome to your account, ${usernameEncoded}!`;
 
                     const res = await fetch(`https://scratchgems.onrender.com/api/data/${username}`);
                     if (!res.ok) throw new Error('Failed to fetch data');
@@ -185,7 +185,7 @@
         }
 
         function devToken() {
-            const usernameEnc = localStorage.getItem('username');
+            const usernameEnc = localStorage.getItem('usernameEnc');
             const username = localStorage.getItem('username');
             const joined = "Your dev token is:" + usernameEnc + " - Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
             devTokens.style.color = "green";
