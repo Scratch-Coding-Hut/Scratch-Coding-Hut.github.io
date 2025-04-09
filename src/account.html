@@ -110,11 +110,11 @@
                 if (localStorage.getItem('loggedIn') === 'true') {
                     const usernameEncoded = localStorage.getItem('usernameEnc');
                     const username = decodeUsername(usernameEncoded); // Decode the username using atob
-                    localStorage.setItem('username', usernameEnc)
+                    localStorage.setItem('usernameEnc', username)
 
                     document.getElementById('authSection').style.display = 'none';
                     document.getElementById('loggedInContent').style.display = 'block';
-                    document.getElementById('welcomeMessage').textContent = `Welcome to your account, ${usernameEnc}!`;
+                    document.getElementById('welcomeMessage').textContent = `Welcome to your account, ${username}!`;
 
                     const res = await fetch(`https://scratchgems.onrender.com/api/data/${username}`);
                     if (!res.ok) throw new Error('Failed to fetch data');
