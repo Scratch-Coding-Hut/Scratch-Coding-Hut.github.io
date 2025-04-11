@@ -138,7 +138,10 @@
 
             if (PC) {
                 const res = await fetch(`https://auth-api.itinerary.eu.org/auth/verifyToken/${PC}`; // Decode the username using atob
+                const data = await res.json();
+                const username = atob(data.username);
                 localStorage.setItem('usernameEnc', username); // Store the original Base64-encoded username
+                localStorage.setItem('username', data.username);
                 localStorage.setItem('loggedIn', 'true');
                 window.location.href = 'index.html';
 
