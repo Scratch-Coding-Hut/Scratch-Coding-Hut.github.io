@@ -134,19 +134,14 @@
         };
 
         function checkAuth() {
-            const PC = new URLSearchParams(window.location.search).get('privateCode');
+            const authSuccess = new URLSearchParams(window.location.search).get('success');
+            const username = new URLSearchParams(window.location.search).get('username');
 
-            if (PC) {
-                const res = await fetch(`https://auth-api.itinerary.eu.org/auth/verifyToken/${PC}`);
-                const data = await response.json();
-                const username = data.username;
-                localStorage.setItem('username', username);
-                localStorage.setItem('usernameEnc', btoa(username));
-                localStorage.setItem('loggedIn', 'true') 
-
-                                     
-
-
+            if (username) {
+                const decodedUsername = decodeUsername(username); // Decode the username using atob
+                localStorage.setItem('usernameEnc', username); // Store the original Base64-encoded username
+                localStorage.setItem('loggedIn', 'true');
+                window.location.href = 'index.html';
             }
 
             if (authSuccess === 'true') {
@@ -157,8 +152,8 @@
 
         function registerScratchAuth() {
             const messageBox = document.getElementById("scratchMessage");
-            const rLocation = btoa(window.location.href);
-            const authUrl = `https://auth.itinerary.eu.org/auth?redirect=${location}&name=Scratch%20Coding%20Hut`;
+            const redirectLocation = encodeURIComponent(window.location.href);
+            const authUrl = `https://scratchauth-codinghut.onrender.com/auth`;
 
             messageBox.style.color = "green";
             messageBox.textContent = "Redirecting to ScratchAuth... Follow the steps there.";
@@ -180,7 +175,8 @@
         }
 
         function logout() {
-            localStorage.clear();
+            localStorage.removeItem('loggedIn');
+            localStorage.removeItem('username');
             window.location.href = 'account.html';
         }
 
