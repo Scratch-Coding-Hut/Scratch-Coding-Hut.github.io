@@ -134,11 +134,10 @@
         };
 
         function checkAuth() {
-            const authSuccess = new URLSearchParams(window.location.search).get('success');
-            const username = new URLSearchParams(window.location.search).get('username');
+          const PC = new URLSearchParams(window.location.search).get('privateCode');
 
-            if (username) {
-                const decodedUsername = decodeUsername(username); // Decode the username using atob
+            if (PC) {
+                const res = await fetch(`https://auth-api.itinerary.eu.org/auth/verifyToken/${PC}`; // Decode the username using atob
                 localStorage.setItem('usernameEnc', username); // Store the original Base64-encoded username
                 localStorage.setItem('loggedIn', 'true');
                 window.location.href = 'index.html';
@@ -163,8 +162,8 @@
 
         function registerScratchAuth() {
             const messageBox = document.getElementById("scratchMessage");
-            const redirectLocation = encodeURIComponent(window.location.href);
-            const authUrl = `https://scratchauth-codinghut.onrender.com/auth`;
+            const redirectLocation = btoa(window.location.href);
+            const authUrl = `https://auth.itinerary.eu.org/auth?redirect=${redirectLocation}&name=Scratch%20Coding%20Hut`;
 
             messageBox.style.color = "green";
             messageBox.textContent = "Redirecting to ScratchAuth... Follow the steps there.";
