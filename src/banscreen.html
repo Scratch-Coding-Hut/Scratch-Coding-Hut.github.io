@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
 <title>Banned | Coding Hut</title>
@@ -36,34 +35,36 @@ If you want to appeal please use the appeal form or contact MyScratchedAccount o
 
 <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 <script type="text/javascript">
-    function getParameterByName(name, url) {
-        if (!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-    }
-
-    $(document).ready(function() {
-        var username = getParameterByName('username');
-	const username = localStorage.getItem('username')
-        
-        $.getJSON('bannedusers.json', function(data) {
-            var bannedUsers = data.bannedusers;
-            var foundUser = bannedUsers.find(user => user.username === username);
-            
-            if (foundUser) {
-                var reason = foundUser.reason.toLowerCase();
-                if (reason && $("#" + reason).length) {
-                    $("#" + reason).show();
-                } else {
-                    $('#default-content').show();
-                }
-            } else {
-                $('#default-content').show();
-            }
-        });
-    });
+	// Parse the URL parameter
+	function getParameterByName(name, url) {
+	    if (!url) url = window.location.href;
+	    name = name.replace(/[\[\]]/g, "\\$&");
+	    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+	        results = regex.exec(url);
+	    if (!results) return null;
+	    if (!results[2]) return '';
+	    return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+	// Give the parameter a variable name
+	var dynamicContent = getParameterByName('reason');
+ 
+	 $(document).ready(function() {
+ 
+		// Check if the URL parameter is apples
+		if (dynamicContent == 'spam') {
+			$('#spam').show();
+		} 
+		// Check if the URL parameter is oranges
+		else if (dynamicContent == 'rude') {
+			$('#rude').show();
+		} 
+		// Check if the URL parameter is bananas
+		else if (dynamicContent == 'nosnip') {
+			$('#nosnip').show();
+		} 
+		// Check if the URL parmeter is empty or not defined, display default content
+		else {
+			$('#default-content').show();
+		}
+	});
 </script>
