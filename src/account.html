@@ -89,20 +89,18 @@
     </style>
 
     <script>
-        function decodeUsername(encodedUsername) {
-            return atob(encodedUsername);
-        }
-
         function encodeUsername(username) {
             return btoa(username);
+        }
+
+        function decodeUsername(encodedUsername) {
+            return atob(encodedUsername);
         }
 
         window.onload = async function () {
             try {
                 if (localStorage.getItem('loggedIn') === 'true') {
-                    const usernameEncoded = localStorage.getItem('usernameEnc');
-                    const username = decodeUsername(usernameEncoded);
-                    localStorage.setItem('username', username);
+                    const username = localStorage.getItem('username');
 
                     document.getElementById('authSection').style.display = 'none';
                     document.getElementById('loggedInContent').style.display = 'block';
@@ -132,18 +130,19 @@
                 try {
                     const res = await fetch(`https://auth-api.itinerary.eu.org/auth/verifyToken/${PC}`);
                     const data = await res.json();
-                    const username = btoa(data.username);
+                    const plainUsername = data.username;
+                    const encodedUsername = btoa(plainUsername);
 
                     // Ban check (example logic)
-                    if (username === 'PUT THE FIRST BANNED USER HERE') {
+                    if (encodedUsername === 'PUT THE FIRST BANNED USER HERE') {
                         localStorage.removeItem('loggedIn');
                         localStorage.removeItem('username');
                         window.location.href = 'banscreen.html?reason=spam';
                         return;
                     }
 
-                    localStorage.setItem('usernameEnc', data.username); // base64
-                    localStorage.setItem('username', username); // plain text
+                    localStorage.setItem('usernameEnc', encodedUsername); // encoded version
+                    localStorage.setItem('username', plainUsername); // plain version
                     localStorage.setItem('loggedIn', 'true');
                     window.location.href = 'index.html';
                 } catch (err) {
@@ -164,18 +163,6 @@
             }, 2000);
         }
 
-        function registerApiAuth() {
-            const messageBox = document.getElementById("apiMessage");
-            const redirectLocation = encodeURIComponent(window.location.href);
-            const authUrl = `https://ubbload.netlify.app/login?redirect=${redirectLocation}`;
-
-            messageBox.style.color = "green";
-            messageBox.textContent = "Redirecting to APIAuth login (ubbload)... Follow the steps there.";
-            setTimeout(() => {
-                window.location.href = authUrl;
-            }, 2000);
-        }
-
         function logout() {
             localStorage.removeItem('loggedIn');
             localStorage.removeItem('username');
@@ -191,11 +178,12 @@
         }
 
         function devToken() {
-            const usernameEnc = localStorage.getItem('usernameEnc');
+            const username = localStorage.getItem('username');
             const devTokens = document.getElementById('devTokens');
 
-            if (usernameEnc && devTokens) {
-                const joined = "Your dev token is: " + usernameEnc + " - Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
+            if (username && devTokens) {
+                const token = btoa(username);
+                const joined = "Your dev token is: " + token + " - Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
                 devTokens.style.color = "green";
                 devTokens.textContent = joined;
             }
