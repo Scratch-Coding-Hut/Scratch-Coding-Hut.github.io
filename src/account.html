@@ -142,6 +142,17 @@
                 localStorage.setItem('usernameEnc', username); // Store the original Base64-encoded username
                 localStorage.setItem('loggedIn', 'true');
                 window.location.href = 'index.html';
+
+                // Check if the user is on the first line of the Ban List
+                // Banned Users: No People Have Been Banned Yet!
+                if (username === 'PUT THE FIRST BANNED USER HERE') {
+                    // Code here is run if the user gets banned
+
+                    localStorage.removeItem('loggedIn');
+                    localStorage.removeItem('username');
+                    window.location.href = 'banscreen.html?reason=spam';
+                }
+
             }
 
             if (authSuccess === 'true') {
