@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Scratch Login | Login & Dashboard | Coding Hut</title>
     <style>
         body {
@@ -31,12 +31,7 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .message {
-            color: red;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
+        .message,
         .devTokens {
             color: red;
             font-weight: bold;
@@ -79,12 +74,12 @@
         }
 
         a.kRxZy-link {
-            color: #4CAF50;
+            color: #4caf50;
             font-weight: bold;
         }
 
         a.kRxZy-link:hover {
-            color: #388E3C;
+            color: #388e3c;
         }
 
         #loggedInContent {
@@ -94,23 +89,20 @@
     </style>
 
     <script>
-        // Function to decode the username using atob (Base64 decoding)
         function decodeUsername(encodedUsername) {
-            return atob(encodedUsername); // Using atob to decode the Base64 username
+            return atob(encodedUsername);
         }
 
-        // Function to encode the username using btoa() (Base64 encoding)
         function encodeUsername(username) {
-            return btoa(username); // Using btoa to encode the username to Base64
+            return btoa(username);
         }
 
-        // On page load, check if the user is logged in
         window.onload = async function () {
             try {
                 if (localStorage.getItem('loggedIn') === 'true') {
                     const usernameEncoded = localStorage.getItem('usernameEnc');
-                    const username = decodeUsername(usernameEncoded); // Decode the username using atob
-                    localStorage.setItem('username', username)
+                    const username = decodeUsername(usernameEncoded);
+                    localStorage.setItem('username', username);
 
                     document.getElementById('authSection').style.display = 'none';
                     document.getElementById('loggedInContent').style.display = 'block';
@@ -125,41 +117,38 @@
                         <p>Completed Orders: ${data.completedorders}</p>
                     `;
                 } else {
-                    checkAuth();
+                    await checkAuth();
                 }
             } catch (error) {
                 console.error(error);
-                document.getElementById('mainText').innerHTML = `<p>Something went wrong! Please try again later.</p>`; 
+                document.getElementById('mainText').innerHTML = `<p>Something went wrong! Please try again later.</p>`;
             }
         };
 
-        function checkAuth() {
-          const PC = new URLSearchParams(window.location.search).get('privateCode');
+        async function checkAuth() {
+            const PC = new URLSearchParams(window.location.search).get('privateCode');
 
             if (PC) {
-                const res = await fetch(`https://auth-api.itinerary.eu.org/auth/verifyToken/${PC}`; // Decode the username using atob
-                const data = await res.json();
-                const username = atob(data.username);
-                localStorage.setItem('usernameEnc', username); // Store the original Base64-encoded username
-                localStorage.setItem('username', data.username);
-                localStorage.setItem('loggedIn', 'true');
-                window.location.href = 'index.html';
+                try {
+                    const res = await fetch(`https://auth-api.itinerary.eu.org/auth/verifyToken/${PC}`);
+                    const data = await res.json();
+                    const username = atob(data.username);
 
-                // Check if the user is on the first line of the Ban List
-                // Banned Users: No People Have Been Banned Yet!
-                if (username === 'PUT THE FIRST BANNED USER HERE') {
-                    // Code here is run if the user gets banned
+                    // Ban check (example logic)
+                    if (username === 'PUT THE FIRST BANNED USER HERE') {
+                        localStorage.removeItem('loggedIn');
+                        localStorage.removeItem('username');
+                        window.location.href = 'banscreen.html?reason=spam';
+                        return;
+                    }
 
-                    localStorage.removeItem('loggedIn');
-                    localStorage.removeItem('username');
-                    window.location.href = 'banscreen.html?reason=spam';
+                    localStorage.setItem('usernameEnc', data.username); // base64
+                    localStorage.setItem('username', username); // plain text
+                    localStorage.setItem('loggedIn', 'true');
+                    window.location.href = 'index.html';
+                } catch (err) {
+                    console.error('Token verification failed:', err);
                 }
-
-            }
-
-            if (authSuccess === 'true') {
-                localStorage.setItem('loggedIn', 'true');
-                window.location.href = 'index.html';
             }
         }
 
@@ -190,19 +179,26 @@
         function logout() {
             localStorage.removeItem('loggedIn');
             localStorage.removeItem('username');
+            localStorage.removeItem('usernameEnc');
             window.location.href = 'account.html';
         }
 
-        async function strikeinfo() {
-            window.location.href = `https://scratch-coding-hut.github.io/Strikes/my-strikes?username=${username}`;
+        function strikeinfo() {
+            const username = localStorage.getItem('username');
+            if (username) {
+                window.location.href = `https://scratch-coding-hut.github.io/Strikes/my-strikes?username=${username}`;
+            }
         }
 
         function devToken() {
             const usernameEnc = localStorage.getItem('usernameEnc');
-            const username = localStorage.getItem('username');
-            const joined = "Your dev token is: " + usernameEnc + " - Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
-            devTokens.style.color = "green";
-            devTokens.textContent = joined;
+            const devTokens = document.getElementById('devTokens');
+
+            if (usernameEnc && devTokens) {
+                const joined = "Your dev token is: " + usernameEnc + " - Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
+                devTokens.style.color = "green";
+                devTokens.textContent = joined;
+            }
         }
     </script>
 </head>
@@ -225,7 +221,8 @@
             <h2>For You</h2>
             <button onclick="strikeinfo()">Strikes Received From Coding Hut</button>
         </div>
-    <!-- DO NOT DELETE MY AUTH TOKEN SYSTEM -->
+
+        <!-- Developer Token -->
         <div class="container">
             <h2>Developer Tokens</h2>
             <h3>Used for linking Scratch account to forums account</h3>
@@ -233,7 +230,6 @@
             <button onclick="devToken()">Generate Dev Token</button>
             Coming Soon! Stay tuned
         </div>
-    <!-- DO NOT DELETE MY AUTH TOKEN SYSTEM -->
     </div>
 
     <!-- Auth Section -->
