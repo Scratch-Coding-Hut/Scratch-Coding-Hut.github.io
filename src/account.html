@@ -132,7 +132,7 @@
                 try {
                     const res = await fetch(`https://auth-api.itinerary.eu.org/auth/verifyToken/${PC}`);
                     const data = await res.json();
-                    const username = atob(data.username);
+                    const username = btoa(data.username);
 
                     // Ban check (example logic)
                     if (username === 'PUT THE FIRST BANNED USER HERE') {
