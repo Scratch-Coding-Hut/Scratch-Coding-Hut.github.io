@@ -100,6 +100,15 @@
         window.onload = async function () {
             try {
                 if (localStorage.getItem('loggedIn') === 'true') {
+
+                // Ban check (example logic) - Tested sucessfully by MyScratchedAccount
+                    if (encodedUsername === 'PUT THE FIRST BANNED USERS CODING HUT WEBSITE API TOKEN HERE') {
+                        localStorage.removeItem('loggedIn');
+                        localStorage.removeItem('username');
+                        window.location.href = 'banscreen.html?reason=spam';
+                        return;
+                    }
+                    
                     const username = localStorage.getItem('username');
 
                     document.getElementById('authSection').style.display = 'none';
@@ -133,8 +142,8 @@
                     const plainUsername = data.username;
                     const encodedUsername = btoa(plainUsername);
 
-                    // Ban check (example logic) - im temp banning myself for test
-                    if (encodedUsername === 'TXlTY3JhdGNoZWRBY2NvdW50') {
+                    // Ban check (example logic) - Tested sucessfully by MyScratchedAccount
+                    if (encodedUsername === 'PUT THE FIRST BANNED USERS CODING HUT WEBSITE API TOKEN HERE') {
                         localStorage.removeItem('loggedIn');
                         localStorage.removeItem('username');
                         window.location.href = 'banscreen.html?reason=spam';
