@@ -37,6 +37,72 @@
 </body>
 </html>
 
+<style>
+/* Floating Button Styles */
+#floatingButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Ensure it's above other elements */
+}
+
+#floatingButton:hover {
+    background-color: #0056b3;
+}
+
+/* Widget Styles */
+.widget {
+    position: fixed;
+    bottom: 80px; /* Adjust based on button position and desired spacing */
+    right: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 999; /* Ensure it's below the button if you want the button always on top */
+    width: 300px; /* Adjust as needed */
+    max-height: 400px; /* Optional: for scrollable content */
+    overflow-y: auto; /* Optional: for scrollable content */
+    display: none; /* Initially hidden */
+}
+
+.widget-header {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.widget-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+#closeWidgetButton {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.widget-content {
+    padding: 15px;
+}
+</style>
+
 <script>
   const apiKey = "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"; // Your provided API key
 
@@ -74,3 +140,26 @@
       document.getElementById("responseContent").textContent = "Oops, something went wrong!";
     }
   });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const floatingButton = document.getElementById('floatingButton');
+    const widgetContainer = document.getElementById('widgetContainer');
+    const closeWidgetButton = document.getElementById('closeWidgetButton');
+
+    floatingButton.addEventListener('click', function() {
+        widgetContainer.style.display = 'block'; // Show the widget
+    });
+
+    closeWidgetButton.addEventListener('click', function() {
+        widgetContainer.style.display = 'none'; // Hide the widget
+    });
+
+    // Optional: Close the widget if the user clicks outside of it
+    window.addEventListener('click', function(event) {
+        if (event.target === widgetContainer) {
+            widgetContainer.style.display = 'none';
+        }
+    });
+});
+    
+</script>
