@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Widget Button</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <button id="floatingButton">Forum AI</button>
+
+    <div id="widgetContainer" class="widget">
+        <div class="widget-header">
+            <h3>Chat With Forum AI</h3>
+            <button id="closeWidgetButton">&times;</button>
+        </div>
+        <div class="widget-content">
+<div style="font-family: 'Courier New', monospace; color: #fff; background: linear-gradient(135deg, #2a003f, #1a1a2e); border-radius: 12px; padding: 20px; box-shadow: 0 0 15px #8a2be2; width: 100%; max-width: 400px; cursor: pointer;">
+  <h4 style="font-size: 18px; margin: 0; color: #c0c0ff;">🤖 Forum AI: ChatGPT Assistant</h4>
+  <p style="font-size: 14px; color: #b0b0ff; margin-top: 4px;">Made by kRxZy_kRxZy. Ask anything, Forum AI is here to help!</p>
+  <div style="margin-top: 10px; border-top: 2px solid #8a2be2; padding-top: 15px;">
+    <label for="userQuery" style="font-size: 14px; color: #ddd;">Your Question:</label>
+    <input type="text" id="userQuery" placeholder="Ask me anything..." style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #8a2be2; background-color: #333; color: #fff; font-size: 14px;">
+    <button id="askButton" style="margin-top: 10px; padding: 10px 15px; background-color: #8a2be2; color: white; border: none; border-radius: 5px; width: 100%; font-size: 14px;">Ask Forum AI</button>
+  </div>
+  <div id="responseBox" style="margin-top: 15px; padding: 10px; background-color: #222; border-radius: 5px; color: #ddd; font-size: 14px; display: none;">
+    <b>Forum AI's Response:</b>
+    <p id="responseContent">I'm thinking... 🤔</p>
+  </div>
+</div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+<script>
+  const apiKey = "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"; // Your provided API key
+
+  document.getElementById("askButton").addEventListener("click", async function() {
+    const query = document.getElementById("userQuery").value;
+    if (query.trim() === "") {
+      alert("Please ask a question!");
+      return;
+    }
+
+    document.getElementById("responseBox").style.display = "block";
+    document.getElementById("responseContent").textContent = "Processing...";
+
+    try {
+      const res = await fetch("https://api.openai.com/v1/chat/completions", { // Updated endpoint for GPT-4 or GPT-3.5
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-4", // or "gpt-3.5-turbo"
+          messages: [{ role: "user", content: query }],
+          max_tokens: 100,
+          temperature: 0.7,
+        }),
+      });
+
+      const data = await res.json();
+      const answer = data.choices[0].message.content.trim();
+      document.getElementById("responseContent").textContent = answer;
+
+    } catch (err) {
+      console.error(err);
+      document.getElementById("responseContent").textContent = "Oops, something went wrong!";
+    }
+  });
