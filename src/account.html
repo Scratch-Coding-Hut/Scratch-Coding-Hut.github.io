@@ -133,8 +133,8 @@
                     const plainUsername = data.username;
                     const encodedUsername = btoa(plainUsername);
 
-                    // Ban check (example logic)
-                    if (encodedUsername === 'MyScratchedAccount') {
+                    // Ban check (example logic) - im temp banning myself for test
+                    if (encodedUsername === 'TXlTY3JhdGNoZWRBY2NvdW50') {
                         localStorage.removeItem('loggedIn');
                         localStorage.removeItem('username');
                         window.location.href = 'banscreen.html?reason=spam';
