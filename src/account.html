@@ -110,12 +110,13 @@
                     const res = await fetch(`https://scratch-coding-hut.github.io/api/orders?username=${username}`);
                     if (!res.ok) throw new Error('Failed to fetch data');
 
-                    const data = await res.json();
+                    const json = await res.json();
                     var completedorders = json[1].completed-orders;
                     var pendingorders = json[1].pending-orders;
                     document.getElementById('mainText').innerHTML = `
                         <p>Pending Orders: ${completedorders}</p>
                         <p>Completed Orders: ${pendingorders}</p>
+                        <p>For Developers: ${json}</p>
                     `;
                 } else {
                     await checkAuth();
