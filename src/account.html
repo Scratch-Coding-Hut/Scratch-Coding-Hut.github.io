@@ -148,7 +148,7 @@
                     localStorage.setItem('usernameEnc', encodedUsername); // encoded version
                     localStorage.setItem('username', plainUsername); // plain version
                     localStorage.setItem('loggedIn', 'true');
-                    window.location.href = 'index.html';
+                    window.location.href = 'account.html';
                 } catch (err) {
                     console.error('Token verification failed:', err);
                 }
@@ -164,7 +164,7 @@
                   localStorage.setItem('usernameEnc', devKey); // Store the original Base64-encoded username
                   localStorage.setItem('username', username); // Store the original Base64-encoded username
                   localStorage.setItem('loggedIn', 'true');
-                  window.location.href = 'index.html';
+                  window.location.href = 'account.html'
                 }
 
             }
