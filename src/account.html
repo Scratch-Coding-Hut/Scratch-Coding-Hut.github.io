@@ -154,9 +154,9 @@
             const DK = new URLSearchParams(window.location.search).get('devKey');
 
             if (DK) {
-                const username = new URLSearchParams(window.location.search).get('devKey');
+                const devKey = new URLSearchParams(window.location.search).get('devKey');
 
-                if (username) {
+                if (devKey) {
                  const decodedUsername = decodeUsername(username); // Decode the username using atob
                  localStorage.setItem('usernameEnc', username); // Store the original Base64-encoded username
                  localStorage.setItem('loggedIn', 'true');
