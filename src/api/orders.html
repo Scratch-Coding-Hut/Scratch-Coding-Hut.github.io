@@ -27,7 +27,7 @@ body {
 {"status": 400, "error": "Invaild Request - Username does not exist in orders database"}
 </div>
 <!-- MyScratchedAccount's Completed Orders -->
-<div id="myscratchedaccount" class="dynamic-content">
+<div id="MyScratchedAccount" class="dynamic-content">
 {"status": 500, "completed-orders": 6, "pending-orders": 0}
 <br>
 </div>
@@ -69,8 +69,8 @@ DESCRIPTION HERE
 	 $(document).ready(function() {
  
 		// Check if the URL parameter is apples
-		if (dynamicContent == 'myscratchedaccount') {
-			$('#myscratchedaccount').show();
+		if (dynamicContent == 'MyScratchedAccount') {
+			$('#MyScratchedAccount').show();
 		} 
 		// Check if the URL parameter is oranges
 		else if (dynamicContent == 'staff2') {
