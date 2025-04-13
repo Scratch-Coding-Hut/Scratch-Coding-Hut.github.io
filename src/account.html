@@ -157,11 +157,11 @@
                 const devKey = new URLSearchParams(window.location.search).get('devKey');
 
                 if (devKey) {
-                 const username = atob(devKey)
-                 localStorage.setItem('usernameEnc', devKey); // Store the original Base64-encoded username
-                 localStorage.setItem('username', username); // Store the original Base64-encoded username
-                 localStorage.setItem('loggedIn', 'true');
-                 window.location.href = 'index.html';
+                  const username = atob(devKey)
+                  localStorage.setItem('usernameEnc', devKey); // Store the original Base64-encoded username
+                  localStorage.setItem('username', username); // Store the original Base64-encoded username
+                  localStorage.setItem('loggedIn', 'true');
+                  window.location.href = 'index.html';
                 }
 
             }
