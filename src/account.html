@@ -107,13 +107,13 @@
                     document.getElementById('loggedInContent').style.display = 'block';
                     document.getElementById('welcomeMessage').textContent = `Welcome to your account, ${username}!`;
 
-                    const res = await fetch(`https://scratchgems.onrender.com/api/data/${username}`);
+                    const res = await fetch(`https://scratch-coding-hut.github.io/api/orders?username=${username}`);
                     if (!res.ok) throw new Error('Failed to fetch data');
 
                     const data = await res.json();
                     document.getElementById('mainText').innerHTML = `
-                        <p>Pending Orders: ${data.pendingorders}</p>
-                        <p>Completed Orders: ${data.completedorders}</p>
+                        <p>Pending Orders: ${data.pending-orders}</p>
+                        <p>Completed Orders: ${data.completed-orders}</p>
                     `;
                 } else {
                     await checkAuth();
