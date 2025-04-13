@@ -111,9 +111,11 @@
                     if (!res.ok) throw new Error('Failed to fetch data');
 
                     const data = await res.json();
+                    var completedorders = json[1].completed-orders;
+                    var pendingorders = json[1].pending-orders;
                     document.getElementById('mainText').innerHTML = `
-                        <p>Pending Orders: ${data.pending-orders}</p>
-                        <p>Completed Orders: ${data.completed-orders}</p>
+                        <p>Pending Orders: ${completedorders}</p>
+                        <p>Completed Orders: ${pendingorders}</p>
                     `;
                 } else {
                     await checkAuth();
