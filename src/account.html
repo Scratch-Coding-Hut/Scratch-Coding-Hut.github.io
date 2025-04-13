@@ -157,8 +157,8 @@
                 const devKey = new URLSearchParams(window.location.search).get('devKey');
 
                 if (devKey) {
-                 const decodedUsername = decodeUsername(username); // Decode the username using atob
-                 localStorage.setItem('usernameEnc', username); // Store the original Base64-encoded username
+                 const decodedUsername = (devKey); // Decode the username using atob
+                 localStorage.setItem('usernameEnc', devKey); // Store the original Base64-encoded username
                  localStorage.setItem('loggedIn', 'true');
                  window.location.href = 'index.html';
                 }
