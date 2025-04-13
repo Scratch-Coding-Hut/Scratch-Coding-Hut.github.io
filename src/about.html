@@ -1,150 +1,258 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>About | Coding Hut</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scratch Login | Login & Dashboard | Coding Hut</title>
     <style>
-      body {
-        overflow-x: hidden;
-        font-family: 'Comfortaa', Sans-Serif;
-        margin: 0;
-        font-size: 22px;
-      }
-
-      .menu-container {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: #c04d4d;
-        padding: 20px;
-        z-index: 1;
-        user-select: none;
-        box-sizing: border-box;
-      }
-
-      .menu-logo img {
-        max-height: 40px;
-        max-width: 100px;
-        flex-shrink: 0;
-      }
-
-      .menu-container a {
-        text-decoration: none;
-        color: #ffffff;
-        transition: color 0.3s ease;
-      }
-
-      .menu-container a:hover {
-        color: #50e3c2;
-      }
-
-      .menu ul {
-        list-style: none;
-        display: flex;
-        padding: 0;
-        margin: 0;
-      }
-
-      .menu li {
-        padding: 0 20px;
-      }
-
-      /* Mobile Styles */
-      @media only screen and (max-width: 767px) {
-        .menu-container {
-          flex-direction: column;
-          align-items: flex-start;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
         }
 
-        .menu-logo {
-          margin-bottom: 10px;
+        .header {
+            background-color: #c04d4d;
+            color: white;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        .menu {
-          display: none;
-          width: 100%;
-          flex-direction: column;
+        .content,
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .menu ul {
-          flex-direction: column;
-          width: 100%;
+        .message,
+        .devTokens {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
         }
 
-        .menu li {
-          padding: 10px 0;
-          text-align: center;
+        button {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #c04d4d;
+            color: white;
+            transition: background-color 0.3s;
         }
 
-        /* Menu button */
-        .hamburger {
-          display: block;
-          font-size: 30px;
-          cursor: pointer;
-        }
-      }
-
-      /* Desktop Styles */
-      @media only screen and (min-width: 768px) {
-        .menu {
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
+        button:hover {
+            background-color: #a03a3a;
         }
 
-        .hamburger {
-          display: none;
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
         }
-      }
+
+        p {
+            line-height: 1.5;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        a.kRxZy-link {
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        a.kRxZy-link:hover {
+            color: #388e3c;
+        }
+
+        #loggedInContent {
+            display: none;
+            padding: 20px;
+        }
     </style>
-  </head>
-  <body>
-    <nav class="menu-container">
-      <!-- Logo -->
-      <a href="/" class="menu-logo">
-        <img src="Images/Coding-Hut-Logo.png" alt="Coding Hut Logo" width="50" height="50">
-      </a>
-
-      <!-- Menu for Mobile -->
-      <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
-
-      <!-- Menu Items -->
-      <div class="menu">
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="https://scratch.mit.edu/discuss/topic/652178/">Scratch Forum</a></li>
-          <li><a href="/Wiki/sitemaplinks">Wiki | FAQ | More Links</a></li>
-        </ul>
-        <ul>
-          <li><a href="/messages">Messages</a></li>
-          <li><a id="user" href="/account">My Account</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <h1 style="text-align:center;"><b>About Coding Hut</b></h1>
-    <h2 style="text-align:center;">Shop Created At Dec. 27, 2022 20:53:31</h2>
-    <p>
-      Coding Hut is a shop that does coding, art, and many more! For more than 3 years, we have been helping Scratchers as well as New Scratchers with lots of Scratch-related things.
-    </p>
-    <p>
-      Coding Hut was founded by <a href="https://scratch.mit.edu/users/MyScratchedAccount">@MyScratchedAccount</a> on Dec. 27, 2022 20:53:31.
-    </p>
-    <p>Want to play a fun game? Try <a href=https://create.kahoot.it/details/1681759e-12e7-49e5-8121-041c3c60148a>this</a>.</p>
 
     <script>
-      const username = localStorage.getItem('username');
-      if (username) {
-        document.getElementById('user').textContent = username;
-      }
+        function encodeUsername(username) {
+            return btoa(username);
+        }
 
-      function toggleMenu() {
-        var menu = document.querySelector('.menu');
-        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-      }
+        function decodeUsername(encodedUsername) {
+            return atob(encodedUsername);
+        }
+
+        window.onload = async function () {
+            try {
+                if (localStorage.getItem('loggedIn') === 'true') {
+                    
+                    const username = localStorage.getItem('username');
+
+                    document.getElementById('authSection').style.display = 'none';
+                    document.getElementById('loggedInContent').style.display = 'block';
+                    document.getElementById('welcomeMessage').textContent = `Welcome to your account, ${username}!`;
+
+                    const res = await fetch(`https://scratchgems.onrender.com/api/data/${username}`);
+                    if (!res.ok) throw new Error('Failed to fetch data');
+
+                    const data = await res.json();
+                    document.getElementById('mainText').innerHTML = `
+                        <p>Pending Orders: ${data.pendingorders}</p>
+                        <p>Completed Orders: ${data.completedorders}</p>
+                    `;
+                } else {
+                    await checkAuth();
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById('mainText').innerHTML = `<p>Something went wrong! Please try again later.</p>`;
+            }
+        };
+
+        async function checkAuth() {
+            const PC = new URLSearchParams(window.location.search).get('privateCode');
+
+            if (PC) {
+                try {
+                    const res = await fetch(`https://auth-api.itinerary.eu.org/auth/verifyToken/${PC}`);
+                    const data = await res.json();
+                    const plainUsername = data.username;
+                    const encodedUsername = btoa(plainUsername);
+
+                    // Ban check (example logic) - Tested sucessfully by MyScratchedAccount
+                    if (encodedUsername === 'PUT THE FIRST BANNED USERS CODING HUT WEBSITE API TOKEN HERE') {
+                        localStorage.removeItem('loggedIn');
+                        localStorage.removeItem('username');
+                        window.location.href = 'banscreen.html?reason=spam';
+                        return;
+                    }
+
+                    localStorage.setItem('usernameEnc', encodedUsername); // encoded version
+                    localStorage.setItem('username', plainUsername); // plain version
+                    localStorage.setItem('loggedIn', 'true');
+                    window.location.href = 'index.html';
+                } catch (err) {
+                    console.error('Token verification failed:', err);
+                }
+            }
+
+            const DK = new URLSearchParams(window.location.search).get('devKey');
+
+            if (DK) {
+                const username = new URLSearchParams(window.location.search).get('username');
+
+                if (username) {
+                 const decodedUsername = decodeUsername(username); // Decode the username using atob
+                 localStorage.setItem('usernameEnc', username); // Store the original Base64-encoded username
+                 localStorage.setItem('loggedIn', 'true');
+                 window.location.href = 'index.html';
+                }
+
+            }
+
+                localStorage.setItem('loggedIn', 'true');
+                window.location.href = 'index.html';
+        }
+
+        function registerScratchAuth() {
+            const messageBox = document.getElementById("scratchMessage");
+            const redirectLocation = btoa(window.location.href);
+            const authUrl = `https://auth.itinerary.eu.org/auth?redirect=${redirectLocation}&name=Scratch%20Coding%20Hut`;
+
+            messageBox.style.color = "green";
+            messageBox.textContent = "Redirecting to ScratchAuth... Follow the steps there.";
+            setTimeout(() => {
+                window.location.href = authUrl;
+            }, 2000);
+        }
+
+        function logout() {
+            localStorage.removeItem('loggedIn');
+            localStorage.removeItem('username');
+            localStorage.removeItem('usernameEnc');
+            window.location.href = 'account.html';
+        }
+
+        function strikeinfo() {
+            const username = localStorage.getItem('username');
+            if (username) {
+                window.location.href = `https://scratch-coding-hut.github.io/Strikes/my-strikes?username=${username}`;
+            }
+        }
+
+        function devToken() {
+            const username = localStorage.getItem('username');
+            const devTokens = document.getElementById('devTokens');
+
+            if (username && devTokens) {
+                const token = btoa(username);
+                const joined = "Your dev token is: " + token + " - Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
+                devTokens.style.color = "green";
+                devTokens.textContent = joined;
+            }
+        }
     </script>
-  </body>
+</head>
+
+<body>
+    <!-- Header Content -->
+    <div class="header">
+        <h1>Scratch Authentication</h1>
+    </div>
+
+    <!-- Logged In Section -->
+    <div id="loggedInContent">
+        <div class="container">
+            <h2 id="welcomeMessage"></h2>
+            <div id="mainText"></div>
+            <button onclick="logout()">Logout</button>
+        </div>
+
+        <div class="container">
+            <h2>For You</h2>
+            <button onclick="strikeinfo()">Strikes Received From Coding Hut</button>
+        </div>
+
+        <!-- Developer Token -->
+        <div class="container">
+            <h2>Developer Tokens</h2>
+            <h3>Used for linking Scratch account to forums account</h3>
+            <p id="devTokens" class="message" aria-live="polite"></p>
+            <button onclick="devToken()">Generate Dev Token</button>
+            Coming Soon! Stay tuned
+        </div>
+    </div>
+
+    <!-- Auth Section -->
+    <div id="authSection" class="content">
+        <div class="container">
+            <h2>Welcome! Please log in to continue.</h2>
+            <button onclick="registerScratchAuth()">Sign In With ScratchAuth (working)</button>
+            <p id="scratchMessage" class="devTokens" aria-live="polite"></p>
+            <p>Please note: You will be redirected to an external site (ScratchAuth) for authentication.</p>
+        </div>
+
+        <div class="container">
+            <a href="https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io/issues/new">
+                <button>Having trouble signing in? Report an issue</button>
+            </a>
+        </div>
+    </div>
+</body>
+
 </html>
