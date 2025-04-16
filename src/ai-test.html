@@ -104,35 +104,69 @@
 </style>
 
 <script>
-document.getElementById("askButton").addEventListener("click", async function () {
-    const query = document.getElementById("userQuery").value;
-    if (query.trim() === "") {
-        alert("Please ask a question!");
-        return;
+// script.js
+document.addEventListener("DOMContentLoaded", () => {
+  const floatingButton      = document.getElementById("floatingButton");
+  const widgetContainer     = document.getElementById("widgetContainer");
+  const closeWidgetButton   = document.getElementById("closeWidgetButton");
+  const askButton           = document.getElementById("askButton");
+  const userQuery           = document.getElementById("userQuery");
+  const responseBox         = document.getElementById("responseBox");
+  const responseContent     = document.getElementById("responseContent");
+
+  // 1) Open the widget
+  floatingButton.addEventListener("click", () => {
+    widgetContainer.style.display = "block";
+    userQuery.focus();
+  });
+
+  // 2) Close the widget
+  closeWidgetButton.addEventListener("click", () => {
+    widgetContainer.style.display = "none";
+  });
+
+  // 3) Submit query (and disable the button until done)
+  askButton.addEventListener("click", async () => {
+    const query = userQuery.value.trim();
+    if (!query) {
+      alert("Please ask a question!");
+      return;
     }
 
-    document.getElementById("responseBox").style.display = "block";
-    document.getElementById("responseContent").textContent = "Processing...";
+    // disable & show loading state
+    askButton.disabled       = true;
+    askButton.textContent    = "Waiting for response…";
+    responseBox.style.display = "block";
+    responseContent.textContent = "Processing… 🤖";
 
     try {
-        const res = await fetch("https://api.pollinations.ai/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                model: "openai-large", // or other available models if specified by Pollinations
-                messages: [{ role: "user", content: query }],
-            }),
-        });
+      const res = await fetch("https://api.pollinations.ai/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "openai-large",
+          messages: [{ role: "user", content: query }]
+        })
+      });
 
-        const data = await res.json();
-        const answer = data.choices[0].message.content.trim();
-        document.getElementById("responseContent").textContent = answer;
+      if (!res.ok) throw new Error(`API returned ${res.status}`);
+      const data   = await res.json();
+      const answer = data.choices?.[0]?.message?.content?.trim() || "No response.";
+      responseContent.textContent = answer;
+
     } catch (err) {
-        console.error(err);
-        document.getElementById("responseContent").textContent = "Oops, something went wrong!";
+      console.error(err);
+      responseContent.textContent = "Oops, something went wrong!";
+    } finally {
+      // re‑enable
+      askButton.disabled    = false;
+      askButton.textContent = "Ask Forum AI";
     }
-});
+  });
 
+  // 4) Allow Enter key to submit
+  userQuery.addEventListener("keydown", e => {
+    if (e.key === "Enter") askButton.click();
+  });
+});
 </script>
