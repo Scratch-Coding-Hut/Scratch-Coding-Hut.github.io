@@ -104,62 +104,35 @@
 </style>
 
 <script>
-  const apiKey = "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"; // Your provided API key
-
-  document.getElementById("askButton").addEventListener("click", async function() {
+document.getElementById("askButton").addEventListener("click", async function () {
     const query = document.getElementById("userQuery").value;
     if (query.trim() === "") {
-      alert("Please ask a question!");
-      return;
+        alert("Please ask a question!");
+        return;
     }
 
     document.getElementById("responseBox").style.display = "block";
     document.getElementById("responseContent").textContent = "Processing...";
 
     try {
-      const res = await fetch("https://api.openai.com/v1/chat/completions", { // Updated endpoint for GPT-4 or GPT-3.5
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4", // or "gpt-3.5-turbo"
-          messages: [{ role: "user", content: query }],
-          max_tokens: 100,
-          temperature: 0.7,
-        }),
-      });
+        const res = await fetch("https://api.pollinations.ai/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                model: "openai-large", // or other available models if specified by Pollinations
+                messages: [{ role: "user", content: query }],
+            }),
+        });
 
-      const data = await res.json();
-      const answer = data.choices[0].message.content.trim();
-      document.getElementById("responseContent").textContent = answer;
-
+        const data = await res.json();
+        const answer = data.choices[0].message.content.trim();
+        document.getElementById("responseContent").textContent = answer;
     } catch (err) {
-      console.error(err);
-      document.getElementById("responseContent").textContent = "Oops, something went wrong!";
+        console.error(err);
+        document.getElementById("responseContent").textContent = "Oops, something went wrong!";
     }
-  });
-
-document.addEventListener('DOMContentLoaded', function() {
-    const floatingButton = document.getElementById('floatingButton');
-    const widgetContainer = document.getElementById('widgetContainer');
-    const closeWidgetButton = document.getElementById('closeWidgetButton');
-
-    floatingButton.addEventListener('click', function() {
-        widgetContainer.style.display = 'block'; // Show the widget
-    });
-
-    closeWidgetButton.addEventListener('click', function() {
-        widgetContainer.style.display = 'none'; // Hide the widget
-    });
-
-    // Optional: Close the widget if the user clicks outside of it
-    window.addEventListener('click', function(event) {
-        if (event.target === widgetContainer) {
-            widgetContainer.style.display = 'none';
-        }
-    });
 });
-    
+
 </script>
