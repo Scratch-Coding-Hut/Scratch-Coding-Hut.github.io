@@ -20,7 +20,7 @@ app.secret_key = random_secret_key  # Use the generated random secret key
 Thanks to Chiroyce (https://replit.com/@Chiroyce/auth) for part of the code! Truly the GOAT.
 """
 
-def base64(string):
+def encode_base64(string):
     return b64encode(string.encode("utf-8")).decode()
 
 def generate_random_code():
@@ -38,24 +38,30 @@ def auth():
     if "username" not in session:
         # Generate a random code using the generate_random_code function
         random_code = generate_random_code()
-        return redirect(f"https://auth.itinerary.eu.org/auth/?redirect={ base64('https://scratch-coding-hut.github.io/auth') }&name=NotFenixio%27s%20ScratchAuth%20Example&code={random_code}")
+        return redirect(f"https://auth.itinerary.eu.org/auth/?redirect={encode_base64('https://scratch-coding-hut.github.io/auth')}&name=NotFenixio%27s%20ScratchAuth%20Example&code={random_code}")
     else:
         return render_template("auth.html", username=session["username"])
 
-@app.get("/auth")
+@app.get("/authenticate")
 def authenticate():
     code = request.args.get("privateCode")
     
     if code is None:
         return "Bad Request", 400
 
-    response = get(f"https://auth.itinerary.eu.org/api/auth/verifyToken?privateCode={code}").json()
-    if response["redirect"] == "https://scratch-coding-hut.github.io/auth":
-        if response["valid"]:
-            session["username"] = response["username"]
+    response = get(f"https://auth.itinerary.eu.org/api/auth/verifyToken?privateCode={code}")
+    
+    if response.status_code != 200:
+        return "Error communicating with authentication service", 500
+
+    response_json = response.json()
+    
+    if response_json.get("redirect") == "https://scratch-coding-hut.github.io/auth":
+        if response_json.get("valid"):
+            session["username"] = response_json["username"]
             return redirect("/auth")
         else:
-            return "Authentication failed!"
+            return "Authentication failed!", 401
     else:
         return "Invalid Redirect", 400
 
