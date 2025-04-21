@@ -1,0 +1,7 @@
+{
+"can-use-deploy":[
+  {"username":"MyScratchedAccount", "deployRole":"Admin"},
+  {"username":"ALLOWEDUSER2", "deployRole":"Manage"},
+  {"username":"ALOWEDUSER3", "deployRole":"Deploy"}
+]
+}
