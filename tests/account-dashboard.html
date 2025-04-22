@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>Coding Hut Website</title>
@@ -7,7 +7,7 @@
     <style>
       body {
         overflow-x: hidden;
-        font-family: "Comfortaa", Sans-Serif;
+        font-family: 'Comfortaa', Sans-Serif;
         margin: 0;
         font-size: 22px;
       }
@@ -137,7 +137,11 @@
           <li><a href="https://scratch-coding-hut.github.io">Home</a></li>
           <li><a href="https://scratch-coding-hut.github.io/about">About</a></li>
           <li><a href="https://scratch.mit.edu/discuss/topic/652178/">Scratch Forum</a></li>
-          <li><a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks">Wiki | FAQ | More Links</a></li>
+          <li>
+            <a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks"
+              >Wiki | FAQ | More Links</a
+            >
+          </li>
         </ul>
         <ul>
           <li><a href="https://scratch-coding-hut.github.io/messages">Messages</a></li>
@@ -152,37 +156,37 @@
 
     <script>
       async function loadUserData() {
-        const username = localStorage.getItem("username");
+        const username = localStorage.getItem('username');
 
         if (username) {
-          document.getElementById("user").textContent = `Hello, ${username}`;
+          document.getElementById('user').textContent = `Hello, ${username}`;
 
           try {
             const res = await fetch(`https://scratch-coding-hut-data.onrender.com/${username}`);
             const data = await res.json();
 
-            console.log("Fetched data:", data); // Debugging line to check the data
+            console.log('Fetched data:', data); // Debugging line to check the data
 
             if (data) {
-              document.getElementById("data").textContent = JSON.stringify(data);
+              document.getElementById('data').textContent = JSON.stringify(data);
             } else {
-              document.getElementById("data").textContent = "No data available.";
+              document.getElementById('data').textContent = 'No data available.';
             }
           } catch (error) {
-            console.error("Error fetching data:", error);
-            document.getElementById("data").textContent = "Failed to load data.";
+            console.error('Error fetching data:', error);
+            document.getElementById('data').textContent = 'Failed to load data.';
           }
         } else {
-          document.getElementById("data").textContent = "Please log in.";
+          document.getElementById('data').textContent = 'Please log in.';
         }
       }
 
       function toggleMenu() {
-        var menu = document.querySelector(".menu");
-        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+        var menu = document.querySelector('.menu');
+        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
       }
 
-      document.addEventListener("DOMContentLoaded", loadUserData);
+      document.addEventListener('DOMContentLoaded', loadUserData);
     </script>
   </body>
 </html>

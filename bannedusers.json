@@ -1,7 +1,7 @@
 {
-"bannedusers":[
-  {"username":"bannie6", "reason":"spam"},
-  {"username":"BANNEDUSER2", "reason":""},
-  {"username":"BANNEDUSER3", "reason":""}
-]
+  "bannedusers": [
+    { "username": "bannie6", "reason": "spam" },
+    { "username": "BANNEDUSER2", "reason": "" },
+    { "username": "BANNEDUSER3", "reason": "" }
+  ]
 }

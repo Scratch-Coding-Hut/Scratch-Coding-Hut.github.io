@@ -1,8 +1,8 @@
 {
-// For the Deploy Role, you can use Admin, Manage or Deploy.
-"can-use-deploy":[
-  {"username":"MyScratchedAccount", "deployRole":"Admin"},
-  {"username":"ALLOWEDUSER2", "deployRole":"Manage"},
-  {"username":"ALOWEDUSER3", "deployRole":"Deploy"}
-]
+  // For the Deploy Role, you can use Admin, Manage or Deploy.
+  "can-use-deploy": [
+    { "username": "MyScratchedAccount", "deployRole": "Admin" },
+    { "username": "ALLOWEDUSER2", "deployRole": "Manage" },
+    { "username": "ALOWEDUSER3", "deployRole": "Deploy" }
+  ]
 }

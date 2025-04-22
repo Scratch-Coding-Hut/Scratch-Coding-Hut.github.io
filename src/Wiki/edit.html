@@ -1,203 +1,207 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Scratch Coding Hut Wiki</title>
-  <style>
-    /* Global reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Scratch Coding Hut Wiki</title>
+    <style>
+      /* Global reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    body {
-      font-family: 'Arial', sans-serif;
-      background: #fff4f4;
-      color: #333;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 3rem;
-      color: #ff4d4d;
-      margin-bottom: 30px;
-      font-weight: bold;
-    }
-
-    .form-container {
-      background-color: #ffcccc;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 500px;
-      margin-bottom: 30px;
-    }
-
-    .form-container h2 {
-      font-size: 1.5rem;
-      color: #e60000;
-      margin-bottom: 20px;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      border: 2px solid #e60000;
-      font-size: 1rem;
-      outline: none;
-    }
-
-    input:focus, textarea:focus {
-      border-color: #ff4d4d;
-      box-shadow: 0 0 5px rgba(255, 77, 77, 0.5);
-    }
-
-    button {
-      background-color: #ff4d4d;
-      color: white;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #ff1a1a;
-    }
-
-    /* Mobile Responsive Styling */
-    @media (max-width: 768px) {
-      .form-container {
-        width: 90%;
-        padding: 20px;
+      body {
+        font-family: 'Arial', sans-serif;
+        background: #fff4f4;
+        color: #333;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
       }
 
       h1 {
-        font-size: 2.5rem;
+        font-size: 3rem;
+        color: #ff4d4d;
+        margin-bottom: 30px;
+        font-weight: bold;
+      }
+
+      .form-container {
+        background-color: #ffcccc;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+        margin-bottom: 30px;
+      }
+
+      .form-container h2 {
+        font-size: 1.5rem;
+        color: #e60000;
+        margin-bottom: 20px;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border: 2px solid #e60000;
+        font-size: 1rem;
+        outline: none;
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: #ff4d4d;
+        box-shadow: 0 0 5px rgba(255, 77, 77, 0.5);
       }
 
       button {
-        font-size: 1rem;
-        padding: 12px 25px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <h1>Edit Scratch Coding Hut Wiki</h1>
-
-  <div class="form-container">
-    <h2>Edit Wiki Post</h2>
-    <form id="editWikiForm">
-      <input type="text" id="wikiTitle" placeholder="Title" required>
-      <textarea id="wikiContent" placeholder="Content" required></textarea>
-      <button type="submit">Save Changes</button>
-    </form>
-  </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const backendUrl = 'https://thejsurlback.onrender.com/api';
-      const editWikiForm = document.getElementById('editWikiForm');
-      const wikiTitleInput = document.getElementById('wikiTitle');
-      const wikiContentInput = document.getElementById('wikiContent');
-      const urlParams = new URLSearchParams(window.location.search);
-      const wikiTitle = urlParams.get('edit');
-      const authorizedUsers = ['kRxZy_kRxZy', 'mcgdj', 'MyScratchedAccount'];
-
-      if (!wikiTitle) {
-        alert('No wiki title provided to edit.');
-        window.location.href = 'sitemaplinks.html';  // Redirect to main page
-        return;
+        background-color: #ff4d4d;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: background-color 0.3s ease;
       }
 
-      let wikiId = null;
+      button:hover {
+        background-color: #ff1a1a;
+      }
 
-      // Fetch the wiki to edit
-      const fetchWiki = async () => {
-        try {
-          const response = await fetch(`${backendUrl}/wikis`);
-          const wikis = await response.json();
-          console.log('Fetched wikis:', wikis);  // Log the fetched wikis
-          const wiki = wikis.find(w => w.title === wikiTitle);
+      /* Mobile Responsive Styling */
+      @media (max-width: 768px) {
+        .form-container {
+          width: 90%;
+          padding: 20px;
+        }
 
-          if (!wiki) {
-            alert('Wiki not found!');
-            window.location.href = 'sitemaplinks.html';  // Redirect to wiki list if not found
-          } else {
-            wikiId = wiki.id;  // Store the wiki ID
-            wikiTitleInput.value = wiki.title;
-            wikiContentInput.value = wiki.content;
+        h1 {
+          font-size: 2.5rem;
+        }
 
-            // Check if the user is authorized to edit the wiki
-            const username = localStorage.getItem('username');
-            if (!username || (username !== wiki.owner && !authorizedUsers.includes(username))) {
-              alert('You are not authorized to edit this wiki.');
-              window.location.href = 'sitemaplinks.html';  // Redirect to wiki list if not authorized
+        button {
+          font-size: 1rem;
+          padding: 12px 25px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Edit Scratch Coding Hut Wiki</h1>
+
+    <div class="form-container">
+      <h2>Edit Wiki Post</h2>
+      <form id="editWikiForm">
+        <input type="text" id="wikiTitle" placeholder="Title" required />
+        <textarea id="wikiContent" placeholder="Content" required></textarea>
+        <button type="submit">Save Changes</button>
+      </form>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const backendUrl = 'https://thejsurlback.onrender.com/api';
+        const editWikiForm = document.getElementById('editWikiForm');
+        const wikiTitleInput = document.getElementById('wikiTitle');
+        const wikiContentInput = document.getElementById('wikiContent');
+        const urlParams = new URLSearchParams(window.location.search);
+        const wikiTitle = urlParams.get('edit');
+        const authorizedUsers = ['kRxZy_kRxZy', 'mcgdj', 'MyScratchedAccount'];
+
+        if (!wikiTitle) {
+          alert('No wiki title provided to edit.');
+          window.location.href = 'sitemaplinks.html'; // Redirect to main page
+          return;
+        }
+
+        let wikiId = null;
+
+        // Fetch the wiki to edit
+        const fetchWiki = async () => {
+          try {
+            const response = await fetch(`${backendUrl}/wikis`);
+            const wikis = await response.json();
+            console.log('Fetched wikis:', wikis); // Log the fetched wikis
+            const wiki = wikis.find((w) => w.title === wikiTitle);
+
+            if (!wiki) {
+              alert('Wiki not found!');
+              window.location.href = 'sitemaplinks.html'; // Redirect to wiki list if not found
+            } else {
+              wikiId = wiki.id; // Store the wiki ID
+              wikiTitleInput.value = wiki.title;
+              wikiContentInput.value = wiki.content;
+
+              // Check if the user is authorized to edit the wiki
+              const username = localStorage.getItem('username');
+              if (!username || (username !== wiki.owner && !authorizedUsers.includes(username))) {
+                alert('You are not authorized to edit this wiki.');
+                window.location.href = 'sitemaplinks.html'; // Redirect to wiki list if not authorized
+              }
             }
+          } catch (error) {
+            console.error('Error fetching wiki:', error);
+            alert('Error fetching wiki data. Please try again later.');
           }
-        } catch (error) {
-          console.error('Error fetching wiki:', error);
-          alert('Error fetching wiki data. Please try again later.');
-        }
-      };
+        };
 
-      // Save edited wiki
-      editWikiForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const updatedTitle = wikiTitleInput.value;
-        const updatedContent = wikiContentInput.value;
-        const username = localStorage.getItem('username');
+        // Save edited wiki
+        editWikiForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const updatedTitle = wikiTitleInput.value;
+          const updatedContent = wikiContentInput.value;
+          const username = localStorage.getItem('username');
 
-        if (!username) {
-          alert('You must be logged in to edit a wiki. Go to https://scratch-coding-hut.netlify.app/account to log in.');
-          return;
-        }
-
-        if (!wikiId) {
-          alert('Wiki ID not found');
-          return;
-        }
-
-        try {
-          const response = await fetch(`${backendUrl}/wikis/${wikiId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              title: updatedTitle,
-              content: updatedContent,
-              owner: username
-            })
-          });
-
-          if (response.ok) {
-            alert('Wiki updated successfully!');
-            window.location.href = 'sitemaplinks.html';  // Redirect to Wiki list page after saving
-          } else {
-            const errorDetails = await response.json();
-            console.error('Failed to update wiki:', errorDetails);
-            alert('Failed to update wiki. Please try again.');
+          if (!username) {
+            alert(
+              'You must be logged in to edit a wiki. Go to https://scratch-coding-hut.netlify.app/account to log in.'
+            );
+            return;
           }
-        } catch (error) {
-          console.error('Error updating wiki:', error);
-          alert('Error updating wiki. Please check your connection or try again later.', error);
-        }
+
+          if (!wikiId) {
+            alert('Wiki ID not found');
+            return;
+          }
+
+          try {
+            const response = await fetch(`${backendUrl}/wikis/${wikiId}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                title: updatedTitle,
+                content: updatedContent,
+                owner: username,
+              }),
+            });
+
+            if (response.ok) {
+              alert('Wiki updated successfully!');
+              window.location.href = 'sitemaplinks.html'; // Redirect to Wiki list page after saving
+            } else {
+              const errorDetails = await response.json();
+              console.error('Failed to update wiki:', errorDetails);
+              alert('Failed to update wiki. Please try again.');
+            }
+          } catch (error) {
+            console.error('Error updating wiki:', error);
+            alert('Error updating wiki. Please check your connection or try again later.', error);
+          }
+        });
+
+        // Initialize the page with the wiki data
+        fetchWiki();
       });
-
-      // Initialize the page with the wiki data
-      fetchWiki();
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>

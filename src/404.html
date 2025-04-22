@@ -1,127 +1,149 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 Not Found | Coding Hut Website</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      background: #0f0f0f;
-      color: #e0e0e0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 Not Found | Coding Hut Website</title>
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        background: #0f0f0f;
+        color: #e0e0e0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
 
-    .menu-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      background: #1a1a2e;
-      padding: 20px 5%;
-      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
-    }
+      .menu-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        background: #1a1a2e;
+        padding: 20px 5%;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+      }
 
-    .menu-logo img {
-      max-height: 50px;
-      transition: transform 0.3s ease-in-out;
-    }
+      .menu-logo img {
+        max-height: 50px;
+        transition: transform 0.3s ease-in-out;
+      }
 
-    .menu-logo img:hover {
-      transform: scale(1.1);
-    }
+      .menu-logo img:hover {
+        transform: scale(1.1);
+      }
 
-    .menu ul {
-      display: flex;
-      gap: 20px;
-      list-style: none;
-      padding: 0;
-    }
+      .menu ul {
+        display: flex;
+        gap: 20px;
+        list-style: none;
+        padding: 0;
+      }
 
-    .menu a {
-      text-decoration: none;
-      color: #50e3c2;
-      font-weight: bold;
-      transition: color 0.3s ease-in-out;
-    }
+      .menu a {
+        text-decoration: none;
+        color: #50e3c2;
+        font-weight: bold;
+        transition: color 0.3s ease-in-out;
+      }
 
-    .menu a:hover {
-      color: #ff4c4c;
-    }
+      .menu a:hover {
+        color: #ff4c4c;
+      }
 
-    h1, h2 {
-      text-align: center;
-      font-size: 3rem;
-    }
+      h1,
+      h2 {
+        text-align: center;
+        font-size: 3rem;
+      }
 
-    h3 {
-      color: #ff4c4c;
-      text-align: center;
-    }
+      h3 {
+        color: #ff4c4c;
+        text-align: center;
+      }
 
-    .error-message {
-      text-align: center;
-      background: #1f1f1f;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-      width: 90%;
-      max-width: 600px;
-      animation: fadeIn 1s ease-in-out;
-    }
+      .error-message {
+        text-align: center;
+        background: #1f1f1f;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 600px;
+        animation: fadeIn 1s ease-in-out;
+      }
 
-    .error-message a {
-      color: #50e3c2;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
+      .error-message a {
+        color: #50e3c2;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
 
-    .error-message a:hover {
-      color: #ff4c4c;
-    }
+      .error-message a:hover {
+        color: #ff4c4c;
+      }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-</head>
-<body>
-  <nav class="menu-container">
-    <a href="https://scratch-coding-hut.github.io" class="menu-logo">
-      <img src="https://i.postimg.cc/6qgPbyGH/temp-Image-BJ164c.avif" alt="My Awesome Website"/>
-    </a>
-    <div class="menu">
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="menu-container">
+      <a href="https://scratch-coding-hut.github.io" class="menu-logo">
+        <img src="https://i.postimg.cc/6qgPbyGH/temp-Image-BJ164c.avif" alt="My Awesome Website" />
+      </a>
+      <div class="menu">
+        <ul>
+          <li><a href="https://scratch-coding-hut.github.io">Home</a></li>
+          <li><a href="https://scratch-coding-hut.github.io/about">About</a></li>
+          <li><a href="https://scratch.mit.edu/discuss/topic/652178/">Scratch Forum Post</a></li>
+          <li><a href="https://scratch-coding-hut.github.io/sitemaplinks">More...</a></li>
+        </ul>
+        <ul>
+          <li><a href="https://scratch-coding-hut.github.io/account">My Account</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="error-message">
+      <h3>Error:</h3>
+      <h1><b>404</b></h1>
+      <h2>Not Found</h2>
+      <p>We are sorry, but the page you opened was not found.</p>
+      <br />
+      <b>But here's what you could do!</b>
       <ul>
-        <li><a href="https://scratch-coding-hut.github.io">Home</a></li>
-        <li><a href="https://scratch-coding-hut.github.io/about">About</a></li>
-        <li><a href="https://scratch.mit.edu/discuss/topic/652178/">Scratch Forum Post</a></li>
-        <li><a href="https://scratch-coding-hut.github.io/sitemaplinks">More...</a></li>
-      </ul>
-      <ul>
-        <li><a href="https://scratch-coding-hut.github.io/account">My Account</a></li>
+        <li>
+          <a href="https://scratch-coding-hut.github.io">Go To The Homepage Of This Website</a>
+        </li>
+        <li>
+          <a href="https://scratch.mit.edu/discuss/post/6975871/"
+            >Go To The Coding Hut Forum Post on Scratch</a
+          >
+        </li>
+        <li>
+          <a href="https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io/issues"
+            >Suggest this page or report a missing page by creating & opening an issue on our Github
+            Repo</a
+          >
+        </li>
+        <li>
+          <a href="javascript:history.go(-1)"
+            >Go back to the previous page you were on just before this 404 Not Found error page</a
+          >
+        </li>
       </ul>
     </div>
-  </nav>
-
-  <div class="error-message">
-    <h3>Error:</h3>
-    <h1><b>404</b></h1>
-    <h2>Not Found</h2>
-    <p>We are sorry, but the page you opened was not found.</p>
-    <br>
-    <b>But here's what you could do!</b>
-    <ul>
-      <li><a href="https://scratch-coding-hut.github.io">Go To The Homepage Of This Website</a></li>
-      <li><a href="https://scratch.mit.edu/discuss/post/6975871/">Go To The Coding Hut Forum Post on Scratch</a></li>
-      <li><a href="https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io/issues">Suggest this page or report a missing page by creating & opening an issue on our Github Repo</a></li>
-      <li><a href="javascript:history.go(-1)">Go back to the previous page you were on just before this 404 Not Found error page</a></li>
-    </ul>
-  </div>
-</body>
+  </body>
 </html>

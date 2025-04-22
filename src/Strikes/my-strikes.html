@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>Strike Info | Coding Hut Website</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       body {
         overflow-x: hidden;
@@ -10,16 +10,17 @@
         margin: 0;
       }
     </style>
-    <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet" />
     <style>
       body {
-          font-family: 'Comfortaa';font-size: 22px;
+        font-family: 'Comfortaa';
+        font-size: 22px;
       }
 
       .dynamic-content {
-          display:none;
+        display: none;
       }
-          
+
       .menu-container {
         position: relative;
         display: flex;
@@ -108,15 +109,17 @@
         }
       }
     </style>
-    <script src="https://code.jquery.com/jquery-1.12.0.min.js" 
-            integrity="sha256-Xxq2X+KtazgaGuA2cWR1v3jJsuMJUozyIXDB3e793L8=" 
-            crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-1.12.0.min.js"
+      integrity="sha256-Xxq2X+KtazgaGuA2cWR1v3jJsuMJUozyIXDB3e793L8="
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <nav class="menu-container">
       <!-- Logo -->
       <a href="https://scratch-coding-hut.github.io" class="menu-logo">
-        <img src="https://i.postimg.cc/6qgPbyGH/temp-Image-BJ164c.avif" alt="Coding Hut Logo"/>
+        <img src="https://i.postimg.cc/6qgPbyGH/temp-Image-BJ164c.avif" alt="Coding Hut Logo" />
       </a>
 
       <!-- Menu for Mobile -->
@@ -128,7 +131,11 @@
           <li><a href="https://scratch-coding-hut.github.io">Home</a></li>
           <li><a href="https://scratch-coding-hut.github.io/about">About</a></li>
           <li><a href="https://scratch.mit.edu/discuss/topic/652178/">Scratch Forum</a></li>
-          <li><a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks">Wiki | FAQ | More Links</a></li>
+          <li>
+            <a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks"
+              >Wiki | FAQ | More Links</a
+            >
+          </li>
         </ul>
         <ul>
           <li><a href="https://scratch-coding-hut.github.io/messages">Messages</a></li>
@@ -136,68 +143,69 @@
         </ul>
       </div>
     </nav>
-	  
+
     <!-- This is the strikes information system -->
     <h1>My Strikes</h1>
 
     <!-- Default Dynamic Section -->
     <div id="default-content" class="dynamic-content">
       <h2>No Strike ID</h2>
-      Make sure you got a valid link and come back. You may also not have any strikes at this time. If that's true, keep up the good work!
+      Make sure you got a valid link and come back. You may also not have any strikes at this time.
+      If that's true, keep up the good work!
     </div>
     <!-- Dynamic Section 1 -->
     <div id="username1" class="dynamic-content">
       <h2>Username 1</h2>
       <h3>1 Strike</h3>
-      <br>
+      <br />
       Oops! You currently have 1 Strike at Coding Hut. Look below to see your strikes.
     </div>
     <!-- Dynamic Section 2 -->
     <div id="staff2" class="dynamic-content">
       <h2>Staff2</h2>
-      <br>
+      <br />
       DESCRIPTION HERE
     </div>
     <!-- Dynamic Section 3 -->
     <div id="staff3" class="dynamic-content">
       <h2>Staff3</h2>
-      <br>
+      <br />
       DESCRIPTION HERE
     </div>
-    
+
     <script>
       function toggleMenu() {
         var menu = document.querySelector('.menu');
         menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
       }
-      
+
       // Parse the URL parameter
       function getParameterByName(name, url) {
         if (!url) url = window.location.href;
-        name = name.replace(/[\\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
+        name = name.replace(/[\\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+          results = regex.exec(url);
         if (!results) return null;
         if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
       }
-      
-      $(document).ready(function() {
+
+      $(document).ready(function () {
         // Give the parameter a variable name
         var dynamicContent = getParameterByName('strikeid');
-        
+
         // Check if the URL parameter matches any of our dynamic sections
         if (dynamicContent == 'username1') {
           $('#username1').show();
-        } 
+        }
         // Check if the URL parameter is staff2
         else if (dynamicContent == 'staff2') {
           $('#staff2').show();
-        } 
+        }
         // Check if the URL parameter is staff3
         else if (dynamicContent == 'staff3') {
           $('#staff3').show();
-        } 
+        }
         // Check if the URL parameter is empty or not defined, display default content
         else {
           $('#default-content').show();

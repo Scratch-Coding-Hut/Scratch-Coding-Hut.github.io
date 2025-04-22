@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Messages | Coding Hut</title>
     <style>
       /* General Styling */
@@ -85,8 +85,12 @@
       }
 
       @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
     </style>
   </head>
@@ -104,21 +108,21 @@
     </div>
 
     <!-- User Messages Section -->
-    <div class="user-posts-container" style="display: none;">
+    <div class="user-posts-container" style="display: none">
       <h2>Messages by <span id="username"></span></h2>
       <div id="user-posts"></div>
     </div>
 
     <script>
       (async () => {
-        const username = localStorage.getItem("username");
+        const username = localStorage.getItem('username');
         if (!username) {
-          console.warn("Username not found in localStorage.");
+          console.warn('Username not found in localStorage.');
           return;
         }
 
         // Set the username in the heading
-        document.getElementById("username").textContent = username;
+        document.getElementById('username').textContent = username;
 
         // Hide loading spinner and show user posts section
         document.querySelector('.loading').style.display = 'none';
@@ -126,37 +130,37 @@
         postsContainer.style.display = 'block';
 
         // Flarum API endpoint to fetch all posts
-        const apiUrl = "https://sch.flarum.cloud/api/posts";
+        const apiUrl = 'https://sch.flarum.cloud/api/posts';
 
         try {
           const response = await fetch(apiUrl);
           const data = await response.json();
 
           // Filter posts by the logged-in user’s username
-          const userPosts = data.data.filter(post => {
+          const userPosts = data.data.filter((post) => {
             const author = post.relationships.user?.data;
             return author && author.attributes.username === username;
           });
 
           // Display user posts
-          const postsDiv = document.getElementById("user-posts");
+          const postsDiv = document.getElementById('user-posts');
 
           if (userPosts.length === 0) {
-            postsDiv.innerHTML = "<p>No messages found for this user.</p>";
+            postsDiv.innerHTML = '<p>No messages found for this user.</p>';
           }
 
-          userPosts.forEach(post => {
+          userPosts.forEach((post) => {
             const content = post.attributes.contentHtml || post.attributes.content;
-            const postDiv = document.createElement("div");
-            postDiv.className = "post";
+            const postDiv = document.createElement('div');
+            postDiv.className = 'post';
             postDiv.innerHTML = `<div class="post-content">${content}</div>`;
             postsDiv.appendChild(postDiv);
           });
         } catch (err) {
-          console.error("Failed to fetch posts:", err);
+          console.error('Failed to fetch posts:', err);
           document.querySelector('.loading').style.display = 'none';
-          const errorDiv = document.createElement("div");
-          errorDiv.textContent = "Error fetching posts.";
+          const errorDiv = document.createElement('div');
+          errorDiv.textContent = 'Error fetching posts.';
           document.querySelector('.user-posts-container').appendChild(errorDiv);
         }
       })();

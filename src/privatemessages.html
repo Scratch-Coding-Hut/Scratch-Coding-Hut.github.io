@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>Messages | Coding Hut Website</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       body {
         overflow-x: hidden;
@@ -9,47 +9,47 @@
         margin: 0;
       }
 
-.header {
-  padding: 60px;
-  text-align: center;
-  background: #1abc9c;
-  color: white;
-  font-size: 30px;
-}
+      .header {
+        padding: 60px;
+        text-align: center;
+        background: #1abc9c;
+        color: white;
+        font-size: 30px;
+      }
 
-.badge {
-  background-color: red;
-  color: white;
-  padding: 4px 8px;
-  text-align: center;
-  border-radius: 5px;
-}
-      
+      .badge {
+        background-color: red;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        border-radius: 5px;
+      }
+
       /* The alert message box */
-.alert {
-  padding: 20px;
-  background-color: #f44336; /* Red */
-  color: white;
-  margin-bottom: 15px;
-}
+      .alert {
+        padding: 20px;
+        background-color: #f44336; /* Red */
+        color: white;
+        margin-bottom: 15px;
+      }
 
-/* The close button */
-.closebtn {
-  margin-left: 15px;
-  color: white;
-  font-weight: bold;
-  float: right;
-  font-size: 22px;
-  line-height: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-}
+      /* The close button */
+      .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
 
-/* When moving the mouse over the close button */
-.closebtn:hover {
-  color: black;
-}
-      
+      /* When moving the mouse over the close button */
+      .closebtn:hover {
+        color: black;
+      }
+
       .menu-container {
         position: relative;
         display: flex;
@@ -63,50 +63,78 @@
       }
 
       /* The snackbar - position it at the bottom and in the middle of the screen */
-#snackbar {
-  visibility: hidden; /* Hidden by default. Visible on click */
-  min-width: 250px; /* Set a default minimum width */
-  margin-left: -125px; /* Divide value of min-width by 2 */
-  background-color: #333; /* Black background color */
-  color: #fff; /* White text color */
-  text-align: center; /* Centered text */
-  border-radius: 2px; /* Rounded borders */
-  padding: 16px; /* Padding */
-  position: fixed; /* Sit on top of the screen */
-  z-index: 1; /* Add a z-index if needed */
-  left: 50%; /* Center the snackbar */
-  bottom: 30px; /* 30px from the bottom */
-}
+      #snackbar {
+        visibility: hidden; /* Hidden by default. Visible on click */
+        min-width: 250px; /* Set a default minimum width */
+        margin-left: -125px; /* Divide value of min-width by 2 */
+        background-color: #333; /* Black background color */
+        color: #fff; /* White text color */
+        text-align: center; /* Centered text */
+        border-radius: 2px; /* Rounded borders */
+        padding: 16px; /* Padding */
+        position: fixed; /* Sit on top of the screen */
+        z-index: 1; /* Add a z-index if needed */
+        left: 50%; /* Center the snackbar */
+        bottom: 30px; /* 30px from the bottom */
+      }
 
-/* Show the snackbar when clicking on a button (class added with JavaScript) */
-#snackbar.show {
-  visibility: visible; /* Show the snackbar */
-  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+      /* Show the snackbar when clicking on a button (class added with JavaScript) */
+      #snackbar.show {
+        visibility: visible; /* Show the snackbar */
+        /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
   However, delay the fade out process for 2.5 seconds */
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s;
-}
+        -webkit-animation:
+          fadein 0.5s,
+          fadeout 0.5s 2.5s;
+        animation:
+          fadein 0.5s,
+          fadeout 0.5s 2.5s;
+      }
 
-/* Animations to fade the snackbar in and out */
-@-webkit-keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
-}
+      /* Animations to fade the snackbar in and out */
+      @-webkit-keyframes fadein {
+        from {
+          bottom: 0;
+          opacity: 0;
+        }
+        to {
+          bottom: 30px;
+          opacity: 1;
+        }
+      }
 
-@keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
-}
+      @keyframes fadein {
+        from {
+          bottom: 0;
+          opacity: 0;
+        }
+        to {
+          bottom: 30px;
+          opacity: 1;
+        }
+      }
 
-@-webkit-keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
-}
+      @-webkit-keyframes fadeout {
+        from {
+          bottom: 30px;
+          opacity: 1;
+        }
+        to {
+          bottom: 0;
+          opacity: 0;
+        }
+      }
 
-@keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
-}
+      @keyframes fadeout {
+        from {
+          bottom: 30px;
+          opacity: 1;
+        }
+        to {
+          bottom: 0;
+          opacity: 0;
+        }
+      }
 
       .menu-logo img {
         max-height: 40px;
@@ -189,7 +217,7 @@
     <nav class="menu-container">
       <!-- Logo -->
       <a href="https://scratch-coding-hut.github.io" class="menu-logo">
-        <img src="https://i.postimg.cc/6qgPbyGH/temp-Image-BJ164c.avif" alt="Coding Hut Logo"/>
+        <img src="https://i.postimg.cc/6qgPbyGH/temp-Image-BJ164c.avif" alt="Coding Hut Logo" />
       </a>
 
       <!-- Menu for Mobile -->
@@ -201,73 +229,77 @@
           <li><a href="https://scratch-coding-hut.github.io">Home</a></li>
           <li><a href="https://scratch-coding-hut.github.io/about">About</a></li>
           <li><a href="https://scratch.mit.edu/discuss/topic/652178/">Scratch Forum</a></li>
-          <li><a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks">Wiki | FAQ | More Links</a></li>
+          <li>
+            <a href="https://scratch-coding-hut.github.io/Wiki/sitemaplinks"
+              >Wiki | FAQ | More Links</a
+            >
+          </li>
         </ul>
         <ul>
           <li><a href="https://scratch-coding-hut.github.io/account">My Account</a></li>
         </ul>
       </div>
     </nav>
-    
-<div class="header">
-  <h1>Private Messages</h1>
-  <p>Check messages users sent you here</p>
-</div>
 
-<br>
+    <div class="header">
+      <h1>Private Messages</h1>
+      <p>Check messages users sent you here</p>
+    </div>
 
-<!-- Use a button to open the snackbar, that says Coming Soon, as messaging staff through the messages menu is not a feature yet -->
-<b>Actions:</b> <button onclick="myFunction()">Message Staff</button>
+    <br />
 
-<!-- The actual snackbar -->
-<div id="snackbar">This feature is Coming Soon!</div>
+    <!-- Use a button to open the snackbar, that says Coming Soon, as messaging staff through the messages menu is not a feature yet -->
+    <b>Actions:</b> <button onclick="myFunction()">Message Staff</button>
 
-<h3>Messages<span id="alerts" class="badge">Loading...</span></h3>
+    <!-- The actual snackbar -->
+    <div id="snackbar">This feature is Coming Soon!</div>
+
+    <h3>Messages<span id="alerts" class="badge">Loading...</span></h3>
 
     <script>
-      function toggleMenu() {
-        var menu = document.querySelector('.menu');
-        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-      }
-function myFunction() {
-  // Get the snackbar DIV
-  var x = document.getElementById("snackbar");
-
-  // Add the "show" class to DIV
-  x.className = "show";
-
-  // After 3 seconds, remove the show class from DIV
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-  window.location.href = "message_person.html";
-
-}
-window.onload = function {
-  getMessagesForRecipient();
-};
-              window.onload = function() {
-            const message = localStorage.getItem('username') || 'No message found.';
-            document.getElementById('getRecipient').textContent = message;
-        };
-      
-        function getMessagesForRecipient() {
-            const recipient = document.getElementById('getRecipient').value;
-            const userMessages = JSON.parse(localStorage.getItem(recipient)) || [];
-            const messagesDisplay = document.getElementById('messagesDisplay');
-
-            messagesDisplay.innerHTML = '';
-
-            if (userMessages.length > 0) {
-                userMessages.forEach(message => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = message;
-                    messagesDisplay.appendChild(listItem);
-                });
-            } else {
-                const noMessagesItem = document.createElement('li');
-                noMessagesItem.textContent = `No messages found for ${recipient}.`;
-                messagesDisplay.appendChild(noMessagesItem);
+            function toggleMenu() {
+              var menu = document.querySelector('.menu');
+              menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
             }
-        }
+      function myFunction() {
+        // Get the snackbar DIV
+        var x = document.getElementById("snackbar");
+
+        // Add the "show" class to DIV
+        x.className = "show";
+
+        // After 3 seconds, remove the show class from DIV
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        window.location.href = "message_person.html";
+
+      }
+      window.onload = function {
+        getMessagesForRecipient();
+      };
+                    window.onload = function() {
+                  const message = localStorage.getItem('username') || 'No message found.';
+                  document.getElementById('getRecipient').textContent = message;
+              };
+
+              function getMessagesForRecipient() {
+                  const recipient = document.getElementById('getRecipient').value;
+                  const userMessages = JSON.parse(localStorage.getItem(recipient)) || [];
+                  const messagesDisplay = document.getElementById('messagesDisplay');
+
+                  messagesDisplay.innerHTML = '';
+
+                  if (userMessages.length > 0) {
+                      userMessages.forEach(message => {
+                          const listItem = document.createElement('li');
+                          listItem.textContent = message;
+                          messagesDisplay.appendChild(listItem);
+                      });
+                  } else {
+                      const noMessagesItem = document.createElement('li');
+                      noMessagesItem.textContent = `No messages found for ${recipient}.`;
+                      messagesDisplay.appendChild(noMessagesItem);
+                  }
+              }
     </script>
   </body>
 </html>

@@ -1,258 +1,263 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Scratch Login | Login & Dashboard | Coding Hut</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        text-align: center;
+      }
 
-        .header {
-            background-color: #c04d4d;
-            color: white;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
+      .header {
+        background-color: #c04d4d;
+        color: white;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
 
-        .content,
-        .container {
-            padding: 20px;
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+      .content,
+      .container {
+        padding: 20px;
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
 
-        .message,
-        .devTokens {
-            color: red;
-            font-weight: bold;
-            margin-top: 10px;
-        }
+      .message,
+      .devTokens {
+        color: red;
+        font-weight: bold;
+        margin-top: 10px;
+      }
 
-        button {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 10px 0;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #c04d4d;
-            color: white;
-            transition: background-color 0.3s;
-        }
+      button {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 10px 0;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #c04d4d;
+        color: white;
+        transition: background-color 0.3s;
+      }
 
-        button:hover {
-            background-color: #a03a3a;
-        }
+      button:hover {
+        background-color: #a03a3a;
+      }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+      input {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+      }
 
-        p {
-            line-height: 1.5;
-        }
+      p {
+        line-height: 1.5;
+      }
 
-        a {
-            text-decoration: none;
-            color: white;
-        }
+      a {
+        text-decoration: none;
+        color: white;
+      }
 
-        a.kRxZy-link {
-            color: #4caf50;
-            font-weight: bold;
-        }
+      a.kRxZy-link {
+        color: #4caf50;
+        font-weight: bold;
+      }
 
-        a.kRxZy-link:hover {
-            color: #388e3c;
-        }
+      a.kRxZy-link:hover {
+        color: #388e3c;
+      }
 
-        #loggedInContent {
-            display: none;
-            padding: 20px;
-        }
+      #loggedInContent {
+        display: none;
+        padding: 20px;
+      }
     </style>
 
     <script>
-        function encodeUsername(username) {
-            return btoa(username);
-        }
+      function encodeUsername(username) {
+        return btoa(username);
+      }
 
-        function decodeUsername(encodedUsername) {
-            return atob(encodedUsername);
-        }
+      function decodeUsername(encodedUsername) {
+        return atob(encodedUsername);
+      }
 
-        window.onload = async function () {
-            try {
-                if (localStorage.getItem('loggedIn') === 'true') {
-                    
-                    const username = localStorage.getItem('username');
+      window.onload = async function () {
+        try {
+          if (localStorage.getItem('loggedIn') === 'true') {
+            const username = localStorage.getItem('username');
 
-                    document.getElementById('authSection').style.display = 'none';
-                    document.getElementById('loggedInContent').style.display = 'block';
-                    document.getElementById('welcomeMessage').textContent = `Welcome to your account, ${username}!`;
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('loggedInContent').style.display = 'block';
+            document.getElementById('welcomeMessage').textContent =
+              `Welcome to your account, ${username}!`;
 
-                    const res = await fetch(`https://scratchgems.onrender.com/api/data/${username}`);
-                    if (!res.ok) throw new Error('Failed to fetch data');
+            const res = await fetch(`https://scratchgems.onrender.com/api/data/${username}`);
+            if (!res.ok) throw new Error('Failed to fetch data');
 
-                    const data = await res.json();
-                    document.getElementById('mainText').innerHTML = `
+            const data = await res.json();
+            document.getElementById('mainText').innerHTML = `
                         <p>Pending Orders: ${data.pendingorders}</p>
                         <p>Completed Orders: ${data.completedorders}</p>
                     `;
-                } else {
-                    await checkAuth();
-                }
-            } catch (error) {
-                console.error(error);
-                document.getElementById('mainText').innerHTML = `<p>Something went wrong! Please try again later.</p>`;
-            }
-        };
+          } else {
+            await checkAuth();
+          }
+        } catch (error) {
+          console.error(error);
+          document.getElementById('mainText').innerHTML =
+            `<p>Something went wrong! Please try again later.</p>`;
+        }
+      };
 
-        async function checkAuth() {
-            const PC = new URLSearchParams(window.location.search).get('privateCode');
+      async function checkAuth() {
+        const PC = new URLSearchParams(window.location.search).get('privateCode');
 
-            if (PC) {
-                try {
-                    const res = await fetch(`https://auth-api.itinerary.eu.org/auth/verifyToken/${PC}`);
-                    const data = await res.json();
-                    const plainUsername = data.username;
-                    const encodedUsername = btoa(plainUsername);
+        if (PC) {
+          try {
+            const res = await fetch(`https://auth-api.itinerary.eu.org/auth/verifyToken/${PC}`);
+            const data = await res.json();
+            const plainUsername = data.username;
+            const encodedUsername = btoa(plainUsername);
 
-                    // Ban check (example logic) - Tested sucessfully by MyScratchedAccount
-                    if (encodedUsername === 'PUT THE FIRST BANNED USERS CODING HUT WEBSITE API TOKEN HERE') {
-                        localStorage.removeItem('loggedIn');
-                        localStorage.removeItem('username');
-                        window.location.href = 'banscreen.html?reason=spam';
-                        return;
-                    }
-
-                    localStorage.setItem('usernameEnc', encodedUsername); // encoded version
-                    localStorage.setItem('username', plainUsername); // plain version
-                    localStorage.setItem('loggedIn', 'true');
-                    window.location.href = 'index.html';
-                } catch (err) {
-                    console.error('Token verification failed:', err);
-                }
+            // Ban check (example logic) - Tested sucessfully by MyScratchedAccount
+            if (
+              encodedUsername === 'PUT THE FIRST BANNED USERS CODING HUT WEBSITE API TOKEN HERE'
+            ) {
+              localStorage.removeItem('loggedIn');
+              localStorage.removeItem('username');
+              window.location.href = 'banscreen.html?reason=spam';
+              return;
             }
 
-            const DK = new URLSearchParams(window.location.search).get('devKey');
-
-            if (DK) {
-                const username = new URLSearchParams(window.location.search).get('username');
-
-                if (username) {
-                 const decodedUsername = decodeUsername(username); // Decode the username using atob
-                 localStorage.setItem('usernameEnc', username); // Store the original Base64-encoded username
-                 localStorage.setItem('loggedIn', 'true');
-                 window.location.href = 'index.html';
-                }
-
-            }
-
-                localStorage.setItem('loggedIn', 'true');
-                window.location.href = 'index.html';
+            localStorage.setItem('usernameEnc', encodedUsername); // encoded version
+            localStorage.setItem('username', plainUsername); // plain version
+            localStorage.setItem('loggedIn', 'true');
+            window.location.href = 'index.html';
+          } catch (err) {
+            console.error('Token verification failed:', err);
+          }
         }
 
-        function registerScratchAuth() {
-            const messageBox = document.getElementById("scratchMessage");
-            const redirectLocation = btoa(window.location.href);
-            const authUrl = `https://auth.itinerary.eu.org/auth?redirect=${redirectLocation}&name=Scratch%20Coding%20Hut`;
+        const DK = new URLSearchParams(window.location.search).get('devKey');
 
-            messageBox.style.color = "green";
-            messageBox.textContent = "Redirecting to ScratchAuth... Follow the steps there.";
-            setTimeout(() => {
-                window.location.href = authUrl;
-            }, 2000);
+        if (DK) {
+          const username = new URLSearchParams(window.location.search).get('username');
+
+          if (username) {
+            const decodedUsername = decodeUsername(username); // Decode the username using atob
+            localStorage.setItem('usernameEnc', username); // Store the original Base64-encoded username
+            localStorage.setItem('loggedIn', 'true');
+            window.location.href = 'index.html';
+          }
         }
 
-        function logout() {
-            localStorage.removeItem('loggedIn');
-            localStorage.removeItem('username');
-            localStorage.removeItem('usernameEnc');
-            window.location.href = 'account.html';
-        }
+        localStorage.setItem('loggedIn', 'true');
+        window.location.href = 'index.html';
+      }
 
-        function strikeinfo() {
-            const username = localStorage.getItem('username');
-            if (username) {
-                window.location.href = `https://scratch-coding-hut.github.io/Strikes/my-strikes?username=${username}`;
-            }
-        }
+      function registerScratchAuth() {
+        const messageBox = document.getElementById('scratchMessage');
+        const redirectLocation = btoa(window.location.href);
+        const authUrl = `https://auth.itinerary.eu.org/auth?redirect=${redirectLocation}&name=Scratch%20Coding%20Hut`;
 
-        function devToken() {
-            const username = localStorage.getItem('username');
-            const devTokens = document.getElementById('devTokens');
+        messageBox.style.color = 'green';
+        messageBox.textContent = 'Redirecting to ScratchAuth... Follow the steps there.';
+        setTimeout(() => {
+          window.location.href = authUrl;
+        }, 2000);
+      }
 
-            if (username && devTokens) {
-                const token = btoa(username);
-                const joined = "Your dev token is: " + token + " - Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
-                devTokens.style.color = "green";
-                devTokens.textContent = joined;
-            }
+      function logout() {
+        localStorage.removeItem('loggedIn');
+        localStorage.removeItem('username');
+        localStorage.removeItem('usernameEnc');
+        window.location.href = 'account.html';
+      }
+
+      function strikeinfo() {
+        const username = localStorage.getItem('username');
+        if (username) {
+          window.location.href = `https://scratch-coding-hut.github.io/Strikes/my-strikes?username=${username}`;
         }
+      }
+
+      function devToken() {
+        const username = localStorage.getItem('username');
+        const devTokens = document.getElementById('devTokens');
+
+        if (username && devTokens) {
+          const token = btoa(username);
+          const joined =
+            'Your dev token is: ' +
+            token +
+            ' - Make sure to only share it with Coding Hut services and partners or else you can get hacked!';
+          devTokens.style.color = 'green';
+          devTokens.textContent = joined;
+        }
+      }
     </script>
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- Header Content -->
     <div class="header">
-        <h1>Scratch Authentication</h1>
+      <h1>Scratch Authentication</h1>
     </div>
 
     <!-- Logged In Section -->
     <div id="loggedInContent">
-        <div class="container">
-            <h2 id="welcomeMessage"></h2>
-            <div id="mainText"></div>
-            <button onclick="logout()">Logout</button>
-        </div>
+      <div class="container">
+        <h2 id="welcomeMessage"></h2>
+        <div id="mainText"></div>
+        <button onclick="logout()">Logout</button>
+      </div>
 
-        <div class="container">
-            <h2>For You</h2>
-            <button onclick="strikeinfo()">Strikes Received From Coding Hut</button>
-        </div>
+      <div class="container">
+        <h2>For You</h2>
+        <button onclick="strikeinfo()">Strikes Received From Coding Hut</button>
+      </div>
 
-        <!-- Developer Token -->
-        <div class="container">
-            <h2>Developer Tokens</h2>
-            <h3>Used for linking Scratch account to forums account</h3>
-            <p id="devTokens" class="message" aria-live="polite"></p>
-            <button onclick="devToken()">Generate Dev Token</button>
-            Coming Soon! Stay tuned
-        </div>
+      <!-- Developer Token -->
+      <div class="container">
+        <h2>Developer Tokens</h2>
+        <h3>Used for linking Scratch account to forums account</h3>
+        <p id="devTokens" class="message" aria-live="polite"></p>
+        <button onclick="devToken()">Generate Dev Token</button>
+        Coming Soon! Stay tuned
+      </div>
     </div>
 
     <!-- Auth Section -->
     <div id="authSection" class="content">
-        <div class="container">
-            <h2>Welcome! Please log in to continue.</h2>
-            <button onclick="registerScratchAuth()">Sign In With ScratchAuth (working)</button>
-            <p id="scratchMessage" class="devTokens" aria-live="polite"></p>
-            <p>Please note: You will be redirected to an external site (ScratchAuth) for authentication.</p>
-        </div>
+      <div class="container">
+        <h2>Welcome! Please log in to continue.</h2>
+        <button onclick="registerScratchAuth()">Sign In With ScratchAuth (working)</button>
+        <p id="scratchMessage" class="devTokens" aria-live="polite"></p>
+        <p>
+          Please note: You will be redirected to an external site (ScratchAuth) for authentication.
+        </p>
+      </div>
 
-        <div class="container">
-            <a href="https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io/issues/new">
-                <button>Having trouble signing in? Report an issue</button>
-            </a>
-        </div>
+      <div class="container">
+        <a href="https://github.com/Scratch-Coding-Hut/Scratch-Coding-Hut.github.io/issues/new">
+          <button>Having trouble signing in? Report an issue</button>
+        </a>
+      </div>
     </div>
-</body>
-
+  </body>
 </html>

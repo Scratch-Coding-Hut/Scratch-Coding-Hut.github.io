@@ -1,443 +1,498 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>One-Click Local Website Hosting</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <style>
-        /* Custom styles */
-        #file-preview {
-            background-color: rgba(100, 116, 139, 0.5);
-            border: 1px solid rgba(156, 163, 175, 0.7);
-            border-radius: 0.75rem;
-            padding: 1rem;
-            margin-top: 2rem;
-            display: none;
-        }
-        #file-preview .file-info {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        #file-preview h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #f8fafc;
-            margin-bottom: 0;
-        }
-        #file-preview .file-size {
-            font-size: 0.875rem;
-            color: #d1d5db;
-        }
-        #file-preview img {
-            width: 2rem;
-            height: 2rem;
-            border-radius: 0.375rem;
-        }
-        #file-preview .text-content {
-            background-color: #000;
-            color: #e5e7eb;
-            padding: 1rem;
-            border-radius: 0.375rem;
-            overflow-x: auto;
-            max-height: 24rem;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 0.875rem;
-            white-space: pre-wrap;
-        }
-        .icon {
-            width: 1.25rem;
-            height: 1.25rem;
-        }
+      /* Custom styles */
+      #file-preview {
+        background-color: rgba(100, 116, 139, 0.5);
+        border: 1px solid rgba(156, 163, 175, 0.7);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-top: 2rem;
+        display: none;
+      }
+      #file-preview .file-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      #file-preview h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #f8fafc;
+        margin-bottom: 0;
+      }
+      #file-preview .file-size {
+        font-size: 0.875rem;
+        color: #d1d5db;
+      }
+      #file-preview img {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 0.375rem;
+      }
+      #file-preview .text-content {
+        background-color: #000;
+        color: #e5e7eb;
+        padding: 1rem;
+        border-radius: 0.375rem;
+        overflow-x: auto;
+        max-height: 24rem;
+        font-family:
+          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+          monospace;
+        font-size: 0.875rem;
+        white-space: pre-wrap;
+      }
+      .icon {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
 
-        #html-input {
-            width: 100%;
-            min-height: 200px;
-            border: 1px solid #9ca3af;
-            border-radius: 0.75rem;
-            padding: 1rem;
-            margin-top: 1rem;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 0.875rem;
-            color: #e5e7eb;
-            background-color: #000;
-            resize: vertical;
-        }
+      #html-input {
+        width: 100%;
+        min-height: 200px;
+        border: 1px solid #9ca3af;
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-top: 1rem;
+        font-family:
+          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+          monospace;
+        font-size: 0.875rem;
+        color: #e5e7eb;
+        background-color: #000;
+        resize: vertical;
+      }
 
-        #html-input:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
-        }
+      #html-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+      }
 
-        #website-list-container {
-            margin-top: 2rem;
-        }
+      #website-list-container {
+        margin-top: 2rem;
+      }
 
-        #website-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
+      #website-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
 
-        #website-list li {
-            background-color: rgba(100, 116, 139, 0.5);
-            border: 1px solid rgba(156, 163, 175, 0.7);
-            border-radius: 0.75rem;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+      #website-list li {
+        background-color: rgba(100, 116, 139, 0.5);
+        border: 1px solid rgba(156, 163, 175, 0.7);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        transition:
+          background-color 0.3s ease,
+          transform 0.2s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-        #website-list li:hover {
-            background-color: rgba(100, 116, 139, 0.7);
-            transform: translateX(0.5rem);
-        }
+      #website-list li:hover {
+        background-color: rgba(100, 116, 139, 0.7);
+        transform: translateX(0.5rem);
+      }
 
-        #website-list li span {
-            font-weight: 600;
-            color: #f8fafc;
-        }
+      #website-list li span {
+        font-weight: 600;
+        color: #f8fafc;
+      }
 
-        #website-list li small {
-            color: #d1d5db;
-            font-size: 0.875rem;
-        }
+      #website-list li small {
+        color: #d1d5db;
+        font-size: 0.875rem;
+      }
 
-        .delete-button {
-            background-color: #ef4444;
-            color: #fff;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.375rem;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
+      .delete-button {
+        background-color: #ef4444;
+        color: #fff;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
 
-        .delete-button:hover {
-            background-color: #dc2626;
-        }
-
+      .delete-button:hover {
+        background-color: #dc2626;
+      }
     </style>
-</head>
-<body class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white p-4 sm:p-8 flex flex-col items-center">
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white p-4 sm:p-8 flex flex-col items-center"
+  >
     <div class="max-w-4xl w-full space-y-8">
-        <div class="text-center space-y-4">
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                One-Click Local Website Hosting
-            </h1>
-            <p class="text-gray-300 text-base sm:text-lg">
-                Deploy your website locally in seconds. Paste your code, and go live!
-            </p>
-        </div>
+      <div class="text-center space-y-4">
+        <h1
+          class="text-4xl sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
+        >
+          One-Click Local Website Hosting
+        </h1>
+        <p class="text-gray-300 text-base sm:text-lg">
+          Deploy your website locally in seconds. Paste your code, and go live!
+        </p>
+      </div>
 
-        <div class="flex flex-col sm:flex-row gap-4">
-            <textarea id="html-input" placeholder="Paste your HTML code here..."></textarea>
-            <div class="flex flex-col gap-4">
-                <input type="text" id="website-name" placeholder="Website Name"
-                       class="w-full border border-gray-700 rounded-md px-4 py-2 bg-gray-800/50 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <input type="text" id="page-title" placeholder="Page Title"
-                       class="w-full border border-gray-700 rounded-md px-4 py-2 bg-gray-800/50 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <button id="publish-button"
-                        class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-md transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                         stroke="currentColor" class="w-4 h-4 mr-2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25-9 3.694-9 8.25 4.03 8.25 9 8.25z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M12 10.5v2.25m0 9v-2.25m0-9.75a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    Publish Website
-                </button>
-            </div>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <textarea id="html-input" placeholder="Paste your HTML code here..."></textarea>
+        <div class="flex flex-col gap-4">
+          <input
+            type="text"
+            id="website-name"
+            placeholder="Website Name"
+            class="w-full border border-gray-700 rounded-md px-4 py-2 bg-gray-800/50 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="text"
+            id="page-title"
+            placeholder="Page Title"
+            class="w-full border border-gray-700 rounded-md px-4 py-2 bg-gray-800/50 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            id="publish-button"
+            class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-md transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-4 h-4 mr-2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25-9 3.694-9 8.25 4.03 8.25 9 8.25z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 10.5v2.25m0 9v-2.25m0-9.75a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            Publish Website
+          </button>
         </div>
+      </div>
 
-        <div id="file-preview" class="hidden">
-            <div class="file-info">
-                <h3 id="preview-name"></h3>
-                <span id="preview-size" class="file-size"></span>
-            </div>
-            <div id="preview-content" class="text-content"></div>
+      <div id="file-preview" class="hidden">
+        <div class="file-info">
+          <h3 id="preview-name"></h3>
+          <span id="preview-size" class="file-size"></span>
         </div>
+        <div id="preview-content" class="text-content"></div>
+      </div>
 
-        <div id="deployment-info" class="bg-gray-800/50 border border-gray-700 rounded-lg p-4 hidden">
-            <h3 class="text-lg font-semibold mb-2 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="w-5 h-5 text-green-500">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25-9 3.694-9 8.25 4.03 8.25 9 8.25z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M12 10.5v2.25m0 9v-2.25m0-9.75a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-                Deployment URL:
-            </h3>
-            <p id="deployment-url" class="text-green-400 hover:underline break-all">
-                <a href="#" target="_blank" rel="noopener noreferrer"></a>
-            </p>
-        </div>
+      <div id="deployment-info" class="bg-gray-800/50 border border-gray-700 rounded-lg p-4 hidden">
+        <h3 class="text-lg font-semibold mb-2 flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-5 h-5 text-green-500"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25-9 3.694-9 8.25 4.03 8.25 9 8.25z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 10.5v2.25m0 9v-2.25m0-9.75a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+          Deployment URL:
+        </h3>
+        <p id="deployment-url" class="text-green-400 hover:underline break-all">
+          <a href="#" target="_blank" rel="noopener noreferrer"></a>
+        </p>
+      </div>
 
-        <div id="error-alert" class="bg-red-500/10 border border-red-400 text-red-400 p-4 rounded-md mt-4 hidden">
-            <div class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="h-4 w-4">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M12 9v3.75m-9.303 3.375a9.393 9.393 0 000 1.875M12 17.25c1.798 0 3.438-.668 4.801-1.851m-4.8-1.851v-2.25"/>
-                </svg>
-                <h3 class="font-semibold">Error</h3>
-            </div>
-            <p id="error-message"></p>
+      <div
+        id="error-alert"
+        class="bg-red-500/10 border border-red-400 text-red-400 p-4 rounded-md mt-4 hidden"
+      >
+        <div class="flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-4 w-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 9v3.75m-9.303 3.375a9.393 9.393 0 000 1.875M12 17.25c1.798 0 3.438-.668 4.801-1.851m-4.8-1.851v-2.25"
+            />
+          </svg>
+          <h3 class="font-semibold">Error</h3>
         </div>
+        <p id="error-message"></p>
+      </div>
 
-        <div id="website-list-container">
-            <h2 class="text-2xl font-semibold mb-4">Deployed Websites</h2>
-            <ul id="website-list">
-                </ul>
-        </div>
+      <div id="website-list-container">
+        <h2 class="text-2xl font-semibold mb-4">Deployed Websites</h2>
+        <ul id="website-list"></ul>
+      </div>
 
-        <div class="text-center">
-            <button id="reset-button"
-                    class="bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 border border-gray-700 rounded-md px-6 py-3">
-                Reset
-            </button>
-        </div>
+      <div class="text-center">
+        <button
+          id="reset-button"
+          class="bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 border border-gray-700 rounded-md px-6 py-3"
+        >
+          Reset
+        </button>
+      </div>
     </div>
 
     <script>
-        const publishButton = document.getElementById('publish-button');
-        const deploymentInfo = document.getElementById('deployment-info');
-        const deploymentUrlDisplay = document.getElementById('deployment-url');
-        const errorAlert = document.getElementById('error-alert');
-        const errorMessageDisplay = document.getElementById('error-message');
-        const resetButton = document.getElementById('reset-button');
-        const htmlInput = document.getElementById('html-input');
-        const websiteNameInput = document.getElementById('website-name');
-        const pageTitleInput = document.getElementById('page-title');
-        const filePreviewElement = document.getElementById('file-preview');
-        const previewNameElement = document.getElementById('preview-name');
-        const previewSizeElement = document.getElementById('preview-size');
-        const previewContentElement = document.getElementById('preview-content');
-        const websiteList = document.getElementById('website-list');
-        const websiteListContainer = document.getElementById('website-list-container');
+      const publishButton = document.getElementById('publish-button');
+      const deploymentInfo = document.getElementById('deployment-info');
+      const deploymentUrlDisplay = document.getElementById('deployment-url');
+      const errorAlert = document.getElementById('error-alert');
+      const errorMessageDisplay = document.getElementById('error-message');
+      const resetButton = document.getElementById('reset-button');
+      const htmlInput = document.getElementById('html-input');
+      const websiteNameInput = document.getElementById('website-name');
+      const pageTitleInput = document.getElementById('page-title');
+      const filePreviewElement = document.getElementById('file-preview');
+      const previewNameElement = document.getElementById('preview-name');
+      const previewSizeElement = document.getElementById('preview-size');
+      const previewContentElement = document.getElementById('preview-content');
+      const websiteList = document.getElementById('website-list');
+      const websiteListContainer = document.getElementById('website-list-container');
 
+      let isPublishing = false;
+      let websites = JSON.parse(localStorage.getItem('websites')) || [];
 
-        let isPublishing = false;
-        let websites = JSON.parse(localStorage.getItem('websites')) || [];
+      // Helper Functions
+      /**
+       * Displays an error message to the user.
+       * @param {string} message - The error message to display.
+       */
+      function showError(message) {
+        errorAlert.classList.remove('hidden');
+        errorMessageDisplay.textContent = message;
+      }
 
-        // Helper Functions
-        /**
-         * Displays an error message to the user.
-         * @param {string} message - The error message to display.
-         */
-        function showError(message) {
-            errorAlert.classList.remove('hidden');
-            errorMessageDisplay.textContent = message;
-        }
+      /**
+       * Hides the error message.
+       */
+      function hideError() {
+        errorAlert.classList.add('hidden');
+        errorMessageDisplay.textContent = ''; // Clear message
+      }
 
-        /**
-         * Hides the error message.
-         */
-        function hideError() {
-            errorAlert.classList.add('hidden');
-            errorMessageDisplay.textContent = ''; // Clear message
-        }
+      /**
+       * Function to simulate creating a file structure and "deploying" it.
+       * In a real scenario, this would involve server-side logic and file system manipulation.
+       * @param {string} htmlContent
+       * @returns {string} - The URL of the "deployed" website.
+       */
+      function simulateDeploy(htmlContent, websiteName) {
+        // Sanitize website name for URL
+        const sanitizedName = websiteName
+          .toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^a-z0-9-]/g, '');
+        const deploymentUrl = `?name=${sanitizedName}`; // Using URL parameter for "deployment"
+        localStorage.setItem(deploymentUrl, htmlContent); // Store content with URL as key
+        return deploymentUrl;
+      }
 
-        /**
-         * Function to simulate creating a file structure and "deploying" it.
-         * In a real scenario, this would involve server-side logic and file system manipulation.
-         * @param {string} htmlContent
-         * @returns {string} - The URL of the "deployed" website.
-         */
-        function simulateDeploy(htmlContent, websiteName) {
-            // Sanitize website name for URL
-            const sanitizedName = websiteName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-            const deploymentUrl = `?name=${sanitizedName}`;  // Using URL parameter for "deployment"
-            localStorage.setItem(deploymentUrl, htmlContent); // Store content with URL as key
-            return deploymentUrl;
-        }
+      /**
+       * Displays file preview
+       * @param {object} file
+       */
+      function showFilePreview(file) {
+        filePreviewElement.classList.remove('hidden');
+        previewNameElement.textContent = file.name;
+        previewSizeElement.textContent = `(${(file.size / 1024).toFixed(2)} KB)`;
 
-        /**
-         * Displays file preview
-         * @param {object} file
-         */
-        function showFilePreview(file) {
-            filePreviewElement.classList.remove('hidden');
-            previewNameElement.textContent = file.name;
-            previewSizeElement.textContent = `(${(file.size / 1024).toFixed(2)} KB)`;
+        const isTextFile = file.type.startsWith('text/');
+        const isImageFile = file.type.startsWith('image/');
 
-            const isTextFile = file.type.startsWith('text/');
-            const isImageFile = file.type.startsWith('image/');
-
-            let icon = '';
-            if (isTextFile) {
-                icon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+        let icon = '';
+        if (isTextFile) {
+          icon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5 text-blue-400">
                     <path stroke-linecap="round" stroke-linejoin="round"
                           d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
                     </svg>`;
-            } else if (isImageFile) {
-                icon = `<img src="${file.url}" alt="${file.name}" class="w-8 h-8 rounded-md">`;
-            } else {
-                icon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+        } else if (isImageFile) {
+          icon = `<img src="${file.url}" alt="${file.name}" class="w-8 h-8 rounded-md">`;
+        } else {
+          icon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5 text-gray-400">
                     <path stroke-linecap="round" stroke-linejoin="round"
                           d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
                     </svg>`;
-            }
-            previewIconElement.innerHTML = icon;
-
-            if (isTextFile) {
-                previewContentElement.textContent = file.content;
-            } else if (isImageFile) {
-                previewContentElement.innerHTML = `<img src="${file.url}" alt="${file.name}" class="max-w-full max-h-64 rounded-md border border-gray-700 mx-auto">`;
-            } else {
-                previewContentElement.textContent = `File type: ${file.type} (Cannot preview)`;
-            }
         }
+        previewIconElement.innerHTML = icon;
 
-        function renderWebsiteList() {
-            if (websites.length === 0) {
-                websiteListContainer.classList.add('hidden');
-                return;
-            } else {
-                websiteListContainer.classList.remove('hidden');
-            }
-            websiteList.innerHTML = ''; // Clear the list
-            websites.forEach((website, index) => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `
+        if (isTextFile) {
+          previewContentElement.textContent = file.content;
+        } else if (isImageFile) {
+          previewContentElement.innerHTML = `<img src="${file.url}" alt="${file.name}" class="max-w-full max-h-64 rounded-md border border-gray-700 mx-auto">`;
+        } else {
+          previewContentElement.textContent = `File type: ${file.type} (Cannot preview)`;
+        }
+      }
+
+      function renderWebsiteList() {
+        if (websites.length === 0) {
+          websiteListContainer.classList.add('hidden');
+          return;
+        } else {
+          websiteListContainer.classList.remove('hidden');
+        }
+        websiteList.innerHTML = ''; // Clear the list
+        websites.forEach((website, index) => {
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `
                     <span>${website.name}</span>
                     <small>${website.url}</small>
                      <button class="delete-button" data-index="${index}">Delete</button>
                 `;
-                websiteList.appendChild(listItem);
-            });
-        }
-
-        // Event Listeners
-        /**
-         * Handles the upload button click.
-         */
-        function handleUpload() {
-            const htmlContent = htmlInput.value.trim();
-            const websiteName = websiteNameInput.value.trim();
-            const pageTitle = pageTitleInput.value.trim();
-
-            if (!htmlContent) {
-                showError('Please paste your HTML code.');
-                return;
-            }
-            if (!websiteName) {
-                showError('Please provide a website name.');
-                return;
-            }
-
-            const deployedUrl = simulateDeploy(htmlContent, websiteName);
-
-            let file = {
-                name: "index.html",
-                size: htmlContent.length,
-                type: "text/html",
-                url: deployedUrl,
-                content: htmlContent
-            }
-            showFilePreview(file);
-
-            // Store website info
-            websites.push({
-                name: websiteName,
-                url: deployedUrl,
-                title: pageTitle
-            });
-            localStorage.setItem('websites', JSON.stringify(websites));
-            renderWebsiteList();
-
-            // Update title
-            if (pageTitle) {
-                document.title = pageTitle;
-            } else {
-                document.title = "Deployed Website";
-            }
-            deploymentInfo.classList.remove('hidden');
-            deploymentUrlDisplay.textContent = window.location.href + deployedUrl;
-            deploymentUrlDisplay.querySelector('a').href = window.location.href + deployedUrl;
-
-            // Clear form
-            htmlInput.value = '';
-            websiteNameInput.value = '';
-            pageTitleInput.value = '';
-        }
-
-
-
-        function handleReset() {
-            localStorage.removeItem('websites');
-            websites = [];
-            renderWebsiteList();
-            deploymentInfo.classList.add('hidden');
-            filePreviewElement.classList.add('hidden');
-            document.title = "One-Click Local Website Hosting";
-        }
-
-        // Event Listeners
-        publishButton.addEventListener('click', handleUpload);
-        resetButton.addEventListener('click', handleReset);
-
-        websiteList.addEventListener('click', (event) => {
-            if (event.target.classList.contains('delete-button')) {
-                const index = event.target.dataset.index;
-                websites.splice(index, 1);
-                localStorage.setItem('websites', JSON.stringify(websites));
-                renderWebsiteList();
-                if (websites.length === 0) {
-                    deploymentInfo.classList.add('hidden');
-                    filePreviewElement.classList.add('hidden');
-                    document.title = "One-Click Local Website Hosting";
-                }
-            } else {
-                const url = event.target.querySelector('small').textContent;
-                const storedContent = localStorage.getItem(url);
-                if (storedContent) {
-                    //dynamically update the page
-                    document.body.innerHTML = storedContent;
-                    const website = websites.find(site => site.url === url);
-                    if(website?.title){
-                         document.title = website.title;
-                    }
-                    else{
-                         document.title = "Deployed Website"
-                    }
-
-                }
-            }
+          websiteList.appendChild(listItem);
         });
+      }
 
-        // Initial render of website list
+      // Event Listeners
+      /**
+       * Handles the upload button click.
+       */
+      function handleUpload() {
+        const htmlContent = htmlInput.value.trim();
+        const websiteName = websiteNameInput.value.trim();
+        const pageTitle = pageTitleInput.value.trim();
+
+        if (!htmlContent) {
+          showError('Please paste your HTML code.');
+          return;
+        }
+        if (!websiteName) {
+          showError('Please provide a website name.');
+          return;
+        }
+
+        const deployedUrl = simulateDeploy(htmlContent, websiteName);
+
+        let file = {
+          name: 'index.html',
+          size: htmlContent.length,
+          type: 'text/html',
+          url: deployedUrl,
+          content: htmlContent,
+        };
+        showFilePreview(file);
+
+        // Store website info
+        websites.push({
+          name: websiteName,
+          url: deployedUrl,
+          title: pageTitle,
+        });
+        localStorage.setItem('websites', JSON.stringify(websites));
         renderWebsiteList();
 
-        // Load initial content if URL parameter is present
-        const urlParams = new URLSearchParams(window.location.search);
-        const websiteNameFromUrl = urlParams.get('name');
-        if (websiteNameFromUrl) {
-            const storedContent = localStorage.getItem(`?name=${websiteNameFromUrl}`);
-            const website = websites.find(site => site.url === `?name=${websiteNameFromUrl}`);
-            if (storedContent) {
-                document.body.innerHTML = storedContent;
-                 if(website?.title){
-                     document.title = website.title;
-                }
-                else{
-                     document.title = "Deployed Website"
-                }
-            }
+        // Update title
+        if (pageTitle) {
+          document.title = pageTitle;
+        } else {
+          document.title = 'Deployed Website';
         }
+        deploymentInfo.classList.remove('hidden');
+        deploymentUrlDisplay.textContent = window.location.href + deployedUrl;
+        deploymentUrlDisplay.querySelector('a').href = window.location.href + deployedUrl;
 
+        // Clear form
+        htmlInput.value = '';
+        websiteNameInput.value = '';
+        pageTitleInput.value = '';
+      }
+
+      function handleReset() {
+        localStorage.removeItem('websites');
+        websites = [];
+        renderWebsiteList();
+        deploymentInfo.classList.add('hidden');
+        filePreviewElement.classList.add('hidden');
+        document.title = 'One-Click Local Website Hosting';
+      }
+
+      // Event Listeners
+      publishButton.addEventListener('click', handleUpload);
+      resetButton.addEventListener('click', handleReset);
+
+      websiteList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('delete-button')) {
+          const index = event.target.dataset.index;
+          websites.splice(index, 1);
+          localStorage.setItem('websites', JSON.stringify(websites));
+          renderWebsiteList();
+          if (websites.length === 0) {
+            deploymentInfo.classList.add('hidden');
+            filePreviewElement.classList.add('hidden');
+            document.title = 'One-Click Local Website Hosting';
+          }
+        } else {
+          const url = event.target.querySelector('small').textContent;
+          const storedContent = localStorage.getItem(url);
+          if (storedContent) {
+            //dynamically update the page
+            document.body.innerHTML = storedContent;
+            const website = websites.find((site) => site.url === url);
+            if (website?.title) {
+              document.title = website.title;
+            } else {
+              document.title = 'Deployed Website';
+            }
+          }
+        }
+      });
+
+      // Initial render of website list
+      renderWebsiteList();
+
+      // Load initial content if URL parameter is present
+      const urlParams = new URLSearchParams(window.location.search);
+      const websiteNameFromUrl = urlParams.get('name');
+      if (websiteNameFromUrl) {
+        const storedContent = localStorage.getItem(`?name=${websiteNameFromUrl}`);
+        const website = websites.find((site) => site.url === `?name=${websiteNameFromUrl}`);
+        if (storedContent) {
+          document.body.innerHTML = storedContent;
+          if (website?.title) {
+            document.title = website.title;
+          } else {
+            document.title = 'Deployed Website';
+          }
+        }
+      }
     </script>
-</body>
+  </body>
 </html>

@@ -1,64 +1,67 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Topic - Topic Name</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1 id="topic-title">Topic Title</h1>
 
     <div id="comments-container">
-        <!-- Comments will be dynamically injected here -->
+      <!-- Comments will be dynamically injected here -->
     </div>
 
     <h2>Add a Comment</h2>
     <form id="comment-form">
-        <label for="comment-content">Comment:</label>
-        <textarea id="comment-content" required></textarea>
-        <button type="submit">Post Comment</button>
+      <label for="comment-content">Comment:</label>
+      <textarea id="comment-content" required></textarea>
+      <button type="submit">Post Comment</button>
     </form>
 
     <script>
-        const topicName = window.location.pathname.split('/').pop().replace('.html', ''); // Get topic name from URL
+      const topicName = window.location.pathname.split('/').pop().replace('.html', ''); // Get topic name from URL
 
-        async function loadTopic() {
-            const response = await fetch(`http://thejsurlback.onrender.com/forum/${topicName}`);
-            const topic = await response.json();
+      async function loadTopic() {
+        const response = await fetch(`http://thejsurlback.onrender.com/forum/${topicName}`);
+        const topic = await response.json();
 
-            document.getElementById('topic-title').textContent = topic.title;
+        document.getElementById('topic-title').textContent = topic.title;
 
-            const commentsContainer = document.getElementById('comments-container');
-            commentsContainer.innerHTML = '';
-            topic.posts.forEach((post, index) => {
-                const commentElement = document.createElement('div');
-                commentElement.innerHTML = `
+        const commentsContainer = document.getElementById('comments-container');
+        commentsContainer.innerHTML = '';
+        topic.posts.forEach((post, index) => {
+          const commentElement = document.createElement('div');
+          commentElement.innerHTML = `
                     <p>${post.content}</p>
                     <small>Posted on: ${new Date(post.createdAt).toLocaleString()}</small>
                     <hr>
                     <button onclick="deleteComment(${index})">Delete Comment</button>
                 `;
-                commentsContainer.appendChild(commentElement);
-            });
+          commentsContainer.appendChild(commentElement);
+        });
+      }
+
+      async function deleteComment(replyIndex) {
+        const response = await fetch(
+          `http://thejsurlback.onrender.com/forum/${topicName}/reply/${replyIndex}`,
+          {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer admin`, // Only admin can delete comments
+            },
+          }
+        );
+
+        if (response.ok) {
+          alert('Comment deleted!');
+          loadTopic(); // Reload the topic to reflect the change
+        } else {
+          alert('Failed to delete comment');
         }
+      }
 
-        async function deleteComment(replyIndex) {
-            const response = await fetch(`http://thejsurlback.onrender.com/forum/${topicName}/reply/${replyIndex}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer admin` // Only admin can delete comments
-                }
-            });
-
-            if (response.ok) {
-                alert('Comment deleted!');
-                loadTopic();  // Reload the topic to reflect the change
-            } else {
-                alert('Failed to delete comment');
-            }
-        }
-
-        loadTopic(); // Load the topic initially
+      loadTopic(); // Load the topic initially
     </script>
-</body>
+  </body>
 </html>

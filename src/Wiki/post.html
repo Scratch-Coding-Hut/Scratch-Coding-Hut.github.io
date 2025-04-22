@@ -1,37 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create New Topic</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Create a New Topic</h1>
 
     <form id="new-topic-form">
-        <label for="title">Topic Title:</label>
-        <input type="text" id="title" required>
-        <button type="submit">Create Topic</button>
+      <label for="title">Topic Title:</label>
+      <input type="text" id="title" required />
+      <button type="submit">Create Topic</button>
     </form>
 
     <script>
-        document.getElementById('new-topic-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const title = document.getElementById('title').value;
+      document.getElementById('new-topic-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('title').value;
 
-            const newTopic = { title };
+        const newTopic = { title };
 
-            const response = await fetch('http://localhost:3000/forum', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newTopic)
-            });
-
-            if (response.ok) {
-                alert('Topic created successfully!');
-                window.location.href = 'index.html';  // Redirect back to the main forum page
-            }
+        const response = await fetch('http://localhost:3000/forum', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newTopic),
         });
+
+        if (response.ok) {
+          alert('Topic created successfully!');
+          window.location.href = 'index.html'; // Redirect back to the main forum page
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
