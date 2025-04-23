@@ -6,9 +6,6 @@ title: "[BUG]: "
 labels: ["bug"]
 assignees:
   - Fluffy728
-
----
-
 body:
   - type: markdown
     attributes:
