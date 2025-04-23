@@ -1,6 +1,8 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Scratch Coding Hut Forum
+  - name: Scratch Coding Hut Scratch Forum Thread
     url: https://scratch.mit.edu/discuss/topic/652178/
     about: Post here for stuff relating to the shop itself, example: make an order.
-    
+  - name: sch.flarum.cloud
+    url: https://sch.flarum.cloud
+    about: You can also post here, its useful for meetings, and general discussions!
