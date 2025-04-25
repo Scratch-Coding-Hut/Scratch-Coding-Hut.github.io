@@ -8,7 +8,6 @@ This website serves as a hub for all things related to Coding Hut. Here, you'll 
 [![Scratch-Coding-Hut - Scratch-Coding-hut.github.io](https://img.shields.io/static/v1?label=Scratch-Coding-Hut&message=Scratch-Coding-hut.github.io&color=blue&logo=github)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io "Go to GitHub repo")
 [![stars - Scratch-Coding-hut.github.io](https://img.shields.io/github/stars/Scratch-Coding-Hut/Scratch-Coding-hut.github.io?style=social)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io)
 [![forks - Scratch-Coding-hut.github.io](https://img.shields.io/github/forks/Scratch-Coding-Hut/Scratch-Coding-hut.github.io?style=social)](https://github.com/Scratch-Coding-Hut/Scratch-Coding-hut.github.io)
-[![Star History Chart](https://api.star-history.com/svg?repos=Scratch-Coding-Hut/Scratch-Coding-Hut.github.io&type=Date)](https://www.star-history.com/#Scratch-Coding-Hut/Scratch-Coding-Hut.github.io&Date)
 
 ### Repo metadata
 
