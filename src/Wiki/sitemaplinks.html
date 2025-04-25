@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scratch Coding Hut Forum</title>
+  <title>Scratch Coding Hut Wiki</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -37,8 +37,8 @@
 </head>
 <body>
   <h1>Scratch Coding Hut Forum</h1>
-  Wait on tight whioe we redirect you to the real wiki and coding hut forums. Trust Coding Hut, it won't take long at all.
-
+  Wait on tight while we redirect you to the real wiki and coding hut forums. Trust Coding Hut, it won't take long at all.
+Ok, the forum has been closed, so we will redirect you to the Miraheze Wiki.
   
   <div id="topics-container"></div>
   <button id="load-more">Load More</button>
@@ -46,7 +46,7 @@
   <script>
     let currentPage = 1;
     const limit = 5;
-    window.location.href = 'https://sch.flarum.cloud/'
+    window.location.href = 'https://codinghut.miraheze.org'
 
     async function loadTopics(page) {
       const response = await fetch(`http://localhost:3000/forum?page=${page}&limit=${limit}`);
