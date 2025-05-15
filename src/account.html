@@ -88,126 +88,124 @@
         }
     </style>
 
-    <script>
-        function encodeUsername(username) {
-            return btoa(username);
-        }
+<script>
+    function encodeUsername(username) {
+        return btoa(username);
+    }
 
-        function decodeUsername(encodedUsername) {
-            return atob(encodedUsername);
-        }
+    function decodeUsername(encodedUsername) {
+        return atob(encodedUsername);
+    }
 
-        window.onload = async function () {
+    window.onload = async function () {
+        try {
+            if (localStorage.getItem('loggedIn') === 'true') {
+                const username = localStorage.getItem('username');
+
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('loggedInContent').style.display = 'block';
+                document.getElementById('welcomeMessage').textContent = `Welcome to your account, ${username}!`;
+
+                const res = await fetch(`https://scratch-coding-hut.github.io/api/orders?username=${username}`);
+                if (!res.ok) throw new Error('Failed to fetch order data');
+
+                const rawText = await res.text();
+                const json = JSON.parse(rawText);
+
+                const completedOrders = json["completed-orders"] ?? "N/A";
+                const pendingOrders = json["pending-orders"] ?? "N/A";
+
+                document.getElementById('mainText').innerHTML = `
+                    <p>Completed Orders: ${completedOrders}</p>
+                    <p>Pending Orders: ${pendingOrders}</p>
+                    <p>Raw Data:</p>
+                    <pre>${JSON.stringify(json, null, 2)}</pre>
+                `;
+            } else {
+                await checkAuth();
+            }
+        } catch (error) {
+            console.error(error);
+            document.getElementById('mainText').innerHTML = `<p>Something went wrong! Please try again later.</p>`;
+        }
+    };
+
+    async function checkAuth() {
+        const PC = new URLSearchParams(window.location.search).get('privateCode');
+
+        if (PC) {
             try {
-                if (localStorage.getItem('loggedIn') === 'true') {
-                    
-                    const username = localStorage.getItem('username');
+                const res = await fetch(`https://auth-api.itinerary.eu.org/auth/verifyToken/${PC}`);
+                const data = await res.json();
+                const plainUsername = data.username;
+                const encodedUsername = btoa(plainUsername);
 
-                    document.getElementById('authSection').style.display = 'none';
-                    document.getElementById('loggedInContent').style.display = 'block';
-                    document.getElementById('welcomeMessage').textContent = `Welcome to your account, ${username}!`;
-
-                    const res = await fetch(`https://scratch-coding-hut.github.io/api/orders?username=${username}`);
-                    if (!res.ok) throw new Error('Failed to fetch data');
-
-                    const json = await res.json();
-                    var completedorders = json[1].completed-orders;
-                    var pendingorders = json[1].pending-orders;
-                    document.getElementById('mainText').innerHTML = `
-                        <p>Pending Orders: ${completedorders}</p>
-                        <p>Completed Orders: ${pendingorders}</p>
-                        <p>For Developers: ${json}</p>
-                    `;
-                } else {
-                    await checkAuth();
-                }
-            } catch (error) {
-                console.error(error);
-                document.getElementById('mainText').innerHTML = `<p>Something went wrong! Please try again later.</p>`;
-            }
-        };
-
-        async function checkAuth() {
-            const PC = new URLSearchParams(window.location.search).get('privateCode');
-
-            if (PC) {
-                try {
-                    const res = await fetch(`https://auth-api.itinerary.eu.org/auth/verifyToken/${PC}`);
-                    const data = await res.json();
-                    const plainUsername = data.username;
-                    const encodedUsername = btoa(plainUsername);
-
-                    // Ban check (example logic) - Tested sucessfully by MyScratchedAccount - Banning bannie6
-                    if (encodedUsername === 'YmFubmllNg==') {
-                        localStorage.removeItem('loggedIn');
-                        localStorage.removeItem('username');
-                        window.location.href = 'banscreen.html?reason=spam';
-                        return;
-                    }
-
-                    localStorage.setItem('usernameEnc', encodedUsername); // encoded version
-                    localStorage.setItem('username', plainUsername); // plain version
-                    localStorage.setItem('loggedIn', 'true');
-                    window.location.href = 'account.html';
-                } catch (err) {
-                    console.error('Token verification failed:', err);
-                }
-            }
-
-            const DK = new URLSearchParams(window.location.search).get('devKey');
-
-            if (DK) {
-                const devKey = new URLSearchParams(window.location.search).get('devKey');
-
-                if (devKey) {
-                  const username = atob(devKey)
-                  localStorage.setItem('usernameEnc', devKey); // Store the original Base64-encoded username
-                  localStorage.setItem('username', username); // Store the original Base64-encoded username
-                  localStorage.setItem('loggedIn', 'true');
-                  window.location.href = 'account.html'
+                if (encodedUsername === 'YmFubmllNg==') {
+                    localStorage.removeItem('loggedIn');
+                    localStorage.removeItem('username');
+                    window.location.href = 'banscreen.html?reason=spam';
+                    return;
                 }
 
+                localStorage.setItem('usernameEnc', encodedUsername);
+                localStorage.setItem('username', plainUsername);
+                localStorage.setItem('loggedIn', 'true');
+                window.location.href = 'account.html';
+            } catch (err) {
+                console.error('Token verification failed:', err);
             }
         }
 
-        function registerScratchAuth() {
-            const messageBox = document.getElementById("scratchMessage");
-            const redirectLocation = btoa(window.location.href);
-            const authUrl = `https://auth.itinerary.eu.org/auth?redirect=${redirectLocation}&name=Scratch%20Coding%20Hut`;
+        const DK = new URLSearchParams(window.location.search).get('devKey');
 
-            messageBox.style.color = "green";
-            messageBox.textContent = "Redirecting to ScratchAuth... Follow the steps there.";
-            setTimeout(() => {
-                window.location.href = authUrl;
-            }, 2000);
-        }
-
-        function logout() {
-            localStorage.removeItem('loggedIn');
-            localStorage.removeItem('username');
-            localStorage.removeItem('usernameEnc');
+        if (DK) {
+            const username = atob(DK);
+            localStorage.setItem('usernameEnc', DK);
+            localStorage.setItem('username', username);
+            localStorage.setItem('loggedIn', 'true');
             window.location.href = 'account.html';
         }
+    }
 
-        function strikeinfo() {
-            const username = localStorage.getItem('username');
-            if (username) {
-                window.location.href = `https://scratch-coding-hut.github.io/Strikes/my-strikes?username=${username}`;
-            }
+    function registerScratchAuth() {
+        const messageBox = document.getElementById("scratchMessage");
+        const redirectLocation = btoa(window.location.href);
+        const authUrl = `https://auth.itinerary.eu.org/auth?redirect=${redirectLocation}&name=Scratch%20Coding%20Hut`;
+
+        messageBox.style.color = "green";
+        messageBox.textContent = "Redirecting to ScratchAuth... Follow the steps there.";
+        setTimeout(() => {
+            window.location.href = authUrl;
+        }, 2000);
+    }
+
+    function logout() {
+        localStorage.removeItem('loggedIn');
+        localStorage.removeItem('username');
+        localStorage.removeItem('usernameEnc');
+        window.location.href = 'account.html';
+    }
+
+    function strikeinfo() {
+        const username = localStorage.getItem('username');
+        if (username) {
+            window.location.href = `https://scratch-coding-hut.github.io/Strikes/my-strikes?username=${username}`;
         }
+    }
 
-        function devToken() {
-            const username = localStorage.getItem('username');
-            const devTokens = document.getElementById('devTokens');
+    function devToken() {
+        const username = localStorage.getItem('username');
+        const devTokens = document.getElementById('devTokens');
 
-            if (username && devTokens) {
-                const token = btoa(username);
-                const joined = "Your dev token is: " + token + " - Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
-                devTokens.style.color = "green";
-                devTokens.textContent = joined;
-            }
+        if (username && devTokens) {
+            const token = btoa(username);
+            const joined = "Your dev token is: " + token + " - Make sure to only share it with Coding Hut services and partners or else you can get hacked!";
+            devTokens.style.color = "green";
+            devTokens.textContent = joined;
         }
-    </script>
+    }
+</script>
+
 </head>
 
 <body>
