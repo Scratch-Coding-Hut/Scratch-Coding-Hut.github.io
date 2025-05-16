@@ -1,9 +1,5 @@
 # Contributor Covenant Code of Conduct
 
-## First Off,
-
-Don't delete the wikitemplate.html and sitemaplinks.html files for no reason or else you will get temp blocked and a coding hut strike.
-
 ## Remember The Guidelines
 Remember to follow the Scratch community guidelines
 
