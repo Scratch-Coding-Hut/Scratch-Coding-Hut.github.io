@@ -135,7 +135,7 @@
 
         if (PC) {
             try {
-                const res = await fetch(`https://auth-api.itinerary.eu.org/auth/verifyToken/${PC}`);
+                const res = await fetch(`https://scratch-id.onrender.com/verification/${PC}`);
                 const data = await res.json();
                 const plainUsername = data.username;
                 const encodedUsername = btoa(plainUsername);
@@ -170,10 +170,10 @@
     function registerScratchAuth() {
         const messageBox = document.getElementById("scratchMessage");
         const redirectLocation = btoa(window.location.href);
-        const authUrl = `https://auth.itinerary.eu.org/auth?redirect=${redirectLocation}&name=Scratch%20Coding%20Hut`;
+        const authUrl = `https://scratch-id.onrender.com/?redirect=${redirectLocation}&name=Scratch%20Coding%20Hut`;
 
         messageBox.style.color = "green";
-        messageBox.textContent = "Redirecting to ScratchAuth... Follow the steps there.";
+        messageBox.textContent = "Redirecting to ScratchID... Follow the steps there.";
         setTimeout(() => {
             window.location.href = authUrl;
         }, 2000);
