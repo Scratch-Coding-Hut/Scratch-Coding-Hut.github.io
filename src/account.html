@@ -135,7 +135,7 @@
 
         if (PC) {
             try {
-                const res = await fetch(`https://scratch-id.onrender.com/verification/${PC}`);
+                const res = await fetch(`https://corsproxy.io/?url=https://scratch-id.onrender.com/verification/${PC}`);
                 const data = await res.json();
                 const key = Object.keys(data)[0]; // Get the first key (the unique ID)
                 const plainUsername = data[key].user;
