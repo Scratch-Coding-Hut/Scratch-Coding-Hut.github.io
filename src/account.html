@@ -137,7 +137,8 @@
             try {
                 const res = await fetch(`https://scratch-id.onrender.com/verification/${PC}`);
                 const data = await res.json();
-                const plainUsername = data.username;
+                const key = Object.keys(data)[0]; // Get the first key (the unique ID)
+                const plainUsername = data[key].user;
                 const encodedUsername = btoa(plainUsername);
 
                 if (encodedUsername === 'YmFubmllNg==') {
