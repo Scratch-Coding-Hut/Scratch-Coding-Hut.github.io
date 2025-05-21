@@ -131,7 +131,7 @@
     };
 
     async function checkAuth() {
-        const PC = new URLSearchParams(window.location.search).get('privateCode');
+        const PC = new URLSearchParams(window.location.search).get('id');
 
         if (PC) {
             try {
