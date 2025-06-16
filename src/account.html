@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -171,7 +171,13 @@
     function registerScratchAuth() {
         const messageBox = document.getElementById("scratchMessage");
         const redirectLocation = btoa(window.location.href);
-        javascript("window.open("https://scratch-id.onrender.com/?redirect=${redirectLocation}&name=Scratch%20Coding%20Hut", "popupWindow", "width=600,height=400,resizable=yes,scrollbars=yes");")
+        const authUrl = `https://scratch-id.onrender.com/?redirect=${redirectLocation}&name=Scratch%20Coding%20Hut`;
+
+        messageBox.style.color = "green";
+        messageBox.textContent = "Redirecting to ScratchID... Follow the steps there.";
+        setTimeout(() => {
+            window.location.href = authUrl;
+        }, 2000);
     }
 
     function logout() {
